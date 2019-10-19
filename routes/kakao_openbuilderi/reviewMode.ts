@@ -61,7 +61,7 @@ Router.post('/pickone', (req:Express.Request, res:Express.Response) => {
                         "description": "랭킹 확인하기!",
                         "imageUrl": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/160/facebook/200/trophy_1f3c6.png",
                         "link": {
-                          "web": `http://app.snufoodfighter.com/?name=${searchTitle(data[0].name)}` /// 점수 page
+                          "web": `https://snufoodfighter.firebaseapp.com/ranking/?name=${searchTitle(data[0].name)}` /// 점수 page
                         }
                       },
                       {
@@ -77,7 +77,7 @@ Router.post('/pickone', (req:Express.Request, res:Express.Response) => {
                         "description": "미리 들여다 보기! 현재 준비중이에요",
                         "imageUrl": "https://snuffstatic.s3.ap-northeast-2.amazonaws.com/%E1%84%89%E1%85%B3%E1%84%82%E1%85%AE%E1%84%91%E1%85%AE%E1%84%91%E1%85%A1+%E1%84%85%E1%85%A9%E1%84%80%E1%85%A9.PNG",
                         "link": {
-                          "web": `https://snufffront.firebaseapp.com/` /// 준비 중 page
+                          "web": `https://snufoodfighter.firebaseapp.com/`
                         }
                       }
                     ],
