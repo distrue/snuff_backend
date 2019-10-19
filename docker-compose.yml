@@ -1,0 +1,34 @@
+version: '3'
+
+services:
+  snuff_back:
+    container_name: snuff_back
+    build: ./
+    restart: always
+    environment:
+      DBURL: mongodb://snuff_db/snuff
+    ports: # for debug
+      - 3000:3000
+    networks:
+      - snuff
+    # docker exec -it zd_web_1 /bin/sh
+  
+  snuff_db:
+    container_name: snuff_db
+    image: mongo
+    restart: always
+    environment:
+      #MONGO_DATA_DIR: /data/db
+      MONGO_LOG_DIR: /dev/null
+      #MONGODB_USER: "user" 
+      #MONGODB_PASS: "pass"
+    ports: # for debug
+      - 27017:27017
+    networks:
+      - snuff
+    volumes:
+      - ../database/snuff_mongo:/data/db
+
+networks:
+  snuff:
+    driver: bridge

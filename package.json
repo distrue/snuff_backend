@@ -1,0 +1,42 @@
+{
+  "name": "server_side_javascript",
+  "version": "1.0.0",
+  "description": "server side javascript tutorials",
+  "main": "hello.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "ts-node app.ts",
+    "update": "ts-node tools/dbUpdater.ts",
+    "total_up": "ts-node tools/totalscore.ts"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@types/connect-mongo": "^0.0.43",
+    "@types/cors": "^2.8.6",
+    "@types/express-session": "^1.15.14",
+    "axios": "^0.19.0",
+    "body-parser": "^1.19.0",
+    "connect-mongo": "^3.0.0",
+    "cors": "^2.8.5",
+    "ejs": "^2.6.2",
+    "express": "^4.17.1",
+    "express-session": "^1.16.2",
+    "fs-extra": "^8.1.0",
+    "jsonfile": "^5.0.0",
+    "mongoose": "^5.6.9",
+    "morgan": "^1.9.1",
+    "querystring": "^0.2.0",
+    "ts-node": "^8.3.0"
+  },
+  "devDependencies": {
+    "@types/ejs": "^2.6.3",
+    "@types/express": "^4.17.1",
+    "@types/fs-extra": "^8.0.1",
+    "@types/jsonfile": "^5.0.0",
+    "@types/mongoose": "^5.5.13",
+    "@types/morgan": "^1.7.37",
+    "@types/node": "^12.7.2",
+    "typescript": "^3.5.3"
+  }
+}
