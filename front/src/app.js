@@ -75,18 +75,33 @@ const ReviewPostPad = ({chosen}) => {
         })
     }
 
-    return(<div style={{display: "flex", flexDirection: "row", width: "90vw", flexWrap:"wrap"}}>
-        <div style={{padding:"0% 10% 0% 10%", display: "box", width:"500px", border:"1px solid black"}}>
-            <h4>점수 입력</h4>
-            <table>
+    const deletePost = async () => {
+        await Axios.delete(`/admin/rating?name=${addRate[0].name}`, {withCredentials: true})
+        .then(res => {
+            window.location.reload();
+        })
+        .catch(err => {
+            alert("error occured");
+            console.log(err.data);
+        })
+    }
+
+    return(<div style={{display: "flex", flexDirection: "column", width: "90vw", flexWrap:"wrap", "margin-top": "30px"}}>
+        <div style={{position: "relative", padding:"0% 10% 0% 10%", display: "box", width:"80vw", border:"1px solid black"}}>
+            <h4 style={{"font-size": "20px"}}>가게 상세 data</h4>
+            <button 
+                style={{"height":"35px", width:"60px", "font-size": "16pt", "position": "absolute",border: "1px solid black", right: "30px", top: "30px"}}
+                onClick={deletePost}
+            >삭제</button>
+            <table style={{"font-size": "16pt"}}>
                 <tr>
                     <th>이름</th>
-                    <th><input name="name" type="text" value={addRate[0].name} onChange={e => addRate[1]({...addRate[0], name: e.target.value})}/></th>
+                    <th><input name="name" type="text" style={{width:"150px", height:"30px", border: "1px solid black", "font-size": "15pt"}} value={addRate[0].name} onChange={e => addRate[1]({...addRate[0], name: e.target.value})}/></th>
                 </tr>
                 {cate.map(item => {
                     return(<tr>
                         <th>{item}</th>
-                        <th><input name="item" type="number" step="0.1" value={addRate[0][item]} onChange={e => {
+                        <th><input name="item" style={{width:"150px", height:"30px", border: "1px solid black", "font-size": "15pt"}}  type="number" step="0.1" value={addRate[0][item]} onChange={e => {
                             let tmp = {}; tmp[item] = e.target.value;
                             addRate[1](Object.assign(addRate[0], tmp))
                             console.log(addRate[0]);
@@ -94,19 +109,19 @@ const ReviewPostPad = ({chosen}) => {
                     </tr>);
                 })}
             </table>
-            <div style={{marginLeft: "10%"}}>
-                가격(price)<br/>
-                <input name="price" type="text" style={{"height": "50px", "width": "200px"}} value={addRate[0].price} onChange={e => addRate[1]({...addRate[0], price: e.target.value})}/><br/>
+            <div style={{marginLeft: "10%", display: "flex", "flex-direction": "row"}}>
+                <div>
+                    가격(price)<br/>
+                    <input name="price" type="text" style={{"height": "50px", "width": "200px", border: "1px solid black", "font-size": "15pt"}} value={addRate[0].price} onChange={e => addRate[1]({...addRate[0], price: e.target.value})}/><br/>
+                </div>
+                <div style={{"margin-left": "10px"}}>
+                    위치정보: <input name="locationURL" type="text" style={{"height": "30px", "width": "200px", border: "1px solid black", "font-size": "15pt"}} value={addRate[0].locationURL} onChange={e => addRate[1]({...addRate[0], locationURL: e.target.value})}/><br/>
+                </div>
             </div>
             <hr/>
-            <div>
-                위치정보: <input name="locationURL" type="text" style={{"height": "30px", "width": "200px"}} value={addRate[0].locationURL} onChange={e => addRate[1]({...addRate[0], locationURL: e.target.value})}/><br/>
-            </div>
-            <hr/>
-            <button onClick={postRating}>Submit</button>
+            <button style={{"height":"35px", width:"60px", "font-size": "16pt", "position": "absolute", border: "1px solid black",right: "30px", bottom: "30px"}}onClick={postRating}>Sub</button>
         </div>
-        <div style={{display: "block", width:"400px", padding:"10px", border: "1px solid black", marginLeft:"20px"}}>
-            <h3>Restaurant image</h3>
+        <div style={{display: "block", width:"80vw", padding:"10px", border: "1px solid black", marginLeft:"20px"}}>
             <div style={{display: "flex", flexDirection:"row", flexWrap: "wrap", width: "100%", height:"20%"}}>
                 {chosen[0].images.map((item, idx) => {
                 return(<>
@@ -135,9 +150,9 @@ const ResultList = ({chosen, show}) => {
                 return(<tr onClick={() => {
                     chosen[1]({idx: idx, name: item.name, rating: item.rating, images: item.imgUrls});
                 }} style={{backgroundColor: chosen[0].idx === idx?"skyblue":"white"}} >
-                    <td>{item.name}</td>
-                    <td>{JSON.stringify(item.rating)}</td>
-                    <td>{item.locationURL}</td>
+                    <td class="row1">{item.name}</td>
+                    <td class="row2">{JSON.stringify(item.rating)}</td>
+                    <td class="row3">{item.locationURL}</td>
                 </tr>);
             })}
         </tbody>
@@ -146,11 +161,18 @@ const ResultList = ({chosen, show}) => {
 }
 
 const TableStyle = styled.table`
-    .td {
+    td {
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
+        overflow: hidden;
     }
+    tr{
+        height: 40px;
+    }
+    table-layout: fixed;
+    font-size: 16pt;
+    width: 90vw;
     .row1 { width: 20%; } .row2 { width: 60%; } .row3 { width: 20%; }
 `;
 

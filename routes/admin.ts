@@ -1,7 +1,7 @@
 import Express  from 'express';
 import path from 'path';
 
-import {list, update} from '../api/database/review';
+import {list, update, deleteOne} from '../api/database/review';
 const Router = Express.Router();
 
 Router.get('/login', async(req: Express.Request, res: Express.Response) => {
@@ -72,7 +72,19 @@ Router.post('/rating', async (req:Express.Request, res: Express.Response) => {
     }
     catch(err) {
         console.log(err);
-        return res.status(400).json({err: err});
+        return res.status(500).json({err: err});
+    }
+})
+
+Router.delete('/rating', async (req: Express.Request, res: Express.Response) => {
+    try {
+        console.log(req.query);
+        let ans = await deleteOne({name: req.query.name.toString()});
+        return res.status(200).json({ans: ans});
+    }
+    catch(err) {
+        console.log(err);
+        return res.status(500).json({err: err});
     }
 })
 
