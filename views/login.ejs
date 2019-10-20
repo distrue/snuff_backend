@@ -1,9 +1,15 @@
 <html>
     <head></head>
     <body>
-        <form method="POST" target="_self">
+        <form id="main" method="POST" target="_self">
             비밀번호: <input type="text" name="password"/> <br/>
-            <input type="submit" value="로그인"/>
         </form>
+        <button onClick="javascript:goSubmit()">로그인</button>
+        <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script> 
+        <script type="text/javascript">
+            function goSubmit() {
+                $("#main").submit();
+            }
+        </script>
     </body>
 </html>
