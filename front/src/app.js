@@ -65,7 +65,7 @@ const ReviewPostPad = ({chosen}) => {
     }, [chosen[0]]);
 
     const postRating = async () => {
-        await Axios.post(`http://${BACK_URL}/admin/rating`, {...addRate[0]}, {withCredentials: true})
+        await Axios.post(`/admin/rating`, {...addRate[0]}, {withCredentials: true})
         .then(res => {
             window.location.reload();
         })
@@ -160,7 +160,7 @@ const App = () => {
     const chosen = useState({idx: -1, images: []});
 
     const getRating = async () => {
-        await Axios.get(`http://${BACK_URL}/admin/rating?name=${name[0]}`, {withCredentials: true})
+        await Axios.get(`/admin/rating?name=${name[0]}`, {withCredentials: true})
         .then(res => {
             show[1](res.data.show);
         })
