@@ -4,20 +4,7 @@ import path from 'path';
 import {list, update, deleteOne} from '../api/database/review';
 const Router = Express.Router();
 
-Router.get('/login', async(req: Express.Request, res: Express.Response) => {
-    return res.status(200).render('login');
-})
-
-Router.post('/login', async(req: Express.Request, res: Express.Response) => {
-    let ans = req.body.password;
-    if(ans === "hilite1!") {
-        req.session!.isAdmin = true;
-        return res.status(200).redirect('/admin');
-    }
-    return await setTimeout(() => {return(res.status(200).render('login'))}, 2000);
-})
-
-Router.get('/logout', async(req: Express.Request, res: Express.Response) => {
+Router.all('/logout', async(req: Express.Request, res: Express.Response) => {
     req.session!.isAdmin = false;
     return res.status(200).send('logout!');
 })
@@ -26,9 +13,21 @@ Router.get('/isAdmin', async(req: Express.Request, res: Express.Response) => {
     return res.status(200).send(`Admin: ${req.session!.isAdmin}`);
 })
 
+Router.post(/^/, async(req: Express.Request, res: Express.Response, next: any) => {
+    let ans = req.body.password;
+    if(ans === "hilite1!") {
+        req.session!.isAdmin = true;
+        console.log(req.session!.isAdmin);
+        return next();
+    }
+    return await setTimeout(() => {return(next());}, 2000);
+})
+
+
 Router.all(/^/, (req, res, next) => {
+    console.log(req.session!.isAdmin);
     if(req.session!.isAdmin !== true) {
-        return res.render("Unauthorized");
+        return res.render("login", {isLogin: req.session!.isAdmin});
     }
     return next();
 })
@@ -88,8 +87,8 @@ Router.delete('/rating', async (req: Express.Request, res: Express.Response) => 
     }
 })
 
-Router.get('/', function(req, res) {
-    res.redirect('/admin/index.html');
+Router.all('/', function(req, res) {
+    res.sendFile(path.join(__dirname, '..', 'bundle', 'index.html'));
 })
 
 Router.get('/:route', function (req, res) {
