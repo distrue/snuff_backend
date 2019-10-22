@@ -4,6 +4,7 @@ import bodyParser from 'body-parser';
 import logger from 'morgan';
 import cors from 'cors';
 import session from 'express-session';
+import mongoose from 'mongoose';
 
 import {init as configInit} from './config';
 import dbinit from './mongodb';
@@ -21,16 +22,25 @@ app.use(bodyParser.urlencoded({
 }));
 
 dbinit();
+
+const MongoStore = require('connect-mongo')(session);
+
+app.set('trustproxy', 1);
 app.use(cors());
-app.use(session({
+const appSession = session({
 	cookie: {
-		secure: false // TODO: to change session in http, change it to true in https
+		secure: false, // TODO: to change session in http, change it to true in https
+		maxAge: 3 * 24 * 60 * 60 * 1000
 	  },
 	  name: 'sid',
 	  resave: false,
 	  saveUninitialized: true,
-	  secret: 'dhakhiuq32lhfi8yy1ilasho8u9'
-}));
+	  secret: 'dhakhiuq32lhfi8yy1ilasho8u9',
+	  store: new MongoStore({
+		mongooseConnection: mongoose.connection
+	  })
+})
+app.use(appSession);
 
 configInit();
 
