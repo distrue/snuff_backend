@@ -6,7 +6,7 @@ import cors from 'cors';
 import session from 'express-session';
 
 import {init as configInit} from './config';
-import dbsession from './mongodb';
+import dbinit from './mongodb';
 import apiRouter from './routes/kakao_openbuilderi';
 import adminRouter from './routes/admin';
 import kakaoRouter from './routes/kakao_oauth';
@@ -20,7 +20,7 @@ app.use(bodyParser.urlencoded({
   extended: true
 }));
 
-app.use(dbsession());
+dbinit();
 app.use(cors());
 app.use(session({
 	cookie: {
