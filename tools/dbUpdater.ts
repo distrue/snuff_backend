@@ -12,13 +12,14 @@ mongoose.connect('mongodb://localhost/snuff', {useNewUrlParser: true}, () =>
 
 async function readCSV() {
   const file = fs.readFileSync(path.join(__dirname, '..', 'result.csv'), 'utf-8');
-  const lines = file.split('endline\n');
-  let cou = 0;
-  return lines.map((v:any) =>
+  let lines = file.split('endline\n');
+  lines.push(lines[0].split('end\n')[1]);
+  lines[0] = lines[0].split('end\n')[0];
+  return lines.map((v:any, idx: Number) =>
   {
+    if(idx === 0) return null;
     const vv = v.split('$');
-    if(vv[4] !== undefined) { console.log(vv[3]); cou+=1;    
-      console.log(cou);
+    if(vv[4] !== undefined) { console.log(vv[3]);
       // vv[0]: postURL, vv[2]:region, vv[3]: foodtype 
       try {
         return {
@@ -66,8 +67,9 @@ async function add(item: ReviewItem) {
 
 async function addToDB(items: ReviewItem[]) {
   console.log('[+] Add to DB');
+  console.log(items);
   try {
-    console.log('[-] UserModel Clear');``
+    // console.log('[-] UserModel Clear');
     // await ReviewModel.collection.drop();
     // tslint:disable-next-line: no-empty
   } catch {}
