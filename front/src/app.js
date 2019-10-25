@@ -27,7 +27,7 @@ const SearchBar = ({name, getRating, show}) => {
     }, [Unrated[0]]);
 
     return(<div style={{display: "flex", flexDirection: "row"}}>
-        <img width="50px" src="/static/logo_white.png"/>
+        <img width="50px" height="50px" src="/static/logo_white.png"/>
         <div>
             show little: <input onChange={e => name[1](e.target.value)} name="name"/>
             <button onClick={getRating}>submit</button>
@@ -125,7 +125,7 @@ const ReviewPostPad = ({chosen}) => {
             <div style={{display: "flex", flexDirection:"row", flexWrap: "wrap", width: "100%", height:"20%"}}>
                 {chosen[0].images.map((item, idx) => {
                 return(<>
-                    <img class="ImgBlock" style={{maxWidth: "20%"}} onLoad={e => {
+                    <img class="ImgBlock" style={{maxWidth: "20%", height: "auto"}} onLoad={e => {
                         console.log(idx);
                     }} src={item}/>
                 </>);
@@ -168,7 +168,7 @@ const TableStyle = styled.table`
         overflow: hidden;
     }
     tr{
-        height: 40px;
+        height: 60px;
     }
     table-layout: fixed;
     font-size: 16pt;
