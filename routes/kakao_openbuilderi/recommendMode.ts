@@ -36,7 +36,7 @@ Router.post('/rcmd', (req:Express.Request, res:Express.Response) => {
               let parseContent = String(item.content.match(/메뉴:.*$/));
               parseContent = parseContent!.replace(/\"/gi, "");
               datalist.push({
-                  "title": `[스누Pick] ${viewTitle(item.name)}`,
+                  "title": `[푸파Pick] ${viewTitle(item.name)}`,
                   "description": parseContent,
                   "thumbnail": {
                     "imageUrl": imgs[0]
@@ -75,6 +75,7 @@ Router.post('/rcmd', (req:Express.Request, res:Express.Response) => {
           if(req.body.action.detailParams.region.value!=="skip") filter2 = Object.assign(filter2, {region: {$regex: req.body.action.detailParams.region.value}});
           if(req.body.action.detailParams.food_type.value!=="skip") filter2 = Object.assign(filter2, {foodtype: {$regex: req.body.action.detailParams.food_type.value}});
         }
+        Object.assign(filter2, {'rating.total': {$lt: 4.5} });
         data = await randomList(filter2, findlen);
         console.log("general", data.length);
         if(data.length > 0) {
