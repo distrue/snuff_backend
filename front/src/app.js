@@ -1,7 +1,16 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
 import {BACK_URL} from '../config';
 import Axios from 'axios';
 import styled from 'styled-components';
+
+
+function useForceUpdate() {
+    const [, setTick] = useState(0);
+    const update = useCallback(() => {
+      setTick(tick => tick + 1);
+    }, [])
+    return update;
+  }
 
 const SearchBar = ({name, getRating, show}) => {
     const Unrated = useState(false);
@@ -85,6 +94,7 @@ const ReviewPostPad = ({chosen}) => {
             console.log(err.data);
         })
     }
+    const forceUpdate = useForceUpdate();
 
     return(<div style={{display: "flex", flexDirection: "column", width: "90vw", flexWrap:"wrap", "margin-top": "30px"}}>
         <div style={{position: "relative", padding:"0% 10% 0% 10%", display: "box", width:"80vw", border:"1px solid black"}}>
@@ -99,12 +109,13 @@ const ReviewPostPad = ({chosen}) => {
                     <th><input name="name" type="text" style={{width:"150px", height:"30px", border: "1px solid black", "font-size": "15pt"}} value={addRate[0].name} onChange={e => addRate[1]({...addRate[0], name: e.target.value})}/></th>
                 </tr>
                 {cate.map(item => {
-                    return(<tr>
+                    return(<tr key={item}>
                         <th>{item}</th>
                         <th><input name="item" style={{width:"150px", height:"30px", border: "1px solid black", "font-size": "15pt"}}  type="number" step="0.1" value={addRate[0][item]} onChange={e => {
                             let tmp = {}; tmp[item] = e.target.value;
                             addRate[1](Object.assign(addRate[0], tmp))
                             console.log(addRate[0]);
+                            forceUpdate();
                         }}/></th>
                     </tr>);
                 })}
