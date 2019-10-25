@@ -159,7 +159,9 @@ const ResultList = ({chosen, show}) => {
         <tbody>
             {show[0].map((item, idx) => {
                 return(<tr onClick={() => {
-                    chosen[1]({idx: idx, name: item.name, rating: item.rating, images: item.imgUrls});
+                    let po = item.name.match(/[가-힣a-zA-Z0-9]*/).join(' ');
+                    console.log(po);
+                    chosen[1]({idx: idx, name: po, rating: item.rating, images: item.imgUrls});
                 }} style={{backgroundColor: chosen[0].idx === idx?"skyblue":"white"}} >
                     <td class="row1">{item.name}</td>
                     <td class="row2">{JSON.stringify(item.rating)}</td>
