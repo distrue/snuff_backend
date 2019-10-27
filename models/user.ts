@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 
 export interface User extends mongoose.Document {
-    kakaoid: "",
+    kakaoAccount: {},
     nickname: "",
     tmpcode: "",
     access_token: "",
@@ -9,9 +9,9 @@ export interface User extends mongoose.Document {
 }
 
 const schema = new mongoose.Schema({
-    kakaoid: {
-        default: "",
-        type: String
+    kakaoAccount: {
+        default: {},
+        type: Object
     },
     nickname: {
         default: "",

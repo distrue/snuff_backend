@@ -7,10 +7,29 @@ import {create, find} from '../api/database/user';
 
 const Router = Express.Router();
 
+Router.get('/register', async(req: Express.Request, res: Express.Response) => {
+    try {
+        let ans = await find({access_token: req.session!.token});
+        if(ans.length === 0) return res.status(400).send("User does not exists");
+        if(ans[0].nickname !== "") return res.status(200).json({isRegister:"true"});
+        let profile = await Axios.get(`https://kapi.kakao.com/v2/user/me`, {headers: {"Content-type": "application/x-www-form-urlencoded;charset=utf-8", "Authorization": `Bearer ${req.session!.token}`}, withCredentials: true})
+        .then(async (ans2) => {
+            if(ans2.data.kakao_account) {
+                let y = await ans[0].update({kakao_account: ans2.data.kakao_account});
+            }
+            return ans2.data.kakao_account;
+        })
+        return res.status(200).json({isRegister: "false", profile: profile});
+    } catch(err) {
+        return res.status(500).send(`Unintended Error occured in Express Server: ${err}`);
+    }
+});
+
 Router.get('/islogin', async(req: Express.Request, res: Express.Response) => {
     try {
-        let ans = find(req.query.code);
-        return res.status(200).send({islogin: ans});
+        let ans = await find({tmpcode: req.query.code});
+        req.session!.token = ans[0].access_token;
+        return res.status(200).json({islogin: ans.length});
     } catch(err) {
         return res.status(500).send(`Unintended Error occured in Express Server: ${err}`);
     }
@@ -35,7 +54,7 @@ Router.get('/', async (req: Express.Request, res: Express.Response) => {
                 console.log(err);
                 return {res: "failed", update: ''};
             })
-            return res.status(200).redirect(`https://snufoodfighter.firebaseapp.com/?code=${req.query.code}`);
+            return res.status(200).redirect(`https://snufoodfighter.firebaseapp.com/login/?code=${req.query.code}`);
         }
         else {
             return res.status(400).json({err: req.query.error}); 
