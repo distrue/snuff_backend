@@ -5,6 +5,7 @@ import logger from 'morgan';
 import cors from 'cors';
 import session from 'express-session';
 import mongoose from 'mongoose';
+import cookieParser from 'cookie-parser';
 
 import {init as configInit} from './config';
 import dbinit from './mongodb';
@@ -27,6 +28,7 @@ const MongoStore = require('connect-mongo')(session);
 
 app.set('trustproxy', 1);
 app.use(cors());
+app.use(cookieParser());
 const appSession = session({
 	cookie: {
 		secure: false, // TODO: to change session in http, change it to true in https

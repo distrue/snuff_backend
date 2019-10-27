@@ -9,6 +9,7 @@ const Router = Express.Router();
 
 Router.get('/register', async(req: Express.Request, res: Express.Response) => {
     try {
+        if(!req.session!.token) return res.status(400).send("check islogin first");
         let ans = await find({access_token: req.session!.token});
         if(ans.length === 0) return res.status(400).send("User does not exists");
         if(ans[0].nickname !== "") return res.status(200).json({isRegister:"true"});
@@ -27,6 +28,7 @@ Router.get('/register', async(req: Express.Request, res: Express.Response) => {
 
 Router.get('/islogin', async(req: Express.Request, res: Express.Response) => {
     try {
+        console.log(req.cookies);
         let ans = await find({tmpcode: req.query.code});
         req.session!.token = ans[0].access_token;
         return res.status(200).json({islogin: ans.length});

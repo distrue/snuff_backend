@@ -1,5 +1,4 @@
 import React, {useState, useEffect, useCallback} from 'react';
-import {BACK_URL} from '../config';
 import Axios from 'axios';
 import styled from 'styled-components';
 
