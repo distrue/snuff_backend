@@ -7,6 +7,14 @@ import {create} from '../api/database/user';
 
 const Router = Express.Router();
 
+Router.get('/islogin', async(req: Express.Request, res: Express.Response) => {
+    try {
+        return res.status(200).send({islogin: req.session!.id});
+    } catch(err) {
+        return res.status(500).send(`Unintended Error occured in Express Server: ${err}`);
+    }
+});
+
 Router.get('/', async (req: Express.Request, res: Express.Response) => {
     try {
         if(req.query.code) {
@@ -26,7 +34,8 @@ Router.get('/', async (req: Express.Request, res: Express.Response) => {
                 console.log(err);
                 return {res: "failed", update: ''};
             })
-            return res.status(200).json({user: ans.res, update: ans.update});
+            req.session!.id = ans.res.data.access_token;
+            return res.status(200).redirect("https://snufoodfighter.firebaseapp.com/login");
         }
         else {
             return res.status(400).json({err: req.query.error}); 
