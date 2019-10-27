@@ -9,9 +9,9 @@ const Router = Express.Router();
 
 Router.get('/secess', async(req: Express.Request, res: Express.Response) => {
     try {
-        if(!req.session!.token) return res.status(400).send("check islogin first");
+        if(!req.session!.token) return res.status(401).send("check islogin first");
         let ans = await find({access_token: req.session!.token});
-        if(ans.length === 0) return res.status(400).send("User does not exists");
+        if(ans.length === 0) return res.status(406).send("User does not exists");
         if(ans[0].nickname !== "") return res.status(200).json({isRegister:"true"});
         let profile = await Axios.get(`https://kapi.kakao.com/v1/user/unlink`, {headers: {"Content-type": "application/x-www-form-urlencoded;charset=utf-8", "Authorization": `Bearer ${req.session!.token}`}, withCredentials: true})
         .then(async (ans2) => {
@@ -25,14 +25,15 @@ Router.get('/secess', async(req: Express.Request, res: Express.Response) => {
 
 Router.get('/logout', async(req: Express.Request, res: Express.Response) => {
     try {
-        if(!req.session!.token) return res.status(400).send("check islogin first");
+        if(!req.session!.token) return res.status(401).send("check islogin first");
         let ans = await find({access_token: req.session!.token});
-        if(ans.length === 0) return res.status(400).send("User does not exists");
+        if(ans.length === 0) return res.status(406).send("User does not exists");
         if(ans[0].nickname !== "") return res.status(200).json({isRegister:"true"});
         let profile = await Axios.get(`https://kapi.kakao.com/v1/user/logout`, {headers: {"Content-type": "application/x-www-form-urlencoded;charset=utf-8", "Authorization": `Bearer ${req.session!.token}`}, withCredentials: true})
         .then(async (ans2) => {
             return ans2.data;
         })
+        req.session!.destory();
         return res.status(200).json({secession: true, profile: profile});
     } catch(err) {
         return res.status(500).send(`Unintended Error occured in Express Server: ${err}`);
@@ -41,9 +42,9 @@ Router.get('/logout', async(req: Express.Request, res: Express.Response) => {
 
 Router.get('/register', async(req: Express.Request, res: Express.Response) => {
     try {
-        if(!req.session!.token) return res.status(400).send("check islogin first");
+        if(!req.session!.token) return res.status(401).send("check islogin first");
         let ans = await find({access_token: req.session!.token});
-        if(ans.length === 0) return res.status(400).send("User does not exists");
+        if(ans.length === 0) return res.status(406).send("User does not exists");
         if(ans[0].nickname !== "") return res.status(200).json({isRegister:"true"});
         let profile = await Axios.get(`https://kapi.kakao.com/v2/user/me`, {headers: {"Content-type": "application/x-www-form-urlencoded;charset=utf-8", "Authorization": `Bearer ${req.session!.token}`}, withCredentials: true})
         .then(async (ans2) => {
@@ -61,6 +62,7 @@ Router.get('/register', async(req: Express.Request, res: Express.Response) => {
 Router.get('/islogin', async(req: Express.Request, res: Express.Response) => {
     try {
         let ans = await find({access_token: req.session!.token});
+        req.session!.token = ans[0].access_token;
         return res.status(200).json({islogin: ans.length});
     } catch(err) {
         return res.status(500).send(`Unintended Error occured in Express Server: ${err}`);
