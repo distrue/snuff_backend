@@ -27,7 +27,11 @@ dbinit();
 const MongoStore = require('connect-mongo')(session);
 
 app.set('trustproxy', 1);
-app.use(cors());
+app.use(cors({
+	credentials: true, // enable set cookie
+	methods: ['GET', 'POST', 'PUT', 'DELETE'],
+	origin: ['http://localhost:8000', 'https://snufoodfighter.firebaseapp.com']
+  }));
 app.use(cookieParser());
 const appSession = session({
 	cookie: {
