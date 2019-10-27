@@ -62,12 +62,10 @@ const ReviewPostPad = ({chosen}) => {
     useEffect(() => {
         if(chosen[0].idx >= 0) {
             addRate[1]({
-                name: chosen[0].name,
                 taste: chosen[0].rating.taste,
                 quantity: chosen[0].rating.quantity,
                 atmosphere: chosen[0].rating.atmosphere,
-                service: chosen[0].rating.service,
-                price: chosen[0].rating.service
+                service: chosen[0].rating.service
             })
         }
     }, [chosen[0]]);
@@ -131,11 +129,11 @@ const ReviewPostPad = ({chosen}) => {
             <hr/>
             <button style={{"height":"35px", width:"60px", "font-size": "16pt", "position": "absolute", border: "1px solid black",right: "30px", bottom: "30px"}}onClick={postRating}>Sub</button>
         </div>
-        <div style={{display: "block", width:"80vw", padding:"10px", border: "1px solid black", marginLeft:"20px"}}>
+        <div style={{display: "block", width:"90vw", height:"auto", padding:"10px", border: "1px solid black", marginLeft:"20px"}}>
             <div style={{display: "flex", flexDirection:"row", flexWrap: "wrap", width: "100%", height:"20%"}}>
                 {chosen[0].images.map((item, idx) => {
                 return(<>
-                    <img class="ImgBlock" style={{maxWidth: "20%", height: "auto"}} onLoad={e => {
+                    <img class="ImgBlock" style={{maxWidth: "17vw", height: "17vw"}} onLoad={e => {
                         console.log(idx);
                     }} src={item}/>
                 </>);
@@ -179,7 +177,7 @@ const TableStyle = styled.table`
         text-overflow: ellipsis;
         overflow: hidden;
     }
-    tr{
+    tr {
         height: 60px;
     }
     table-layout: fixed;
