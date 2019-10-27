@@ -17,6 +17,7 @@ Router.get('/secess', async(req: Express.Request, res: Express.Response) => {
         .then(async (ans2) => {
             return ans2.data;
         })
+        await remove({access_token: req.session!.token});
         return res.status(200).json({secession: true, profile: profile});
     } catch(err) {
         console.error(err);
@@ -55,7 +56,6 @@ Router.get('/register', async(req: Express.Request, res: Express.Response) => {
             }
             return ans2.data.kakao_account;
         })
-        await remove({access_token: req.session!.token});
         return res.status(200).json({isRegister: "false", profile: profile});
     } catch(err) {
         console.error(err);
