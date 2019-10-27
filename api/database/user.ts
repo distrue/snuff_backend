@@ -18,3 +18,8 @@ export async function find(query: Object) {
     // TODO: 중복 확인
     return await UserModel.find(query);
 }
+
+export async function remove(query: Object) {
+    // TODO: 중복 확인
+    return await UserModel.remove(query);
+}

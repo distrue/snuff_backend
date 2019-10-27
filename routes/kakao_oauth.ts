@@ -3,7 +3,7 @@ import Axios from 'axios';
 import querystring from 'querystring';
 
 import {getValue} from '../config';
-import {create, find} from '../api/database/user';
+import {create, find, remove} from '../api/database/user';
 
 const Router = Express.Router();
 
@@ -19,6 +19,7 @@ Router.get('/secess', async(req: Express.Request, res: Express.Response) => {
         })
         return res.status(200).json({secession: true, profile: profile});
     } catch(err) {
+        console.error(err);
         return res.status(500).send(`Unintended Error occured in Express Server: ${err}`);
     }
 });
@@ -36,6 +37,7 @@ Router.get('/logout', async(req: Express.Request, res: Express.Response) => {
         req.session!.destory();
         return res.status(200).json({secession: true, profile: profile});
     } catch(err) {
+        console.error(err);
         return res.status(500).send(`Unintended Error occured in Express Server: ${err}`);
     }
 });
@@ -53,8 +55,10 @@ Router.get('/register', async(req: Express.Request, res: Express.Response) => {
             }
             return ans2.data.kakao_account;
         })
+        await remove({access_token: req.session!.token});
         return res.status(200).json({isRegister: "false", profile: profile});
     } catch(err) {
+        console.error(err);
         return res.status(500).send(`Unintended Error occured in Express Server: ${err}`);
     }
 });
@@ -65,6 +69,7 @@ Router.get('/islogin', async(req: Express.Request, res: Express.Response) => {
         req.session!.token = ans[0].access_token;
         return res.status(200).json({islogin: ans.length});
     } catch(err) {
+        console.error(err);
         return res.status(500).send(`Unintended Error occured in Express Server: ${err}`);
     }
 });
@@ -95,6 +100,7 @@ Router.get('/', async (req: Express.Request, res: Express.Response) => {
             return res.status(400).json({err: req.query.error}); 
         }
     } catch(err) {
+        console.error(err);
         return res.status(500).send(`Unintended Error occured in Express Server: ${err}`);
     }
 });
