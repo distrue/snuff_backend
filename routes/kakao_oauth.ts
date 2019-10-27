@@ -28,9 +28,7 @@ Router.get('/register', async(req: Express.Request, res: Express.Response) => {
 
 Router.get('/islogin', async(req: Express.Request, res: Express.Response) => {
     try {
-        console.log(req.cookies);
-        let ans = await find({tmpcode: req.query.code});
-        req.session!.token = ans[0].access_token;
+        let ans = await find({access_token: req.session!.token});
         return res.status(200).json({islogin: ans.length});
     } catch(err) {
         return res.status(500).send(`Unintended Error occured in Express Server: ${err}`);
@@ -56,6 +54,7 @@ Router.get('/', async (req: Express.Request, res: Express.Response) => {
                 console.log(err);
                 return {res: "failed", update: ''};
             })
+            req.session!.token = ans.res.access_token;
             return res.status(200).redirect(`https://snufoodfighter.firebaseapp.com/login/?code=${req.query.code}`);
         }
         else {
