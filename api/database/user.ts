@@ -9,3 +9,10 @@ export async function create(tmpcode: String) {
         tmpcode: tmpcode
     });
 }
+
+export async function find(tmpcode: String) {
+    // TODO: 중복 확인
+    return await UserModel.find({
+        tmpcode: tmpcode
+    });
+}

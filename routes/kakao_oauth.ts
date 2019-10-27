@@ -3,13 +3,14 @@ import Axios from 'axios';
 import querystring from 'querystring';
 
 import {getValue} from '../config';
-import {create} from '../api/database/user';
+import {create, find} from '../api/database/user';
 
 const Router = Express.Router();
 
 Router.get('/islogin', async(req: Express.Request, res: Express.Response) => {
     try {
-        return res.status(200).send({islogin: req.session!.id});
+        let ans = find(req.query.code);
+        return res.status(200).send({islogin: ans});
     } catch(err) {
         return res.status(500).send(`Unintended Error occured in Express Server: ${err}`);
     }
@@ -34,8 +35,7 @@ Router.get('/', async (req: Express.Request, res: Express.Response) => {
                 console.log(err);
                 return {res: "failed", update: ''};
             })
-            req.session!.id = ans.res.data.access_token;
-            return res.status(200).redirect("https://snufoodfighter.firebaseapp.com/login");
+            return res.status(200).redirect(`https://snufoodfighter.firebaseapp.com/?code=${req.query.code}`);
         }
         else {
             return res.status(400).json({err: req.query.error}); 
