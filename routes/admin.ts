@@ -80,7 +80,7 @@ Router.post('/rating', async (req:Express.Request, res: Express.Response) => {
 Router.delete('/rating', async (req: Express.Request, res: Express.Response) => {
     try {
         console.log(req.query);
-        let ans = await deleteOne({name: req.query.name.toString()});
+        let ans = await deleteOne({name: {$regex: req.query.name.toString()}});
         return res.status(200).json({ans: ans});
     }
     catch(err) {
