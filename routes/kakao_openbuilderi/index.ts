@@ -28,4 +28,7 @@ Router.use(askEvent);
 import askLocation from './askLocation';
 Router.use(askLocation);
 
+import eventTgt from './eventTgt';
+Router.use(eventTgt);
+
 export default Router;

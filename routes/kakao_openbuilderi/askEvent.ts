@@ -1,43 +1,38 @@
 import Express from 'express';
 const Router = Express.Router();
 
-import {viewTitle} from '../../api/database/search';
-import {list} from '../../api/database/review';
+import {list} from '../../api/database/event';
 
 Router.post('/askEvent', (req:Express.Request, res:Express.Response) => {
-    let find = {name: {$regex: req.body.action.params.restaurant_name.replace(/_/gi, " ")}};
-    console.log(find);
+    let find = "";
+    if(req.body.action.params.restaurant_name) {
+      find = req.body.action.params.restaurant_name.replace(/_/gi, " ");
+    }
     list(find)
-    .then(data => {
+    .then(async data => {
+        console.log(data);
         let datalist: any[] = [];
-        let imgURLs = data[0].imgUrls;
-        /*for(let idx in imgURLs) {
-          if(datalist.length >= 10) break;
+        await data.forEach(item => {
           datalist.push({
-            "title":viewTitle(data[0].name),
+            "title":item.title,
             "thumbnail": {
-              "imageUrl": imgURLs[idx],
-              "link": {
-                  "web": imgURLs[idx]
-              }
-            },
-            "buttons":[]
-          });
-        } */
-        datalist.push({
-            "title":"이벤트 1",
-            "thumbnail": {
-              "imageUrl": "https://snuffstatic.s3.ap-northeast-2.amazonaws.com/kakaomap.png",
+              "imageUrl": item.imageUrl,
               "fixedRatio": true
             },
             "buttons":[
                 {
                     "action": "block",
-                    "label": "쿠폰 연결",
-                    "blockId": `5d9b3c5192690d0001a44921`
-                }
+                    "label": "참여 방법",
+                    "blockId": `${item.blockId}`
+                },
+                {
+                  "action": "message",
+                  "label": "참여매장보기",
+                  "messageText": `eventTgt ${item.code}`
+              }
             ]
           });
+        });
         const responseBody = {
             "version": "2.0",
             "template": {

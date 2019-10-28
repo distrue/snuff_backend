@@ -82,7 +82,7 @@ Router.post('/pickone', (req:Express.Request, res:Express.Response) => {
                     "items": [
                       {
                         "title": `종합점수: ${totalscore}, 상세점수보기`,
-                        "description": `(${ALL}개 중 ${getRating(String(totalscore))}등)`,
+                        "description": `${ALL}개 매장 중 ${getRating(String(totalscore))}등`,
                         "imageUrl": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/160/facebook/200/trophy_1f3c6.png",
                         "link": {
                           "web": `https://snufoodfighter.firebaseapp.com/ranking/?name=${searchTitle(data[0].name)}` /// 점수 page

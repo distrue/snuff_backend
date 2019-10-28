@@ -44,13 +44,13 @@ Router.post('/rcmd', (req:Express.Request, res:Express.Response) => {
                   "buttons": [
                     {
                       "action": "message",
-                      "label": "리뷰 검색해 보기",
+                      "label": "매장 정보 보기",
                       "messageText": `askTotal ${searchTitle(item.name)}`
                     },
                     {
-                      "action":  "webLink",
-                      "label": "인스타 포스트 보기",
-                      "webLinkUrl": `https://www.instagram.com${item.postURL}`
+                      "action": "message",
+                      "label": "매장 이벤트 보기",
+                      "messageText": `askEvent ${searchTitle(item.name)}`
                     }
                   ]
               });
