@@ -42,7 +42,7 @@ const SearchBar = ({name, getRating, show}) => {
         </div>
         <div>
             Look for: <input type="radio" name="show" value="unrated" 
-            checked={Unrated[0]} onClick={() => {Unrated[1](!Unrated[0])}}/> Unrated
+            checked={Unrated[0]} onChange={() => {Unrated[1](!Unrated[0])}}/> Unrated
         </div>
     </div>);
 }
@@ -93,22 +93,23 @@ const ReviewPostPad = ({chosen}) => {
     }
     const forceUpdate = useForceUpdate();
 
-    return(<div style={{display: "flex", flexDirection: "column", width: "90vw", flexWrap:"wrap", "margin-top": "30px"}}>
+    return(<div style={{display: "flex", flexDirection: "column", width: "90vw", flexWrap:"wrap", marginTop: "30px"}}>
         <div style={{position: "relative", padding:"0% 10% 0% 10%", display: "box", width:"80vw", border:"1px solid black"}}>
-            <h4 style={{"font-size": "20px"}}>가게 상세 data</h4>
+            <h4 style={{fontSize: "20px"}}>가게 상세 data</h4>
             <button 
-                style={{"height":"35px", width:"60px", "font-size": "16pt", "position": "absolute",border: "1px solid black", right: "30px", top: "30px"}}
+                style={{"height":"35px", width:"60px", fontSize: "16pt", "position": "absolute",border: "1px solid black", right: "30px", top: "30px"}}
                 onClick={deletePost}
             >삭제</button>
-            <table style={{"font-size": "16pt"}}>
+            <table style={{"fontSize": "16pt"}}>
+                <tbody>
                 <tr>
                     <th>이름</th>
-                    <th><input name="name" type="text" style={{width:"150px", height:"30px", border: "1px solid black", "font-size": "15pt"}} value={addRate[0].name} onChange={e => addRate[1]({...addRate[0], name: e.target.value})}/></th>
+                    <th><input name="name" type="text" style={{width:"150px", height:"30px", border: "1px solid black", "fontSize": "15pt"}} value={addRate[0].name} onChange={e => addRate[1]({...addRate[0], name: e.target.value})}/></th>
                 </tr>
                 {cate.map(item => {
                     return(<tr key={item}>
                         <th>{item}</th>
-                        <th><input name="item" style={{width:"150px", height:"30px", border: "1px solid black", "font-size": "15pt"}}  type="number" step="0.1" value={addRate[0][item]} onChange={e => {
+                        <th><input name="item" style={{width:"150px", height:"30px", border: "1px solid black", "fontSize": "15pt"}}  type="number" step="0.1" value={addRate[0][item]} onChange={e => {
                             let tmp = {}; tmp[item] = e.target.value;
                             addRate[1](Object.assign(addRate[0], tmp))
                             console.log(addRate[0]);
@@ -116,24 +117,25 @@ const ReviewPostPad = ({chosen}) => {
                         }}/></th>
                     </tr>);
                 })}
+                </tbody>
             </table>
-            <div style={{marginLeft: "10%", display: "flex", "flex-direction": "row"}}>
+            <div style={{marginLeft: "10%", display: "flex", "flexDirection": "row"}}>
                 <div>
                     가격(price)<br/>
-                    <input name="price" type="text" style={{"height": "50px", "width": "200px", border: "1px solid black", "font-size": "15pt"}} value={addRate[0].price} onChange={e => addRate[1]({...addRate[0], price: e.target.value})}/><br/>
+                    <input name="price" type="text" style={{"height": "50px", "width": "200px", border: "1px solid black", "fontSize": "15pt"}} value={addRate[0].price} onChange={e => addRate[1]({...addRate[0], price: e.target.value})}/><br/>
                 </div>
-                <div style={{"margin-left": "10px"}}>
-                    위치정보: <input name="locationURL" type="text" style={{"height": "30px", "width": "200px", border: "1px solid black", "font-size": "15pt"}} value={addRate[0].locationURL} onChange={e => addRate[1]({...addRate[0], locationURL: e.target.value})}/><br/>
+                <div style={{"marginLeft": "10px"}}>
+                    위치정보: <input name="locationURL" type="text" style={{"height": "30px", "width": "200px", border: "1px solid black", "fontSize": "15pt"}} value={addRate[0].locationURL} onChange={e => addRate[1]({...addRate[0], locationURL: e.target.value})}/><br/>
                 </div>
             </div>
             <hr/>
-            <button style={{"height":"35px", width:"60px", "font-size": "16pt", "position": "absolute", border: "1px solid black",right: "30px", bottom: "30px"}}onClick={postRating}>Sub</button>
+            <button style={{"height":"35px", width:"60px", "fontSize": "16pt", "position": "absolute", border: "1px solid black",right: "30px", bottom: "30px"}}onClick={postRating}>Sub</button>
         </div>
         <div style={{display: "block", width:"90vw", height:"auto", padding:"10px", border: "1px solid black", marginLeft:"20px"}}>
             <div style={{display: "flex", flexDirection:"row", flexWrap: "wrap", width: "100%", height:"20%"}}>
                 {chosen[0].images.map((item, idx) => {
                 return(<>
-                    <img class="ImgBlock" style={{maxWidth: "17vw", height: "17vw"}} onLoad={e => {
+                    <img className="ImgBlock" style={{maxWidth: "17vw", height: "17vw"}} onLoad={e => {
                         console.log(idx);
                     }} src={item}/>
                 </>);
@@ -148,9 +150,9 @@ const ResultList = ({chosen, show}) => {
         <TableStyle>
         <thead>
             <tr>
-            <th class="row1">Name</th>
-            <th class="row2">rating</th>
-            <th class="row3">locationURL</th>
+            <th className="row1">Name</th>
+            <th className="row2">rating</th>
+            <th className="row3">locationURL</th>
             </tr>
         </thead>
         <tbody>
@@ -160,9 +162,9 @@ const ResultList = ({chosen, show}) => {
                     console.log(po);
                     chosen[1]({idx: idx, name: po, rating: item.rating, images: item.imgUrls});
                 }} style={{backgroundColor: chosen[0].idx === idx?"skyblue":"white"}} >
-                    <td class="row1">{item.name}</td>
-                    <td class="row2">{JSON.stringify(item.rating)}</td>
-                    <td class="row3">{item.locationURL}</td>
+                    <td className="row1">{item.name}</td>
+                    <td className="row2">{JSON.stringify(item.rating)}</td>
+                    <td className="row3">{item.locationURL}</td>
                 </tr>);
             })}
         </tbody>
@@ -197,19 +199,24 @@ const EventPad = () => {
         });
     }
     
-    return(<div style={{display: "flex", flexDirection: "column", width: "90vw", flexWrap:"wrap", "margin-top": "30px"}}>
+    const forceUpdate = useForceUpdate();
+
+    return(<div style={{display: "flex", flexDirection: "column", width: "90vw", flexWrap:"wrap", "marginTop": "30px"}}>
         <table>
-            {[...addEvent[0].keys()].map(item => {
-                return(<td>
-                    <tr>{item}</tr>
-                    <tr>
-                        <input value={addEvent[0][item]} onChange={e => {
-                            addEvent[1](Object.assign(addEvent[0], {item: e.target.value}));
+            <tbody>
+            {[...Object.keys(addEvent[0])].map(item => {
+                return(<tr key={item}>
+                    <td>{item}: <input value={addEvent[0][item]} onChange={e => {
+                            let ne = {}; ne[item] = e.target.value; 
+                            let ans = Object.assign(addEvent[0], ne);
+                            console.log(ans);
+                            addEvent[1](ans);
                             forceUpdate();
-                        }}/>
-                    </tr>
-                </td>);
+                        }}
+                    style={{border:"1px solid black"}}/></td>
+                </tr>);
             })}
+            </tbody>
         </table>
         <button onClick={putEvent}>Submit</button>
     </div>);

@@ -90,15 +90,6 @@ Router.delete('/rating', async (req: Express.Request, res: Express.Response) => 
     }
 })
 
-Router.all('/', function(req, res) {
-    res.sendFile(path.join(__dirname, '..', 'bundle', 'index.html'));
-})
-
-Router.get('/:route', function (req, res) {
-    res.sendFile(path.join(__dirname, '..', 'bundle', String(req.params.route)));
-});
-
-
 Router.put('/event', async function(req, res) {
     try {
         let ans = await add(req.body.title, req.body.code, req.body.blockId, req.body.description, req.body.imageUrl);
@@ -117,6 +108,14 @@ Router.get('/event', async function(req, res) {
         console.error(err);
         return res.status(500).send("Unintended Server error occured");
     }
+});
+
+Router.all('/', function(req, res) {
+    res.sendFile(path.join(__dirname, '..', 'bundle', 'index.html'));
+})
+
+Router.get('/:route', function (req, res) {
+    res.sendFile(path.join(__dirname, '..', 'bundle', String(req.params.route)));
 });
 
 export default Router;
