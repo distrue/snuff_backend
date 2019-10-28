@@ -82,7 +82,7 @@ Router.post('/pickone', (req:Express.Request, res:Express.Response) => {
                     "items": [
                       {
                         "title": `종합점수: ${totalscore}, 상세점수보기`,
-                        "description": "(${ALL}개 중 ${getRating(String(totalscore))}등)",
+                        "description": `(${ALL}개 중 ${getRating(String(totalscore))}등)`,
                         "imageUrl": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/160/facebook/200/trophy_1f3c6.png",
                         "link": {
                           "web": `https://snufoodfighter.firebaseapp.com/ranking/?name=${searchTitle(data[0].name)}` /// 점수 page
@@ -103,12 +103,11 @@ Router.post('/pickone', (req:Express.Request, res:Express.Response) => {
                         }
                       }
                     ],
-                    "buttons": [
+                    "buttons": [ 
                       {
-                        "title": "이벤트 보기",
-                        "description": "음식점 진행중 이벤트",
-                        "imageUrl": "https://snuffstatic.s3.ap-northeast-2.amazonaws.com/event.png",
-                        "messageText": `askEvent ${ searchTitle(data[0].name) }`
+                      "action": "message",
+                      "label": "이벤트 보기",
+                      "messageText": `askEvent ${ searchTitle(data[0].name) }`
                       },
                       {
                         "action": "share",
@@ -121,16 +120,14 @@ Router.post('/pickone', (req:Express.Request, res:Express.Response) => {
                   "basicCard":{
                     "title": viewTitle(data[0].name),
                     "thumbnail": {
-                      "imageUrl": imgURLs[0],
-                      "fixedRatio": true
+                      "imageUrl": imgURLs[0]
                     },
                     "buttons":[
-                        {
-                          "title": "음식점 사진",
-                          "description": "음식점 사진을 살펴보세요!",
-                          "imageUrl": "https://snuffstatic.s3.ap-northeast-2.amazonaws.com/%E1%84%89%E1%85%B3%E1%84%82%E1%85%AE%E1%84%91%E1%85%AE%E1%84%91%E1%85%A1+%E1%84%85%E1%85%A9%E1%84%80%E1%85%A9.PNG",
-                          "messageText": `askImage ${ searchTitle(data[0].name) }`
-                        },
+                      {
+                        "label": "음식점 사진",
+                        "action": "message",
+                        "messageText": `askImage ${ searchTitle(data[0].name) }`
+                      },
                        {
                         "action": "message",
                         "label": "상세 리뷰 보기",
