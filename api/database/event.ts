@@ -1,4 +1,5 @@
 import {EventModel} from '../../models/event';
+import { ObjectId } from 'bson';
 
 export async function add(title: string, code: string, blockId: string, description: string, imageUrl: string) {
     try {
@@ -33,7 +34,7 @@ export async function list(participant: string) {
     }
 }
 
-export async function targets(code: string) {
+export async function targets(code: ObjectId) {
     try {
         let query = {
             "code": {
