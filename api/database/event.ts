@@ -1,5 +1,6 @@
 import {EventModel} from '../../models/event';
 import { ObjectId } from 'bson';
+import {list as reivewList} from './review';
 
 export async function add(title: string, code: string, blockId: string, description: string, imageUrl: string) {
     try {
@@ -20,27 +21,25 @@ export async function list(participant: string) {
     try {
         let query: any = {};
         if(participant) {
+            let key = await reivewList({"name": {"$regex": participant}});
             query = {
                 "participants": {
-                    "$elemMatch":{
-                        "$regex": participant
-                    }
+                    "$elemMatch": key[0].reviewId
                 }
             };
+            return await EventModel.find({});
         }
-        return await EventModel.find(query);
+        else {
+            return await EventModel.find({});           
+        }
     } catch (err) {
         throw err;
     }
 }
 
-export async function targets(code: ObjectId) {
+export async function targets(code: string) {
     try {
-        let query = {
-            "code": {
-                "$regex": code
-            }
-        };
+        let query = { "code": code };
         return await EventModel.find(query).populate('participants');
     } catch (err) {
         throw err;

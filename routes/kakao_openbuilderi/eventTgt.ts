@@ -3,14 +3,13 @@ const Router = Express.Router();
 
 import {viewTitle, searchTitle} from '../../api/database/search';
 import {targets} from '../../api/database/event';
-import mongoose from 'mongoose';
 
 Router.post('/eventTgt', (req:Express.Request, res:Express.Response) => {
     let find = "";
     if(req.body.action.params.EventName) {
       find = req.body.action.params.EventName.replace(/_/gi, " ");
     }
-    targets(mongoose.Types.ObjectId(find)) 
+    targets(find) 
     .then(async data => {
         console.log(data);
         let datalist: any[] = [];
