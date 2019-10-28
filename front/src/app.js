@@ -199,7 +199,7 @@ const EventPad = () => {
     
     return(<div style={{display: "flex", flexDirection: "column", width: "90vw", flexWrap:"wrap", "margin-top": "30px"}}>
         <table>
-            {addEvent[0].keys.map(item => {
+            {[...addEvent[0].keys()].map(item => {
                 return(<td>
                     <tr>{item}</tr>
                     <tr>
