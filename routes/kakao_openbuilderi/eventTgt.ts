@@ -13,6 +13,7 @@ Router.post('/eventTgt', (req:Express.Request, res:Express.Response) => {
     .then(async data => {
         console.log(data);
         let datalist: any[] = [];
+        if(data.length === 0) return res.status(400).send("no review");
         await data[0].participants.forEach((item: any) => {
           let parseContent = String(item.content.match(/메뉴:.*$/));
           parseContent = parseContent!.replace(/\"/gi, "");

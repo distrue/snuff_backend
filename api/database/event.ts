@@ -24,7 +24,7 @@ export async function list(participant: string) {
             let key = await reivewList({"name": {"$regex": participant}});
             query = {
                 "participants": {
-                    "$elemMatch": key[0].reviewId
+                    "$elemMatch": key[0]._id
                 }
             };
             return await EventModel.find({});
@@ -39,7 +39,7 @@ export async function list(participant: string) {
 
 export async function targets(code: string) {
     try {
-        let query = { "code": code };
+        let query = { "code": {"$regex": code} };
         return await EventModel.find(query).populate('participants');
     } catch (err) {
         throw err;
