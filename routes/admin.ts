@@ -2,6 +2,7 @@ import Express  from 'express';
 import path from 'path';
 
 import {list, update, deleteOne} from '../api/database/review';
+import {add, list as eventList} from '../api/database/event';
 const Router = Express.Router();
 
 Router.all('/logout', async(req: Express.Request, res: Express.Response) => {
@@ -95,6 +96,27 @@ Router.all('/', function(req, res) {
 
 Router.get('/:route', function (req, res) {
     res.sendFile(path.join(__dirname, '..', 'bundle', String(req.params.route)));
+});
+
+
+Router.put('/event', async function(req, res) {
+    try {
+        let ans = await add(req.body.title, req.body.code, req.body.blockId, req.body.description, req.body.imageUrl);
+        return res.status(200).json(ans);
+    } catch(err) {
+        console.error(err);
+        return res.status(500).send("Unintended Server error occured");
+    }
+});
+
+Router.get('/event', async function(req, res) {
+    try {
+        let ans = await eventList("");
+        return res.status(200).json(ans);
+    } catch(err) {
+        console.error(err);
+        return res.status(500).send("Unintended Server error occured");
+    }
 });
 
 export default Router;

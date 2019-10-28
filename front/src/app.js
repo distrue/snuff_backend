@@ -170,6 +170,51 @@ const ResultList = ({chosen, show}) => {
     </div>);
 }
 
+const EventPad = () => {
+    const addEvent = useState({
+        title: "",
+        code: "",
+        blockId: "",
+        description: "",
+        imageUrl: ""
+    });
+
+    useEffect(() => {
+        Axios.get(`/admin/event`, {withCredentials: true})
+        .then(res => {
+            console.log(res);
+        });
+    }, []);
+
+    async function putEvent() {
+        return await Axios.put(`/admin/event`, {...addEvent[0]}, {withCredentials: true})
+        .then(res => {
+            window.location.reload();
+        })
+        .catch(err => {
+            alert("error occured");
+            console.log(err.data);
+        });
+    }
+    
+    return(<div style={{display: "flex", flexDirection: "column", width: "90vw", flexWrap:"wrap", "margin-top": "30px"}}>
+        <table>
+            {addEvent[0].keys.map(item => {
+                return(<td>
+                    <tr>{item}</tr>
+                    <tr>
+                        <input value={addEvent[0][item]} onChange={e => {
+                            addEvent[1](Object.assign(addEvent[0], {item: e.target.value}));
+                            forceUpdate();
+                        }}/>
+                    </tr>
+                </td>);
+            })}
+        </table>
+        <button onClick={putEvent}>Submit</button>
+    </div>);
+}
+
 const TableStyle = styled.table`
     td {
         white-space: nowrap;
@@ -210,6 +255,7 @@ const App = () => {
         <SearchBar name={name} getRating={getRating} show={show} />
         <ResultList show={show} chosen={chosen} />
         <ReviewPostPad chosen={chosen}/>
+        <EventPad/>
     </>);
 }
 
