@@ -22,4 +22,10 @@ Router.use(reviewRequest);
 import ratingone from './ratingone';
 Router.use(ratingone);
 
+import askEvent from './askEvent';
+Router.use(askEvent);
+
+import askLocation from './askLocation';
+Router.use(askLocation);
+
 export default Router;

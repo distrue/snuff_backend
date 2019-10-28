@@ -3,37 +3,61 @@ const Router = Express.Router();
 
 import {list} from '../../api/database/review';
 import {viewTitle, searchTitle} from '../../api/database/search';
+import {add} from '../../api/database/request';
+
+
+const ALL = 246;
+
+function getRating(score: string) {
+  switch(score) {
+    case "4.875":
+        return 1;
+    case "4.75":
+        return 3;
+    case "4.625":
+        return 9;
+    case "4.5":
+        return 22;
+    case "4.375":
+        return 48;
+    case "4.25":
+        return 85;
+    case "4.125":
+        return 125;
+    case "4":
+        return 167;
+    case "3.875":
+        return 201;
+    case "3.75":
+        return 224;
+    case "3.625":
+        return 238;
+    case "3.5":
+        return 243;
+    case "3.375":
+        return 246;
+  }
+}
 
 
 Router.post('/pickone', (req:Express.Request, res:Express.Response) => {
     let find = {name: {$regex: req.body.action.detailParams.restaurant_name.value.replace(/_/gi, " ")}};
     console.log(find);
     list(find)
-    .then(data => {
+    .then(async (data) => {
       let responseBody;
       if(data.length === 0) {
+        await add(req.body.action.detailParams.restaurant_name.value);
         responseBody = {
           "version": "2.0",
           "template": {
             "outputs": [
               {
                 "basicCard": {
-                  "description": `아직 ${(req.body.action.detailParams.restaurant_name.value.replace(/_/gi, " "))}의 리뷰가 없어요ㅠㅠ 리뷰 요청하기로 리뷰를 요청해주세요!`,
+                  "description": `아직 ${(req.body.action.detailParams.restaurant_name.value.replace(/_/gi, " "))}의 리뷰가 없어요, 스누푸파가 준비해볼게요!`,
                   "thumbnail": {
                       "imageUrl": "https://testonit.s3.ap-northeast-2.amazonaws.com/%E1%84%89%E1%85%B3%E1%84%82%E1%85%AE%E1%84%91%E1%85%AE%E1%84%91%E1%85%A1+%E1%84%85%E1%85%A9%E1%84%80%E1%85%A9.PNG",
-                  },
-                  "buttons": [
-                    {
-                      "action": "message",
-                      "label": "요청하기",
-                      "messageText": `askNewone`
-                    },
-                    {
-                      "action": "message",
-                      "label":"괜찮아요",
-                      "messageText": `끝내기`
-                    }
-                  ]
+                  }
                 }
               }
             ]
@@ -57,27 +81,37 @@ Router.post('/pickone', (req:Express.Request, res:Express.Response) => {
                     },
                     "items": [
                       {
-                        "title": `스누푸파 종합점수: ${totalscore}`,
-                        "description": "랭킹 확인하기!",
+                        "title": `스누푸파 종합점수: ${totalscore} (${ALL}개 매장 중 ${getRating(String(totalscore))}등)`,
+                        "description": "상세 점수표 확인하기",
                         "imageUrl": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/160/facebook/200/trophy_1f3c6.png",
                         "link": {
                           "web": `https://snufoodfighter.firebaseapp.com/ranking/?name=${searchTitle(data[0].name)}` /// 점수 page
                         }
                       },
                       {
+                        "title": "이벤트 보기",
+                        "description": "이 음식점에서 진행중인 이벤트 보기",
+                        "imageUrl": "https://snuffstatic.s3.ap-northeast-2.amazonaws.com/event.png",
+                        "messageText": `askEvent ${ searchTitle(data[0].name) }`
+                      },
+                      {
+                        "title": "음식점 사진",
+                        "description": "음식점 상세 사진을 살펴보세요!",
+                        "imageUrl": "https://snuffstatic.s3.ap-northeast-2.amazonaws.com/%E1%84%89%E1%85%B3%E1%84%82%E1%85%AE%E1%84%91%E1%85%AE%E1%84%91%E1%85%A1+%E1%84%85%E1%85%A9%E1%84%80%E1%85%A9.PNG",
+                        "messageText": `askImage ${ searchTitle(data[0].name) }`
+                      },
+                      {
+                        "title": "음식점 위치 🗺️",
+                        "description": "음식점 위치를 살펴보세요!",
+                        "imageUrl": "https://snuffstatic.s3.ap-northeast-2.amazonaws.com/%E1%84%89%E1%85%B3%E1%84%82%E1%85%AE%E1%84%91%E1%85%AE%E1%84%91%E1%85%A1+%E1%84%85%E1%85%A9%E1%84%80%E1%85%A9.PNG",
+                        "messageText": `askLocation ${ searchTitle(data[0].name) }`
+                      },
+                      {                        
                         "title": "인스타에서 보기",
                         "description": "인스타에서 자세히 보기",
                         "imageUrl": "https://www.instagram.com/static/images/ico/favicon-192.png/68d99ba29cc8.png",
                         "link": {
                           "web": `https://www.instagram.com${data[0].postURL}`
-                        }
-                      },
-                      {
-                        "title": "스누푸파 app",
-                        "description": "미리 들여다 보기! 현재 준비중이에요",
-                        "imageUrl": "https://snuffstatic.s3.ap-northeast-2.amazonaws.com/%E1%84%89%E1%85%B3%E1%84%82%E1%85%AE%E1%84%91%E1%85%AE%E1%84%91%E1%85%A1+%E1%84%85%E1%85%A9%E1%84%80%E1%85%A9.PNG",
-                        "link": {
-                          "web": `https://snufoodfighter.firebaseapp.com/`
                         }
                       }
                     ],
@@ -88,9 +122,8 @@ Router.post('/pickone', (req:Express.Request, res:Express.Response) => {
                         "messageText": `askDetail ${ searchTitle(data[0].name) }`
                       },
                       {
-                        "action": "message",
-                        "label": "상세 사진 보기",
-                        "messageText": `askImage ${ searchTitle(data[0].name) }`
+                        "action": "share",
+                        "label": "공유하기"
                       }
                     ]
                   } 

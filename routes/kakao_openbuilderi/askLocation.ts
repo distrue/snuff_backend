@@ -1,29 +1,38 @@
 import Express from 'express';
 const Router = Express.Router();
 
-import {viewTitle} from '../../api/database/search';
 import {list} from '../../api/database/review';
-Router.post('/pictureone', (req:Express.Request, res:Express.Response) => {
+
+
+Router.post('/askLocation', (req:Express.Request, res:Express.Response) => {
     let find = {name: {$regex: req.body.action.params.restaurant_name.replace(/_/gi, " ")}};
     console.log(find);
     list(find)
     .then(data => {
         let datalist: any[] = [];
-        let imgURLs = data[0].imgUrls;
-        for(let idx in imgURLs) {
-          if(datalist.length >= 10) break;
+        if(data[0].locationURL) {
           datalist.push({
-            "title":viewTitle(data[0].name),
+            "title":"매장 위치 보기",
             "thumbnail": {
-              "imageUrl": imgURLs[idx],
+              "imageUrl": "https://snuffstatic.s3.ap-northeast-2.amazonaws.com/kakaomap.png",
               "link": {
-                  "web": imgURLs[idx]
-              },
-              "fixedRatio": true
+                "web": data[0].locationURL
+            }
             },
+            "descriptions": "kakao map으로 매장 위치를 살펴보세요!",
             "buttons":[]
           });
-        } 
+        }
+        else {
+          datalist.push({
+            "title":"매장 정보 등록 대기중",
+            "thumbnail": {
+              "imageUrl": "https://snuffstatic.s3.ap-northeast-2.amazonaws.com/kakaomap.png"
+            },
+            "descriptions": "매장 정보 등록을 대기 하고 있어요",
+            "buttons":[]
+          });
+        }
         const responseBody = {
             "version": "2.0",
             "template": {
