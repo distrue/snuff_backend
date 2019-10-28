@@ -28,7 +28,7 @@ Router.post('/askEvent', (req:Express.Request, res:Express.Response) => {
                 {
                   "action": "message",
                   "label": "참여매장보기",
-                  "messageText": `eventTgt ${item.code}`
+                  "messageText": `eventFor ${item.code}`
               }
             ]
           });
