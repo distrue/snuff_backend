@@ -1,6 +1,7 @@
 import Express from 'express';
 const Router = Express.Router();
 
+import {viewTitle} from '../../api/database/search';
 import {list} from '../../api/database/review';
 
 Router.post('/askEvent', (req:Express.Request, res:Express.Response) => {

@@ -81,30 +81,18 @@ Router.post('/pickone', (req:Express.Request, res:Express.Response) => {
                     },
                     "items": [
                       {
-                        "title": `스누푸파 종합점수: ${totalscore} (${ALL}개 매장 중 ${getRating(String(totalscore))}등)`,
-                        "description": "상세 점수표 확인하기",
+                        "title": `종합점수: ${totalscore}, 상세점수보기`,
+                        "description": "(${ALL}개 중 ${getRating(String(totalscore))}등)",
                         "imageUrl": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/160/facebook/200/trophy_1f3c6.png",
                         "link": {
                           "web": `https://snufoodfighter.firebaseapp.com/ranking/?name=${searchTitle(data[0].name)}` /// 점수 page
                         }
                       },
                       {
-                        "title": "이벤트 보기",
-                        "description": "이 음식점에서 진행중인 이벤트 보기",
-                        "imageUrl": "https://snuffstatic.s3.ap-northeast-2.amazonaws.com/event.png",
-                        "messageText": `askEvent ${ searchTitle(data[0].name) }`
-                      },
-                      {
-                        "title": "음식점 사진",
-                        "description": "음식점 상세 사진을 살펴보세요!",
-                        "imageUrl": "https://snuffstatic.s3.ap-northeast-2.amazonaws.com/%E1%84%89%E1%85%B3%E1%84%82%E1%85%AE%E1%84%91%E1%85%AE%E1%84%91%E1%85%A1+%E1%84%85%E1%85%A9%E1%84%80%E1%85%A9.PNG",
-                        "messageText": `askImage ${ searchTitle(data[0].name) }`
-                      },
-                      {
                         "title": "음식점 위치 🗺️",
                         "description": "음식점 위치를 살펴보세요!",
                         "imageUrl": "https://snuffstatic.s3.ap-northeast-2.amazonaws.com/%E1%84%89%E1%85%B3%E1%84%82%E1%85%AE%E1%84%91%E1%85%AE%E1%84%91%E1%85%A1+%E1%84%85%E1%85%A9%E1%84%80%E1%85%A9.PNG",
-                        "messageText": `askLocation ${ searchTitle(data[0].name) }`
+                        "messageText": `https://snufoodfighter.firebaseapp.com`
                       },
                       {                        
                         "title": "인스타에서 보기",
@@ -117,14 +105,41 @@ Router.post('/pickone', (req:Express.Request, res:Express.Response) => {
                     ],
                     "buttons": [
                       {
-                        "action": "message",
-                        "label": "상세 리뷰 보기",
-                        "messageText": `askDetail ${ searchTitle(data[0].name) }`
+                        "title": "이벤트 보기",
+                        "description": "음식점 진행중 이벤트",
+                        "imageUrl": "https://snuffstatic.s3.ap-northeast-2.amazonaws.com/event.png",
+                        "messageText": `askEvent ${ searchTitle(data[0].name) }`
                       },
                       {
                         "action": "share",
                         "label": "공유하기"
                       }
+                    ]
+                  } 
+                },
+                {
+                  "basicCard":{
+                    "title": viewTitle(data[0].name),
+                    "thumbnail": {
+                      "imageUrl": imgURLs[0],
+                      "fixedRatio": true
+                    },
+                    "buttons":[
+                        {
+                          "title": "음식점 사진",
+                          "description": "음식점 사진을 살펴보세요!",
+                          "imageUrl": "https://snuffstatic.s3.ap-northeast-2.amazonaws.com/%E1%84%89%E1%85%B3%E1%84%82%E1%85%AE%E1%84%91%E1%85%AE%E1%84%91%E1%85%A1+%E1%84%85%E1%85%A9%E1%84%80%E1%85%A9.PNG",
+                          "messageText": `askImage ${ searchTitle(data[0].name) }`
+                        },
+                       {
+                        "action": "message",
+                        "label": "상세 리뷰 보기",
+                        "messageText": `askDetail ${ searchTitle(data[0].name) }`
+                       },
+                       {
+                         "action": "share",
+                         "label": "공유하기"
+                       }
                     ]
                   } 
                 }
