@@ -1,3 +1,4 @@
+import mongoose from 'mongoose';
 import {EventModel} from '../../models/event';
 import { ObjectId } from 'bson';
 import {list as reivewList} from './review';
@@ -24,7 +25,7 @@ export async function list(participant: string) {
             let key = await reivewList({"name": {"$regex": participant}});
             query = {
                 "participants": {
-                    "$elemMatch": key[0]._id
+                    "$elemMatch": mongoose.Types.ObjectId(key[0]._id)
                 }
             };
             return await EventModel.find(query);
