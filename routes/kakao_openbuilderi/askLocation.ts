@@ -10,13 +10,13 @@ Router.post('/askLocation', (req:Express.Request, res:Express.Response) => {
     list(find)
     .then(data => {
         let datalist: any[] = [];
-        if(data[0].locationURL) {
+        if(data[0].location) {
           datalist.push({
             "title":"매장 위치 보기",
             "thumbnail": {
               "imageUrl": "https://snuffstatic.s3.ap-northeast-2.amazonaws.com/kakaomap.png",
               "link": {
-                "web": data[0].locationURL
+                "web": `https://snufoodfighter.firebaseapp.com/?lat=${data[0].location.lat}&lng=${data[0].location.lng}&name=${"꾸아땅"}`
             }
             },
             "descriptions": "kakao map으로 매장 위치를 살펴보세요!",

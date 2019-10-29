@@ -20,7 +20,7 @@ export interface Review extends mongoose.Document {
   commentNum: number;
   imgUrls: string[];
   rating: Rating;
-  locationURL: string;
+  location: any;
 }
 // model의 type 진단을 위함
 
@@ -63,9 +63,16 @@ const schema = new mongoose.Schema({
     default: {taste: "0"},
     type: Object
   },
-  locationURL: {
-    defualt: "",
-    type: String
+  location: {
+    default: {},
+    type: {
+      lat: {
+        type: Number
+      },
+      lng: {
+        type: Number
+      }
+    }
   }
 });
 // 실제 model schema

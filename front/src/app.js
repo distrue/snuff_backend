@@ -55,7 +55,10 @@ const ReviewPostPad = ({chosen}) => {
         atmosphere: 0,
         service: 0,
         price: "",
-        locationURL: ""
+        location: {
+            lat: 0,
+            lng: 0
+        }
     });
     const cate = ["taste", "quantity", "atmosphere", "service"];
 
@@ -65,7 +68,11 @@ const ReviewPostPad = ({chosen}) => {
                 taste: chosen[0].rating.taste,
                 quantity: chosen[0].rating.quantity,
                 atmosphere: chosen[0].rating.atmosphere,
-                service: chosen[0].rating.service
+                service: chosen[0].rating.service,
+                location: {
+                    lat: chosen[0].location.lat||0,
+                    lng: chosen[0].location.lng||0
+                }
             })
         }
     }, [chosen[0]]);
@@ -125,7 +132,9 @@ const ReviewPostPad = ({chosen}) => {
                     <input name="price" type="text" style={{"height": "50px", "width": "200px", border: "1px solid black", "fontSize": "15pt"}} value={addRate[0].price} onChange={e => addRate[1]({...addRate[0], price: e.target.value})}/><br/>
                 </div>
                 <div style={{"marginLeft": "10px"}}>
-                    위치정보: <input name="locationURL" type="text" style={{"height": "30px", "width": "200px", border: "1px solid black", "fontSize": "15pt"}} value={addRate[0].locationURL} onChange={e => addRate[1]({...addRate[0], locationURL: e.target.value})}/><br/>
+                    위치정보: 
+                    <input name="locationlat" type="text" style={{"height": "30px", "width": "100px", border: "1px solid black", "fontSize": "15pt"}} value={addRate[0].location.lat} onChange={e => addRate[1]({...addRate[0], location: {lat: e.target.value, lng: addRate[0].location.lng}})}/>
+                    <input name="locationlng" type="text" style={{"height": "30px", "width": "100px", border: "1px solid black", "fontSize": "15pt"}} value={addRate[0].location.lng} onChange={e => addRate[1]({...addRate[0], location: {lng: e.target.value, lat: addRate[0].location.lat}})}/><br/>
                 </div>
             </div>
             <hr/>
@@ -152,7 +161,7 @@ const ResultList = ({chosen, show}) => {
             <tr>
             <th className="row1">Name</th>
             <th className="row2">rating</th>
-            <th className="row3">locationURL</th>
+            <th className="row3">location</th>
             </tr>
         </thead>
         <tbody>
@@ -164,7 +173,7 @@ const ResultList = ({chosen, show}) => {
                 }} style={{backgroundColor: chosen[0].idx === idx?"skyblue":"white"}} >
                     <td className="row1">{item.name}</td>
                     <td className="row2">{JSON.stringify(item.rating)}</td>
-                    <td className="row3">{item.locationURL}</td>
+                    <td className="row3">{item.location}</td>
                 </tr>);
             })}
         </tbody>
