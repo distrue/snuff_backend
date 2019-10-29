@@ -25,7 +25,7 @@ export async function list(participant: string) {
             let key = await reivewList({"name": {"$regex": participant}});
             query = {
                 "participants": {
-                    "$elemMatch": mongoose.Types.ObjectId(key[0]._id)
+                    "$elemMatch": key[0]
                 }
             };
             return await EventModel.find(query);
