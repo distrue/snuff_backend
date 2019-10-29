@@ -17,18 +17,20 @@ Router.post('/askEvent', (req:Express.Request, res:Express.Response) => {
           responseBody = {
             "version": "2.0",
             "template": {
-              "outputs": [
-                {
-                  "basicCard": {
-                    "description": `현재 ${find}에서 진행중인 이벤트가 없어요!`,
-                    "thumbnail": {
-                        "imageUrl": "https://testonit.s3.ap-northeast-2.amazonaws.com/%E1%84%89%E1%85%B3%E1%84%82%E1%85%AE%E1%84%91%E1%85%AE%E1%84%91%E1%85%A1+%E1%84%85%E1%85%A9%E1%84%80%E1%85%A9.PNG",
-                    }
-                  }
-                }
-              ]
+            "outputs": [
+            {
+            "basicCard": {
+            "title": `현재 ${find?`${find}에서`:""} 진행중인 이벤트가 없어요!`,
+            "description": "",
+            "thumbnail": {
+            "imageUrl": "https://testonit.s3.ap-northeast-2.amazonaws.com/%E1%84%89%E1%85%B3%E1%84%82%E1%85%AE%E1%84%91%E1%85%AE%E1%84%91%E1%85%A1+%E1%84%85%E1%85%A9%E1%84%80%E1%85%A9.PNG"
+            },
+            "buttons": []
             }
-          }
+            }
+            ]
+            }
+            }
         }
         else {
           await data.forEach(item => {
