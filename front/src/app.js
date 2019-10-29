@@ -65,13 +65,15 @@ const ReviewPostPad = ({chosen}) => {
     useEffect(() => {
         if(chosen[0].idx >= 0) {
             addRate[1]({
+                name: chosen[0].name,
                 taste: chosen[0].rating.taste,
                 quantity: chosen[0].rating.quantity,
                 atmosphere: chosen[0].rating.atmosphere,
                 service: chosen[0].rating.service,
+                price: chosen[0].rating.price,
                 location: {
-                    lat: chosen[0].location.lat||0,
-                    lng: chosen[0].location.lng||0
+                    lat: chosen[0].location?chosen[0].location.lat:0,
+                    lng: chosen[0].location?chosen[0].location.lng:0
                 }
             })
         }
@@ -169,11 +171,11 @@ const ResultList = ({chosen, show}) => {
                 return(<tr onClick={() => {
                     let po = item.name.match(/[가-힣a-zA-Z0-9]*/).join(' ');
                     console.log(po);
-                    chosen[1]({idx: idx, name: po, rating: item.rating, images: item.imgUrls});
+                    chosen[1]({idx: idx, name: po, rating: item.rating, location:item.location, images: item.imgUrls});
                 }} style={{backgroundColor: chosen[0].idx === idx?"skyblue":"white"}} >
                     <td className="row1">{item.name}</td>
                     <td className="row2">{JSON.stringify(item.rating)}</td>
-                    <td className="row3">{item.location}</td>
+                    <td className="row3">{JSON.stringify(item.location)}</td>
                 </tr>);
             })}
         </tbody>

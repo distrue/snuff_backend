@@ -66,8 +66,7 @@ Router.post('/rating', async (req:Express.Request, res: Express.Response) => {
     try {
         console.log(req.body);
         let name = req.body.name.toString();
-        let location = {}; 
-        if(req.body.location) { location = JSON.parse(req.body.location); }
+        let location = req.body.location;
         req.body.name = undefined; req.body.location = undefined;
         await update({name: {$regex: name}}, {rating: req.body, location: location});
         return res.status(200).json({ok: true});
