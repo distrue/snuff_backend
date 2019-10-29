@@ -27,7 +27,7 @@ export async function list(participant: string) {
                     "$elemMatch": key[0]._id
                 }
             };
-            return await EventModel.find({});
+            return await EventModel.find(query);
         }
         else {
             return await EventModel.find({});           
