@@ -15,7 +15,7 @@ Router.post('/askEvent', (req:Express.Request, res:Express.Response) => {
         let datalist: any[] = [];
         let responseBody:any;
         const pms = data.map(async item => {
-          if(item.participants.length !== 1) return resolve("ok"); 
+          if(find && item.participants.length !== 1) return resolve("ok"); 
           return await datalist.push({
             "title":item.title,
             "thumbnail": {
