@@ -22,13 +22,12 @@ export async function list(participant: string) {
     try {
         let query: any = {};
         if(participant) {
-            let key = await reivewList({"name": {"$regex": participant}});
-            query = {
-                "participants": {
-                    "$elemMatch": key[0]
-                }
-            };
-            return await EventModel.find(query);
+            let event = await EventModel.find({}).populate({
+                path: 'participants',
+                select: 'name',
+                match: { name: {"$regex": participant }}
+            });
+            return event;
         }
         else {
             return await EventModel.find({});           

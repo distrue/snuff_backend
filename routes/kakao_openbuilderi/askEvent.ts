@@ -2,6 +2,7 @@ import Express from 'express';
 const Router = Express.Router();
 
 import {list} from '../../api/database/event';
+import { resolve } from 'path';
 
 Router.post('/askEvent', (req:Express.Request, res:Express.Response) => {
     let find = "";
@@ -13,7 +14,30 @@ Router.post('/askEvent', (req:Express.Request, res:Express.Response) => {
         console.log(data);
         let datalist: any[] = [];
         let responseBody:any;
-        if(data.length === 0) {
+        const pms = data.map(async item => {
+          if(item.participants.length !== 1) return resolve("ok"); 
+          return await datalist.push({
+            "title":item.title,
+            "thumbnail": {
+              "imageUrl": item.imageUrl,
+              "fixedRatio": true
+            },
+            "buttons":[
+                {
+                    "action": "block",
+                    "label": "참여 방법",
+                    "blockId": `${item.blockId}`
+                },
+                {
+                  "action": "message",
+                  "label": "참여매장보기",
+                  "messageText": `eventFor ${item.code}`
+              }
+            ]
+          });
+        })
+        await Promise.all(pms);
+        if(datalist.length === 0) {
           responseBody = {
             "version": "2.0",
             "template": {
@@ -33,39 +57,18 @@ Router.post('/askEvent', (req:Express.Request, res:Express.Response) => {
             }
         }
         else {
-          await data.forEach(item => {
-            datalist.push({
-              "title":item.title,
-              "thumbnail": {
-                "imageUrl": item.imageUrl,
-                "fixedRatio": true
-              },
-              "buttons":[
-                  {
-                      "action": "block",
-                      "label": "참여 방법",
-                      "blockId": `${item.blockId}`
-                  },
-                  {
-                    "action": "message",
-                    "label": "참여매장보기",
-                    "messageText": `eventFor ${item.code}`
+            responseBody = {
+                "version": "2.0",
+                "template": {
+                  "outputs": [
+                    {
+                        "carousel": {
+                            "type": "basicCard",
+                            "items": datalist
+                        }
+                    }]
                 }
-              ]
-            });
-          });
-          responseBody = {
-              "version": "2.0",
-              "template": {
-                "outputs": [
-                  {
-                      "carousel": {
-                          "type": "basicCard",
-                          "items": datalist
-                      }
-                  }]
-              }
-          }
+            }
         }
         res.status(200).send(responseBody);
     });
