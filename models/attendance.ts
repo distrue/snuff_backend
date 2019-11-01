@@ -1,26 +1,16 @@
 import mongoose from 'mongoose';
 import { ObjectId } from 'bson';
+import { EventRule } from './eventRule';
 
 export interface Attendance extends mongoose.Document {
-  count: Number;
-  connectReview: ObjectId;
-  user: ObjectId;
+  userId: string;
   log: Date[];
+  eventRule: EventRule;
 }
 
 const schema = new mongoose.Schema({
-  count: {
-      default: 0,
-      type: Number
-  },
-  connectReview: {
-    required: true,
-    type: ObjectId,
-    ref: "Review"
-  },
-  user: {
-    type: ObjectId,
-    ref: "user",
+  userId: {
+    type: String,
     required: true
   },
   log: {
@@ -29,6 +19,11 @@ const schema = new mongoose.Schema({
         type: Date,
         default: Date.now
     }]
+  },
+  eventRule: {
+    required: true,
+    type: ObjectId,
+    ref: 'EventRule'
   }
 });
 

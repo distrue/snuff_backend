@@ -18,6 +18,15 @@ export async function add(title: string, code: string, blockId: string, descript
     }
 }
 
+export async function one(code: string) {
+    try {
+        if(!code) return null;
+        return await EventModel.find({code: code});
+    } catch (err) {
+        throw err;
+    }
+}
+
 export async function list(participant: string) {
     try {
         let query: any = {};

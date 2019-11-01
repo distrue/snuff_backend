@@ -9,7 +9,11 @@ export interface Event extends mongoose.Document {
   participants: ObjectId[] | Review[];
   blockId: string;
   imageUrl: string;
+  expireDate: Date;
+  type: EventType;
 }
+
+type EventType = 'in_rule' | 'in_norule' | 'out';
 
 const schema = new mongoose.Schema({
   title: {
@@ -21,7 +25,7 @@ const schema = new mongoose.Schema({
     type: String
   },
   blockId: {
-    required: true,
+    default: '',
     type: String
   },
   description: {
@@ -38,6 +42,14 @@ const schema = new mongoose.Schema({
       ref: 'Review',
       type: ObjectId
     }]
+  },
+  expireDate: {
+    default: Date.now,
+    type: Date
+  },
+  type: {
+    default: "",
+    type: String
   }
 });
 

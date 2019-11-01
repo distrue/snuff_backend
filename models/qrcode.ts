@@ -3,29 +3,26 @@ import { ObjectId } from 'bson';
 
 export interface QRcode extends mongoose.Document {
   code: string;
+  qrcode: string;
   type: QRtype;
-  expireDate: Date;
-  connectObject: ObjectId;
 }
 
-type QRtype = 'attendance' | 'coupon';
+type QRtype = 'event' | 'eventRule';
 
 const schema = new mongoose.Schema({
-  expireDate: {
-    default: Date.now,
-    type: Date
-  },
   code: {
+    unique: true,
+    required: true,
+    type: String
+  },
+  qrcode: {
+    unique: true,
     required: true,
     type: String
   },
   type: {
     required: true,
     type: String
-  },
-  connectObject: {
-    required: true,
-    type: ObjectId
   }
 });
 

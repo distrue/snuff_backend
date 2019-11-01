@@ -56,7 +56,7 @@ Router.post('/pickone', (req:Express.Request, res:Express.Response) => {
                 "basicCard": {
                   "description": `아직 ${(req.body.action.detailParams.restaurant_name.value.replace(/_/gi, " "))}의 리뷰가 없어요, 스누푸파가 준비해볼게요!`,
                   "thumbnail": {
-                      "imageUrl": "https://testonit.s3.ap-northeast-2.amazonaws.com/%E1%84%89%E1%85%B3%E1%84%82%E1%85%AE%E1%84%91%E1%85%AE%E1%84%91%E1%85%A1+%E1%84%85%E1%85%A9%E1%84%80%E1%85%A9.PNG",
+                      "imageUrl": "https://snuffstatic.s3.ap-northeast-2.amazonaws.com/%E1%84%89%E1%85%B3%E1%84%82%E1%85%AE%E1%84%91%E1%85%AE%E1%84%91%E1%85%A1+%E1%84%85%E1%85%A9%E1%84%80%E1%85%A9.PNG",
                   }
                 }
               }
