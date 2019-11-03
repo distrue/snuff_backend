@@ -2,13 +2,12 @@ import mongoose from 'mongoose';
 import {QRcodeModel} from '../../models/qrcode';
 import { ObjectId } from 'bson';
 
-export async function add(type: string, code: string, expireDate: Date,  connectObject: ObjectId) {
+export async function add(type: string, code: string, qrcode: string) {
     try {
         return await QRcodeModel.create({
             code: code,
             type: type,
-            expireDate: expireDate,
-            connectObject: connectObject
+            qrcode: qrcode
         });
     } catch (err) {
         throw err;

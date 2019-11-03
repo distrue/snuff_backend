@@ -2,11 +2,12 @@ import Express from 'express';
 const Router = Express.Router();
 
 import {one as Eventone} from '../../api/database/event';
-import {read} from '../../api/database/qrcode';
+import {read, add as qrAdd} from '../../api/database/qrcode';
 import {attendanceUpdate} from '../../api/database/eventRule';
+import { add } from '../../api/database/request';
 
-Router.post('/putQR', (req:Express.Request, res: Express.Response) => {
-
+Router.post('/putQR', async (req:Express.Request, res: Express.Response) => {
+    return await qrAdd("event", req.body.code, req.body.qrcode );
 })
 
 function fallBackResponse() {
@@ -30,7 +31,8 @@ function fallBackResponse() {
 Router.post('/getQR', (req:Express.Request, res:Express.Response) => {
     try {
         if(!req.body.action.params.qrcode) return res.status(400).send("no qrcode");
-        const qrcode = req.body.action.params.qrcode.toString();
+        console.log(JSON.parse(req.body.action.params.qrcode).barcodeData.toString());
+        const qrcode = JSON.parse(req.body.action.params.qrcode).barcodeData.toString();
         const userId = req.body.userRequest.user.id;
 
         read(req.body.action.params.qrcode.toString())
