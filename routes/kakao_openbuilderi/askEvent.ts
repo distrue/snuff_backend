@@ -28,12 +28,12 @@ Router.post('/askEvent', (req:Express.Request, res:Express.Response) => {
                   {
                       "action": "message",
                       "label": "내적립 현황",
-                      "messsageText": `myScore ${item.code}`
+                      "messageText": `myScore ${item.code}`
                   },
                   {
                     "action": "message",
                     "label": "리워드 보기",
-                    "messsageText": `eventRule ${item.code}`
+                    "messageText": `eventRule ${item.code}`
                   }
               ]
             });

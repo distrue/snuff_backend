@@ -21,7 +21,6 @@ function fallBackResponse(txt:string) {
   };
 }
 
-
 Router.post('/eventRule', (req:Express.Request, res:Express.Response) => {
     let find = "";
     if(req.body.action.params.EventName) {
@@ -46,7 +45,7 @@ Router.post('/eventRule', (req:Express.Request, res:Express.Response) => {
                         "title": data[0].title,
                         "description": data[0].description,
                         "buttons": [{
-                          "type": "message",
+                          "action": "message",
                           "label": "내적립현황",
                           "messageText": `myScore ${data[0].code}`
                         }
