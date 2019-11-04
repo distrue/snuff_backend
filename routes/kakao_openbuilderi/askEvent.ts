@@ -16,7 +16,7 @@ Router.post('/askEvent', (req:Express.Request, res:Express.Response) => {
         let responseBody:any;
         let pms = data.map(async item => {
           if(find && item.participants.length !== 1) return resolve("ok");
-          if(!find && item.type === 'in_rule') return null;
+          if(!find && item.type === 'in_rule') return resolve("ok");
           if(item.type === 'in_rule') {
             return await datalist.push({
               "title":item.title,
@@ -31,9 +31,9 @@ Router.post('/askEvent', (req:Express.Request, res:Express.Response) => {
                       "messsageText": `myScore ${item.code}`
                   },
                   {
-                    "action": "messsage",
+                    "action": "message",
                     "label": "리워드 보기",
-                    "messageText": `eventRule ${item.code}`
+                    "messsageText": `eventRule ${item.code}`
                   }
               ]
             });
