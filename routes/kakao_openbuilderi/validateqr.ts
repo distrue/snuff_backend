@@ -81,8 +81,8 @@ Router.post('/getQR', (req:Express.Request, res:Express.Response) => {
             if(data.type === 'eventRule') {
                 let responseBody;
                 await attendanceUpdate(userId, data.code)
-                .then((data:any) => {
-                    if(data === null || data.length === 0) {
+                .then((res:any) => {
+                    if(res === null || res.length === 0) {
                         return responseBody = fallBackResponse("적립 오류 발생");
                     }
                     responseBody = {
@@ -97,7 +97,7 @@ Router.post('/getQR', (req:Express.Request, res:Express.Response) => {
                                         {
                                             "action": "message",
                                             "label": "내적립현황",
-                                            "messageText": `myScore ${data[0].blockId}`
+                                            "messageText": `myScore ${data.code}`
                                         }
                                     ],
                                     "thumbnail": {
