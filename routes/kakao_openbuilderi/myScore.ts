@@ -26,16 +26,17 @@ function fallBackResponse(txt:string, code?:string) {
 }
 
 Router.post('/myScore', (req:Express.Request, res:Express.Response) => {
-    let find = "";
+    let userId = req.body.userRequest.user.id;
+    let code = "";
     if(req.body.action.params.EventName) {
-      find = req.body.action.params.EventName.replace(/_/gi, " ");
+      code = req.body.action.params.EventName.replace(/_/gi, " ");
     }
-    getAttendance(find) 
+    getAttendance(userId, code) 
     .then(data => {
         let responseBody;
 
         if(data.length === 0) {
-          responseBody = fallBackResponse('아직 적립한 적이 없어요..!', find);
+          responseBody = fallBackResponse('아직 적립한 적이 없어요..!', code);
         }
         else {
           responseBody = {
@@ -50,6 +51,11 @@ Router.post('/myScore', (req:Express.Request, res:Express.Response) => {
                           "type": "message",
                           "label": "내적립현황",
                           "messageText": `myScore ${data[0].eventRule.code}`
+                        },
+                        {  // 현재는 static하게, 이후에 policy에 대해 불러올 것
+                          "type": "block",
+                          "label": "0개 보상받기",
+                          "blockId": `5db59a4992690d0001a4f1ee`
                         }
                         ],
                         "thumbnail": {
