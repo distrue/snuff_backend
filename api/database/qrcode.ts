@@ -1,6 +1,5 @@
 import mongoose from 'mongoose';
 import {QRcodeModel} from '../../models/qrcode';
-import { ObjectId } from 'bson';
 
 export async function add(type: string, code: string, qrcode: string) {
     try {

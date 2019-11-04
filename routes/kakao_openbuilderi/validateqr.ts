@@ -4,7 +4,7 @@ const Router = Express.Router();
 import {one as Eventone} from '../../api/database/event';
 import {read, add as qrAdd} from '../../api/database/qrcode';
 import {attendanceUpdate} from '../../api/database/eventRule';
-import { add } from '../../api/database/request';
+
 
 Router.post('/putQR', async (req:Express.Request, res: Express.Response) => {
     return await qrAdd("event", req.body.code, req.body.qrcode );
@@ -35,7 +35,7 @@ Router.post('/getQR', (req:Express.Request, res:Express.Response) => {
         const qrcode = JSON.parse(req.body.action.params.qrcode).barcodeData.toString();
         const userId = req.body.userRequest.user.id;
 
-        read(req.body.action.params.qrcode.toString())
+        read(qrcode)
         .then(async data => {
             if(!data) {
                 const responseBody = fallBackResponse();
@@ -79,7 +79,7 @@ Router.post('/getQR', (req:Express.Request, res:Express.Response) => {
             }
             if(data.type === 'eventRule') {
                 let responseBody;
-                await attendanceUpdate(userId, qrcode)
+                await attendanceUpdate(userId, data.code)
                 .then((data:any) => {
                     responseBody = {
                         "version": "2.0",

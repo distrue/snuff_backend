@@ -1,7 +1,7 @@
 import Express from 'express';
 const Router = Express.Router();
 
-import {getEventRule} from '../../api/database/eventRule';
+import {getEventRule, eventRuleAdd} from '../../api/database/eventRule';
 
 function fallBackResponse(txt:string) {
   return {
@@ -58,8 +58,14 @@ Router.post('/eventRule', (req:Express.Request, res:Express.Response) => {
                 }]
             }
         }
-        return res.status(200).send(responseBody);
+        return res.status(200).json(responseBody);
     });
 });
+
+Router.post('/addEventRule', async (req: Express.Request, res: Express.Response) => {
+  let responseBody;
+  let ans = await eventRuleAdd(req.body.title, req.body.code, req.body.blockId, req.body.description, req.body.imageUrl);
+  return res.status(200).json(responseBody);
+})
 
 export default Router;
