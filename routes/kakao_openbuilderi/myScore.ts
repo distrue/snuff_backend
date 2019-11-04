@@ -1,7 +1,7 @@
 import Express from 'express';
 const Router = Express.Router();
 
-import {getAttendance} from '../../api/database/eventRule';
+import {getAttendance, getEventRule} from '../../api/database/eventRule';
 
 function fallBackResponse(txt:string, code?:string) {
   return {
@@ -25,16 +25,16 @@ function fallBackResponse(txt:string, code?:string) {
   };
 }
 
-Router.post('/myScore', (req:Express.Request, res:Express.Response) => {
+Router.post('/myScore', async (req:Express.Request, res:Express.Response) => {
     let userId = req.body.userRequest.user.id;
     let code = "";
     if(req.body.action.params.EventName) {
       code = req.body.action.params.EventName.replace(/_/gi, " ");
     }
-    getAttendance(userId, code) 
+    let eventRule = await getEventRule(code);
+    getAttendance(userId, eventRule[0]._id) 
     .then(data => {
         let responseBody;
-
         if(data.length === 0) {
           responseBody = fallBackResponse('아직 적립한 적이 없어요..!', code);
         }

@@ -39,9 +39,12 @@ export async function attendanceUpdate(userId: string, code: string) {
     }
 }
 
-export async function getAttendance(userId: string, code: string) {
+export async function getAttendance(userId: string, objId: string) {
     try {
-        return await AttendanceModel.find({userId: userId, code: code}).populate('eventRule');
+        return await AttendanceModel.find({
+            userId: userId,
+            eventRule: mongoose.Types.ObjectId(objId)
+        }).populate('eventRule');
     } catch (err) {
         throw err;
     }
