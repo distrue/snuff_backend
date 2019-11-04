@@ -10,14 +10,14 @@ Router.post('/putQR', async (req:Express.Request, res: Express.Response) => {
     return await qrAdd("event", req.body.code, req.body.qrcode );
 })
 
-function fallBackResponse() {
+function fallBackResponse(text: string) {
     return {
         "version": "2.0",
         "template": {
           "outputs": [
             {
                 "basicCard": {
-                    "title": "유효한 qrcode가 아니에요..!",
+                    "title": text,
                     "buttons": [],
                     "thumbnail": {
                         "imageUrl": "https://snuffstatic.s3.ap-northeast-2.amazonaws.com/%E1%84%89%E1%85%B3%E1%84%82%E1%85%AE%E1%84%91%E1%85%AE%E1%84%91%E1%85%A1+%E1%84%85%E1%85%A9%E1%84%80%E1%85%A9.PNG"
@@ -38,7 +38,7 @@ Router.post('/getQR', (req:Express.Request, res:Express.Response) => {
         read(qrcode)
         .then(async data => {
             if(!data) {
-                const responseBody = fallBackResponse();
+                const responseBody = fallBackResponse("유효한 qrcode가 아니에요!");
                 return res.status(200).json(responseBody);
             }
             if(data.type === 'event') {
@@ -46,7 +46,7 @@ Router.post('/getQR', (req:Express.Request, res:Express.Response) => {
                 await Eventone(data.code.toString())
                 .then(data => {
                     if(data === null || data.length === 0) {
-                        return responseBody = fallBackResponse();
+                        return responseBody = fallBackResponse("유효한 qrcode가 아니에요!");
                     }
                     responseBody = {
                         "version": "2.0",
@@ -54,7 +54,7 @@ Router.post('/getQR', (req:Express.Request, res:Express.Response) => {
                         "outputs": [
                             {
                                 "basicCard": {
-                                    "title": "Event",
+                                    "title": data[0].title,
                                     "buttons":[
                                         {
                                             "action": "block",
@@ -68,7 +68,8 @@ Router.post('/getQR', (req:Express.Request, res:Express.Response) => {
                                     }
                                     ],
                                     "thumbnail": {
-                                        "imageUrl": data[0].imageUrl
+                                        "imageUrl": data[0].imageUrl,
+                                        "fixedRatio": true
                                     }
                                 }
                             }]
@@ -81,6 +82,9 @@ Router.post('/getQR', (req:Express.Request, res:Express.Response) => {
                 let responseBody;
                 await attendanceUpdate(userId, data.code)
                 .then((data:any) => {
+                    if(data === null || data.length === 0) {
+                        return responseBody = fallBackResponse("적립 오류 발생");
+                    }
                     responseBody = {
                         "version": "2.0",
                         "template": {

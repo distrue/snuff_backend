@@ -32,8 +32,7 @@ export async function attendanceUpdate(userId: string, code: string) {
         let rule = await EventRuleModel.find({code: code});
         return await AttendanceModel.create({
             userId: userId,
-            eventRule: mongoose.Types.ObjectId(rule[0]._id),
-            log: []
+            eventRule: mongoose.Types.ObjectId(rule[0]._id)
         });
     } catch (err) {
         throw err;
