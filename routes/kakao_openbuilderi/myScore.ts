@@ -3,7 +3,7 @@ const Router = Express.Router();
 
 import {getAttendance} from '../../api/database/eventRule';
 
-function fallBackResponse(txt:string) {
+function fallBackResponse(txt:string, code?:string) {
   return {
       "version": "2.0",
       "template": {
@@ -11,7 +11,11 @@ function fallBackResponse(txt:string) {
           {
               "basicCard": {
                   "title": txt,
-                  "buttons": [],
+                  "buttons": [{
+                    "action": "message",
+                    "label": "리워드 보기",
+                    "messageText": `eventRule ${code}`
+                  }],
                   "thumbnail": {
                       "imageUrl": "https://snuffstatic.s3.ap-northeast-2.amazonaws.com/%E1%84%89%E1%85%B3%E1%84%82%E1%85%AE%E1%84%91%E1%85%AE%E1%84%91%E1%85%A1+%E1%84%85%E1%85%A9%E1%84%80%E1%85%A9.PNG"
                   }
@@ -31,7 +35,7 @@ Router.post('/myScore', (req:Express.Request, res:Express.Response) => {
         let responseBody;
 
         if(data.length === 0) {
-          responseBody = fallBackResponse('아직 적립한 적이 없어요..!');
+          responseBody = fallBackResponse('아직 적립한 적이 없어요..!', find);
         }
         else {
           responseBody = {
