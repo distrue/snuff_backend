@@ -48,23 +48,24 @@ Router.post('/myScore', async (req:Express.Request, res:Express.Response) => {
                         "title": `내 적립: ${data[0].log.length}`,
                         "description": data[0].eventRule.description,
                         "buttons": [{
-                          "type": "message",
-                          "label": "내적립현황",
-                          "messageText": `myScore ${data[0].eventRule.code}`
+                          "action": "message",
+                          "label": "리워드 보기",
+                          "messageText": `eventRule ${data[0].eventRule.code}`
                         },
                         {  // 현재는 static하게, 이후에 policy에 대해 불러올 것
-                          "type": "block",
+                          "action": "block",
                           "label": "0개 보상받기",
                           "blockId": `5db59a4992690d0001a4f1ee`
                         }
                         ],
                         "thumbnail": {
-                          "imageUrl": data[0].eventRule.imageUrl || "https://snuffstatic.s3.ap-northeast-2.amazonaws.com/%E1%84%89%E1%85%B3%E1%84%82%E1%85%AE%E1%84%91%E1%85%AE%E1%84%91%E1%85%A1+%E1%84%85%E1%85%A9%E1%84%80%E1%85%A9.PNG"
+                          "imageUrl": "https://snuffstatic.s3.ap-northeast-2.amazonaws.com/myReward.png"
                         }
                     }
                 }]
             }
           }
+          console.log(JSON.stringify(responseBody));
         }
         return res.status(200).send(responseBody);
     });

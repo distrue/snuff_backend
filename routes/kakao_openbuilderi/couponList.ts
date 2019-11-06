@@ -13,7 +13,7 @@ function fallbackBlock(msg:string) {
                 "title": msg,
                 "buttons": [],
                 "thumbnail": {
-                    "imageUrl": "https://snuffstatic.s3.ap-northeast-2.amazonaws.com/coupon.svg"
+                    "imageUrl": "https://snuffstatic.s3.ap-northeast-2.amazonaws.com/coupon.png"
                 }
             }
         }]
@@ -39,7 +39,7 @@ Router.post('/couponList', (req:Express.Request, res:Express.Response) => {
             "title": item.display.title,
             "description": "",
             "thumbnail": {
-              "imageUrl": item.display.imageUrl || 'https://snuffstatic.s3.ap-northeast-2.amazonaws.com/%E1%84%8F%E1%85%AE%E1%84%91%E1%85%A9%E1%86%AB+%E1%84%8B%E1%85%B5%E1%84%86%E1%85%B5%E1%84%8C%E1%85%B5.svg'
+              "imageUrl": item.display.imageUrl || 'https://snuffstatic.s3.ap-northeast-2.amazonaws.com/coupon.png'
             },
             "buttons": [
               {
