@@ -83,7 +83,7 @@ Router.post('/pickone', (req:Express.Request, res:Express.Response) => {
                       {
                         "title": `종합점수: ${totalscore}, 상세점수보기`,
                         "description": `${ALL}개 매장 중 ${getRating(String(totalscore))}등`,
-                        "imageUrl": "https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/160/facebook/200/trophy_1f3c6.png",
+                        "imageUrl": "https://snuffstatic.s3.ap-northeast-2.amazonaws.com/%E1%84%85%E1%85%A2%E1%86%BC%E1%84%8F%E1%85%B5%E1%86%BC.png",
                         "link": {
                           "web": `https://snufoodfighter.firebaseapp.com/ranking/?name=${searchTitle(data[0].name)}` /// 점수 page
                         }
@@ -91,7 +91,7 @@ Router.post('/pickone', (req:Express.Request, res:Express.Response) => {
                       {
                         "title": "음식점 위치 🗺️",
                         "description": "음식점 위치를 살펴보세요!",
-                        "imageUrl": "https://snuffstatic.s3.ap-northeast-2.amazonaws.com/%E1%84%89%E1%85%B3%E1%84%82%E1%85%AE%E1%84%91%E1%85%AE%E1%84%91%E1%85%A1+%E1%84%85%E1%85%A9%E1%84%80%E1%85%A9.PNG",
+                        "imageUrl": "https://snuffstatic.s3.ap-northeast-2.amazonaws.com/%E1%84%8C%E1%85%B5%E1%84%83%E1%85%A9.png",
                         "link": {
                           "web": `https://snufoodfighter.firebaseapp.com/?lat=${data[0].location.lat}&lng=${data[0].location.lng}&name=${searchTitle(data[0].name)}`
                         }
