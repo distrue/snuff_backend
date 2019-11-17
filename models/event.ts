@@ -45,7 +45,8 @@ const schema = new mongoose.Schema({
     }]
   },
   reward: {
-    default: {}
+    default: {},
+    type: Object
   },
   expireDate: {
     default: Date.now,

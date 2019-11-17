@@ -14,7 +14,7 @@ Router.post('/askEvent', (req:Express.Request, res:Express.Response) => {
         console.log(data);
         let datalist: any[] = [];
         let responseBody:any;
-        let pms = data.map(async item => {
+        let pms = data.map(async (item:any) => {
           if(find && item.participants.length !== 1) return resolve("ok");
           if(!find && item.type === 'in_rule') return resolve("ok");
           if(item.type === 'in_rule') {
@@ -39,7 +39,9 @@ Router.post('/askEvent', (req:Express.Request, res:Express.Response) => {
             });
           } 
           else {
-            if(find && item.reward && item.reward[item._id]) {
+            let check = item.participants[0]._id.toString();
+            console.log(check, item.reward, item.reward.get(check));
+            if(find && item.reward && item.reward.get(check)) {
               return await datalist.push({
                 "title":item.title,
                 "thumbnail": {
