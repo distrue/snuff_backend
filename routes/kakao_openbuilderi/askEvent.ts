@@ -39,25 +39,48 @@ Router.post('/askEvent', (req:Express.Request, res:Express.Response) => {
             });
           } 
           else {
-            return await datalist.push({
-              "title":item.title,
-              "thumbnail": {
-                "imageUrl": item.imageUrl,
-                "fixedRatio": true
-              },
-              "buttons":[
+            if(find && item.reward && item.reward[item._id]) {
+              return await datalist.push({
+                "title":item.title,
+                "thumbnail": {
+                  "imageUrl": item.imageUrl,
+                  "fixedRatio": true
+                },
+                "buttons":[
                   {
-                      "action": "block",
-                      "label": "이벤트 상세",
-                      "blockId": `${item.blockId}`
+                    "action": "message",
+                    "label": "매장이벤트",
+                    "messageText": `${item.reward[item._id]}`
                   },
                   {
                     "action": "message",
                     "label": "참여매장보기",
                     "messageText": `eventFor ${item.code}`
-                }
-              ]
-            });
+                  }
+                ]
+              });
+            }
+            else {
+              return await datalist.push({
+                "title":item.title,
+                "thumbnail": {
+                  "imageUrl": item.imageUrl,
+                  "fixedRatio": true
+                },
+                "buttons":[
+                    {
+                        "action": "block",
+                        "label": "이벤트 상세",
+                        "blockId": `${item.blockId}`
+                    },
+                    {
+                      "action": "message",
+                      "label": "참여매장보기",
+                      "messageText": `eventFor ${item.code}`
+                  }
+                ]
+              });
+            }
           }
         })
         await Promise.all(pms);

@@ -11,6 +11,7 @@ export interface Event extends mongoose.Document {
   imageUrl: string;
   expireDate: Date;
   type: EventType;
+  reward: any;
 }
 
 type EventType = 'in_rule' | 'in_norule' | 'out';
@@ -42,6 +43,9 @@ const schema = new mongoose.Schema({
       ref: 'Review',
       type: ObjectId
     }]
+  },
+  reward: {
+    default: {}
   },
   expireDate: {
     default: Date.now,
