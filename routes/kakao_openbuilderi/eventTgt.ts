@@ -72,7 +72,7 @@ Router.post('/eventTgt', (req:Express.Request, res:Express.Response) => {
 Router.get('/eventTgt', (req:Express.Request, res:Express.Response) => {
   let find = "";
   if(req.query.eventName) {
-    find = req.body.action.params.eventName.replace(/_/gi, " ");
+    find = req.query.eventName.replace(/_/gi, " ");
   }
   targets(find) 
   .then(async data => {
