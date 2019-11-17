@@ -25,9 +25,6 @@ Router.use(ratingone);
 import askEvent from './askEvent';
 Router.use(askEvent);
 
-import askLocation from './askLocation';
-Router.use(askLocation);
-
 import eventTgt from './eventTgt';
 Router.use(eventTgt);
 

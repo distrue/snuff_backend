@@ -14,7 +14,22 @@ Router.post('/eventTgt', (req:Express.Request, res:Express.Response) => {
         console.log(data);
         let datalist: any[] = [];
         if(data.length === 0) return res.status(400).send("no review");
-        await data[0].participants.forEach((item: any) => {
+        datalist.push({
+          "title": "참여매장 한눈에 보기",
+          "description": "이벤트에 참여하고 있는 매장들을 한눈에 살펴보세요!",
+          "thumbnail": {
+            "imageUrl": "https://snuffstatic.s3.ap-northeast-2.amazonaws.com/kakaomap.png"
+          },
+          "buttons": [
+            {
+              "action": "webLink",
+              "label": "지도로 보기",
+              "webLinkUrl": `https://snufoodfighter.firebaseapp.com/?eventName=${find}`
+            }
+          ]
+        });
+        await data[0].participants.forEach((item: any, idx: number) => {
+          if(idx >= 9) return 
           let parseContent = String(item.content.match(/메뉴:.*$/));
           parseContent = parseContent!.replace(/\"/gi, "");
               
