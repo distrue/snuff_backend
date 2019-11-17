@@ -69,4 +69,18 @@ Router.post('/eventTgt', (req:Express.Request, res:Express.Response) => {
     });
 });
 
+Router.get('/eventTgt', (req:Express.Request, res:Express.Response) => {
+  let find = "";
+  if(req.query.eventName) {
+    find = req.body.action.params.eventName.replace(/_/gi, " ");
+  }
+  targets(find) 
+  .then(async data => {
+      console.log(data);
+      let datalist: any[] = [];
+      if(data.length === 0) return res.status(400).send("no review");
+      return res.status(200).json({participants: data[0].participants})
+  });
+});
+
 export default Router;
