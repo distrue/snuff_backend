@@ -31,7 +31,7 @@ export async function list(participant: string) {
     try {
         let query: any = {};
         if(participant) {
-            let event = await EventModel.find({}).sort({"expireDate": -1}).populate({
+            let event = await EventModel.find({}).sort("-expireDate").populate({
                 path: 'participants',
                 select: 'name',
                 match: { name: {"$regex": participant }}
@@ -39,7 +39,7 @@ export async function list(participant: string) {
             return event;
         }
         else {
-            return await EventModel.find({});           
+            return await EventModel.find({}).sort("-expireDate");           
         }
     } catch (err) {
         throw err;
