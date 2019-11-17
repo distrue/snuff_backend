@@ -40,8 +40,8 @@ Router.post('/askEvent', (req:Express.Request, res:Express.Response) => {
           } 
           else {
             let check = item.participants[0]._id.toString();
-            console.log(check, item.reward, item.reward.get(check));
-            if(find && item.reward && item.reward.get(check)) {
+            console.log(check, item.reward, item.reward[check]);
+            if(find && item.reward && item.reward[check]) {
               return await datalist.push({
                 "title":item.title,
                 "thumbnail": {
@@ -50,9 +50,10 @@ Router.post('/askEvent', (req:Express.Request, res:Express.Response) => {
                 },
                 "buttons":[
                   {
-                    "action": "message",
+                    "action": "block",
                     "label": "매장이벤트",
-                    "messageText": `${item.reward[item._id]}`
+                    "messageText": `${item.reward[check]}`,
+                    "blockId": `${item.blockId}`
                   },
                   {
                     "action": "message",

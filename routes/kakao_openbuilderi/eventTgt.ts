@@ -79,7 +79,7 @@ Router.get('/eventTgt', (req:Express.Request, res:Express.Response) => {
       console.log(data);
       let datalist: any[] = [];
       if(data.length === 0) return res.status(400).send("no review");
-      return res.status(200).json({participants: data[0].participants})
+      return res.status(200).json({participants: data[0].participants, reward: data[0].reward})
   });
 });
 
