@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import {EventModel} from '../../models/event';
+import {EventModel} from '../models/event';
 import { ObjectId } from 'bson';
 import {list as reivewList} from './review';
 

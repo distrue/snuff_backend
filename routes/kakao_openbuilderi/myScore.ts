@@ -1,7 +1,7 @@
 import Express from 'express';
 const Router = Express.Router();
 
-import {getAttendance, getEventRule} from '../../api/database/eventRule';
+import {getAttendance, getEventRule} from '../../service/eventRule';
 
 function fallBackResponse(txt:string, code?:string) {
   return {

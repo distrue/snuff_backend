@@ -1,4 +1,4 @@
-import {ReviewModel} from '../../models/review';
+import {ReviewModel} from '../models/review';
 
 export async function randomList(filter={}, size: Number) {
   try {

@@ -1,9 +1,9 @@
 import Express from 'express';
 const Router = Express.Router();
 
-import {list} from '../../api/database/review';
-import {viewTitle, searchTitle} from '../../api/database/search';
-import {add} from '../../api/database/request';
+import {list} from '../../service/review';
+import {viewTitle, searchTitle} from '../../service/search';
+import {add} from '../../service/request';
 
 
 const ALL = 246;

@@ -1,7 +1,7 @@
 import Express from 'express';
 const Router = Express.Router();
 
-import {list} from '../../api/database/event';
+import {list} from '../../service/event';
 import { resolve } from 'path';
 
 Router.post('/askEvent', (req:Express.Request, res:Express.Response) => {

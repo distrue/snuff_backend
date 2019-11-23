@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import {UserModel} from '../../models/user';
+import {UserModel} from '../models/user';
 
 export async function update(query: Object, update: Object) {
     return await UserModel.findOneAndUpdate(query, update);

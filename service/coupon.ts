@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import { CouponModel, OwnCouponModel } from '../../models/coupon';
+import { CouponModel, OwnCouponModel } from '../models/coupon';
 import { ObjectId } from 'bson';
 
 export async function couponAdd(blockId: string, imageUrl: string, title: string) {

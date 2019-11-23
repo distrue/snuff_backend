@@ -1,9 +1,9 @@
 import Express from 'express';
 const Router = Express.Router();
 
-import {one as Eventone} from '../../api/database/event';
-import {read, add as qrAdd} from '../../api/database/qrcode';
-import {attendanceUpdate} from '../../api/database/eventRule';
+import {one as Eventone} from '../../service/event';
+import {read, add as qrAdd} from '../../service/qrcode';
+import {attendanceUpdate} from '../../service/eventRule';
 
 
 Router.post('/putQR', async (req:Express.Request, res: Express.Response) => {

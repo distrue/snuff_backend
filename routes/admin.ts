@@ -1,8 +1,8 @@
 import Express  from 'express';
 import path from 'path';
 
-import {list, update, deleteOne} from '../api/database/review';
-import {add, list as eventList} from '../api/database/event';
+import {list, update, deleteOne} from '../service/review';
+import {add, list as eventList} from '../service/event';
 const Router = Express.Router();
 
 Router.all('/logout', async(req: Express.Request, res: Express.Response) => {

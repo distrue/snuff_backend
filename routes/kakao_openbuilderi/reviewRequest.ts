@@ -1,7 +1,7 @@
 import Express from 'express';
 const Router = Express.Router();
 
-import {add} from '../../api/database/request';
+import {add} from '../../service/request';
 
 Router.post('/reviewRequest', (req:Express.Request, res:Express.Response) => {
     add(req.body.action.detailParams.restaurant_name.value)

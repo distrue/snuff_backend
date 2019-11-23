@@ -1,8 +1,8 @@
 import Express from 'express';
 const Router = Express.Router();
 
-import { randomList, list} from '../../api/database/review';
-import {viewTitle, searchTitle} from '../../api/database/search';
+import { randomList, list} from '../../service/review';
+import {viewTitle, searchTitle} from '../../service/search';
 
 function shuffle(a: any[]) {
   for (let i = a.length - 1; i > 0; i--) {

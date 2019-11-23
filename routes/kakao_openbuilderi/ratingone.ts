@@ -1,7 +1,7 @@
 import Express from 'express';
 const Router = Express.Router();
 
-import {list} from '../../api/database/review';
+import {list} from '../../service/review';
 Router.post('/ratingone', (req:Express.Request, res:Express.Response) => {
     let find = {name: {$regex: req.body.action.params.restaurant_name.replace(/_/gi, " ")}};
     list(find)

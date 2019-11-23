@@ -2,7 +2,7 @@ import Express from 'express';
 const Router = Express.Router();
 import {ObjectId} from 'bson';
 
-import {owncouponAdd, couponAdd} from '../../api/database/coupon';
+import {owncouponAdd, couponAdd} from '../../service/coupon';
 import {OneTimeCodeModel, Coupon} from '../../models/coupon';
 
 function fallbackBlock(msg:string) {

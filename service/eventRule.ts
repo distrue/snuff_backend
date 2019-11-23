@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
-import {EventRuleModel} from '../../models/eventRule';
-import {AttendanceModel} from '../../models/attendance';
+import {EventRuleModel} from '../models/eventRule';
+import {AttendanceModel} from '../models/attendance';
 
 
 export async function eventRuleAdd(title: string, code: string, blockId: string, description: string, imageUrl: string) {

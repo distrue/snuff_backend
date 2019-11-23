@@ -3,7 +3,7 @@ import Axios from 'axios';
 import querystring from 'querystring';
 
 import {getValue} from '../config';
-import {create, find, remove} from '../api/database/user';
+import {create, find, remove} from '../service/user';
 
 const Router = Express.Router();
 

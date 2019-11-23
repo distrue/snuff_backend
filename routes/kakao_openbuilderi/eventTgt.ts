@@ -1,8 +1,8 @@
 import Express from 'express';
 const Router = Express.Router();
 
-import {viewTitle, searchTitle} from '../../api/database/search';
-import {targets} from '../../api/database/event';
+import {viewTitle, searchTitle} from '../../service/search';
+import {targets} from '../../service/event';
 
 Router.post('/eventTgt', (req:Express.Request, res:Express.Response) => {
     let find = "";

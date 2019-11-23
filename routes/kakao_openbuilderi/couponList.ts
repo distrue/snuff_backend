@@ -1,7 +1,7 @@
 import Express from 'express';
 const Router = Express.Router();
 
-import {owncouponList} from '../../api/database/coupon';
+import {owncouponList} from '../../service/coupon';
 
 function fallbackBlock(msg:string) {
   return {

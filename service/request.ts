@@ -1,4 +1,4 @@
-import {RequestModel} from '../../models/request';
+import {RequestModel} from '../models/request';
 
 export async function add(name: string) {
     try {

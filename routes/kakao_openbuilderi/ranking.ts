@@ -1,7 +1,7 @@
 import Express from 'express';
 const Router = Express.Router();
 
-import {list} from '../../api/database/review';
+import {list} from '../../service/review';
 Router.get('/ranking', (req:Express.Request, res:Express.Response) => {
     let find = {name: {$regex: req.query.name.replace(/_/gi, " ")}};
     console.log(find);
