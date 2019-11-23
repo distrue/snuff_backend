@@ -34,6 +34,7 @@ Router.post('/giveCoupon', async (req:Express.Request, res:Express.Response) => 
         let item = await OneTimeCodeModel.find({code: code}).populate('coupon');
         if(item.length === 0) {
             let responseBody = fallbackBlock("유효한 코드가 아니에요!");
+            console.log(responseBody);
             return res.status(200).json(responseBody);
         }
         await OneTimeCodeModel.remove({code: code});
@@ -41,11 +42,10 @@ Router.post('/giveCoupon', async (req:Express.Request, res:Express.Response) => 
         blockId = coupon.blockId;
     }    
     
-    await owncouponAdd(blockId, userId) 
-    .then(async data => {
-        let responseBody = fallbackBlock("쿠폰이 지급되었어요, 내 쿠폰 확인하기에서 확인해 보세요!");
-        return res.status(200).json(responseBody);
-    });
+    await owncouponAdd(blockId, userId);
+    let responseBody = fallbackBlock("쿠폰이 지급되었어요, 내 쿠폰 확인하기에서 확인해 보세요!");
+    console.log(responseBody);
+    return res.status(200).json(responseBody);
 });
 
 Router.post('/addCode', async (req: Express.Request, res: Express.Response) => {
