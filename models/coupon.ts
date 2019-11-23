@@ -14,6 +14,22 @@ export interface Coupon extends mongoose.Document {
   title: string;
 }
 
+export interface OneTimeCode extends mongoose.Document {
+  code: string;
+  coupon: ObjectId | Coupon;
+}
+
+const oneTimeSchema = new mongoose.Schema({
+  code: {
+    type: String,
+    default: ""
+  },
+  coupon: {
+    type: ObjectId,
+    ref: "Coupon"
+  }
+})
+
 const ownschema = new mongoose.Schema({
   expireDate: {
     default: Date.now,
@@ -48,5 +64,6 @@ const schema = new mongoose.Schema({
   }
 });
 
+export const OneTimeCodeModel = mongoose.model<OneTimeCode>('OneTimeCode', oneTimeSchema);
 export const OwnCouponModel = mongoose.model<OwnCoupon>('OwnCoupon', ownschema);
 export const CouponModel = mongoose.model<Coupon>('Coupon', schema);
