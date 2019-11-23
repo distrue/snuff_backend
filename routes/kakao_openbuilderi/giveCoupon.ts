@@ -49,14 +49,16 @@ Router.post('/giveCoupon', async (req:Express.Request, res:Express.Response) => 
 });
 
 Router.post('/addCode', async (req: Express.Request, res: Express.Response) => {
-    return await OneTimeCodeModel.create({
+    let ans = await OneTimeCodeModel.create({
         code: req.body.code,
         coupon: new ObjectId(req.body.coupon)
     });
+    return res.status(200).json({ans: ans});
 });
 
 Router.post('/couponAdd', async(req: Express.Request, res: Express.Response) => {
-    return await couponAdd(req.body.blockId, req.body.imageUrl, req.body.title);
+    let ans =  await couponAdd(req.body.blockId, req.body.imageUrl, req.body.title);
+    return res.status(200).json({ans: ans});
 });
 
 export default Router;
