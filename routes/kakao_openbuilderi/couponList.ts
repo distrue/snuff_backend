@@ -23,7 +23,7 @@ function fallbackBlock(msg:string) {
 
 Router.post('/couponList', (req:Express.Request, res:Express.Response) => {
     let find = "";
-    if(req.body.action.params.EventName) {
+    if(req.body.userRequest.user.id) {
       find = req.body.userRequest.user.id;
     }
     owncouponList(find) 
