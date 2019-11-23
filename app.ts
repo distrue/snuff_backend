@@ -8,7 +8,7 @@ import mongoose from 'mongoose';
 import cookieParser from 'cookie-parser';
 
 import {init as configInit} from './config';
-import dbinit from './mongodb';
+import dbinit from './tools/mongodb';
 import apiRouter from './routes/kakao_openbuilderi';
 import adminRouter from './routes/admin';
 import kakaoRouter from './routes/kakao_oauth';

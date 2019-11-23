@@ -1,6 +1,6 @@
 import fs from 'fs-extra';
 import jsonfile from 'jsonfile';
-import logger from '../logger';
+import logger from '../tools/logger';
 import path from 'path';
 
 interface KakaoAppConfig {
