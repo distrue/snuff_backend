@@ -39,6 +39,8 @@
     "@types/mongoose": "^5.5.13",
     "@types/morgan": "^1.7.37",
     "@types/node": "^12.7.2",
+    "tslint": "^5.20.1",
+    "tslint-config-prettier": "^1.18.0",
     "typescript": "^3.5.3"
   }
 }
