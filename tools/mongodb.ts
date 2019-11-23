@@ -1,10 +1,9 @@
 import logger from './logger';
-import connectMongo from 'connect-mongo';
-import session from 'express-session';
+import { getValue } from '../config';
 import mongoose from 'mongoose';
 
 export default function mongo_connect() {
-  const db = process.env.DBURL ? process.env.DBURL : 'mongodb://localhost/snuff';
+  const db = getValue('dbUrl') ? getValue('dbUrl') : 'mongodb://localhost/snuff';
   logger.info('DB', db);
   mongoose.connect(db, {
     useNewUrlParser: true
