@@ -18,7 +18,8 @@ Router.post('/pictureone', (req:Express.Request, res:Express.Response) => {
               "imageUrl": imgURLs[idx],
               "link": {
                   "web": imgURLs[idx]
-              }
+              },
+              "fixedRatio": true
             },
             "buttons":[]
           });

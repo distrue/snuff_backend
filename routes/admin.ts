@@ -2,6 +2,7 @@ import Express  from 'express';
 import path from 'path';
 
 import {list, update, deleteOne} from '../api/database/review';
+import {add, list as eventList} from '../api/database/event';
 const Router = Express.Router();
 
 Router.all('/logout', async(req: Express.Request, res: Express.Response) => {
@@ -65,10 +66,9 @@ Router.post('/rating', async (req:Express.Request, res: Express.Response) => {
     try {
         console.log(req.body);
         let name = req.body.name.toString();
-        let locationURL = ""; 
-        if(req.body.locationURL) { locationURL = req.body.locationURL.toString(); }
-        req.body.name = undefined; req.body.locationURL = undefined;
-        await update({name: {$regex: name}}, {rating: req.body, locationURL: locationURL});
+        let location = req.body.location;
+        req.body.name = undefined; req.body.location = undefined;
+        await update({name: {$regex: name}}, {rating: req.body, location: location});
         return res.status(200).json({ok: true});
     }
     catch(err) {
@@ -88,6 +88,26 @@ Router.delete('/rating', async (req: Express.Request, res: Express.Response) => 
         return res.status(500).json({err: err});
     }
 })
+
+Router.put('/event', async function(req, res) {
+    try {
+        let ans = await add(req.body.title, req.body.code, req.body.blockId, req.body.description, req.body.imageUrl);
+        return res.status(200).json(ans);
+    } catch(err) {
+        console.error(err);
+        return res.status(500).send("Unintended Server error occured");
+    }
+});
+
+Router.get('/event', async function(req, res) {
+    try {
+        let ans = await eventList("");
+        return res.status(200).json(ans);
+    } catch(err) {
+        console.error(err);
+        return res.status(500).send("Unintended Server error occured");
+    }
+});
 
 Router.all('/', function(req, res) {
     res.sendFile(path.join(__dirname, '..', 'bundle', 'index.html'));
