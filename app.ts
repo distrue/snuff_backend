@@ -3,12 +3,12 @@ import * as Express from 'express';
 import bodyParser from 'body-parser';
 import logger from 'morgan';
 import cors from 'cors';
-import session from 'express-session';
-import mongoose from 'mongoose';
 import cookieParser from 'cookie-parser';
 
 import {init as configInit} from './config';
 import dbinit from './tools/mongodb';
+
+import getUser from './controllers/user';
 import apiRouter from './routes/kakao_openbuilderi';
 import adminRouter from './routes/admin';
 import kakaoRouter from './routes/kakao_oauth';
@@ -24,8 +24,6 @@ app.use(bodyParser.urlencoded({
 
 dbinit();
 
-const MongoStore = require('connect-mongo')(session);
-
 app.set('trustproxy', 1);
 app.use(cors({
 	credentials: true, // enable set cookie
@@ -33,26 +31,12 @@ app.use(cors({
 	origin: ['http://localhost:8000', 'https://snufoodfighter.firebaseapp.com']
   }));
 app.use(cookieParser());
-const appSession = session({
-	cookie: {
-		secure: false, // TODO: to change session in http, change it to true in https
-		maxAge: 3 * 24 * 60 * 60 * 1000
-	  },
-	  name: 'sid',
-	  resave: false,
-	  saveUninitialized: true,
-	  secret: 'dhakhiuq32lhfi8yy1ilasho8u9',
-	  store: new MongoStore({
-		mongooseConnection: mongoose.connection
-	  })
-})
-app.use(appSession);
 
 configInit();
 
 app.use('/api', apiRouter);
 app.use('/admin', adminRouter);
-app.use('/kakao_oauth', kakaoRouter);
+app.use('/kakao_oauth', getUser, kakaoRouter);
 
 app.use("/static", Express.static(__dirname + '/static'));
 

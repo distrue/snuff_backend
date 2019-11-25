@@ -6,19 +6,19 @@ import {add, list as eventList} from '../service/event';
 const Router = Express.Router();
 
 Router.all('/logout', async(req: Express.Request, res: Express.Response) => {
-    req.session!.isAdmin = false;
+    req.user!.isAdmin = false;
     return res.status(200).send('logout!');
 })
 
 Router.get('/isAdmin', async(req: Express.Request, res: Express.Response) => {
-    return res.status(200).send(`Admin: ${req.session!.isAdmin}`);
+    return res.status(200).send(`Admin: ${req.user!.isAdmin}`);
 })
 
 Router.post(/^/, async(req: Express.Request, res: Express.Response, next: any) => {
     let ans = req.body.password;
     if(ans === "hilite1!") {
-        req.session!.isAdmin = true;
-        console.log(req.session!.isAdmin);
+        req.user!.isAdmin = true;
+        console.log(req.user!.isAdmin);
         return next();
     }
     return await setTimeout(() => {return(next());}, 2000);
@@ -26,9 +26,9 @@ Router.post(/^/, async(req: Express.Request, res: Express.Response, next: any) =
 
 
 Router.all(/^/, (req, res, next) => {
-    console.log(req.session!.isAdmin);
-    if(req.session!.isAdmin !== true) {
-        return res.render("login", {isLogin: req.session!.isAdmin});
+    console.log(req.user!.isAdmin);
+    if(req.user!.isAdmin !== true) {
+        return res.render("login", {isLogin: req.user!.isAdmin});
     }
     return next();
 })
