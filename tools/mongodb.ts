@@ -3,7 +3,10 @@ import { getValue } from '../config';
 import mongoose from 'mongoose';
 
 export default function mongo_connect() {
-  const db = getValue('dbUrl') ? getValue('dbUrl') : 'mongodb://localhost/snuff';
+  if(!getValue('dbUrl')) {
+    return setTimeout(mongo_connect, 3000); 
+  }
+  const db = getValue('dbUrl');
   logger.info('DB', db);
   mongoose.connect(db, {
     useNewUrlParser: true

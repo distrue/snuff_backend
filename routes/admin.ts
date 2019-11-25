@@ -1,10 +1,12 @@
 import Express  from 'express';
 import path from 'path';
+import mongoose from 'mongoose';
 
 import {list, update, deleteOne} from '../service/review';
 import {add, list as eventList} from '../service/event';
 import {jwtSign} from '../tools/jwt';
 import isAdmin from '../controllers/admin';
+import {readCSV, addToDB} from '../tools/dbUpdater';
 
 const Router = Express.Router();
 
@@ -29,21 +31,30 @@ Router.all('/logout', async(req: Express.Request, res: Express.Response) => {
     return res.status(200).send('logout!');
 })
 
+Router.put('/rating', async (req: Express.Request, res: Express.Response) => {
+    try {
+        console.log(req.body.raw)
+        await readCSV(req.body.raw).then(addToDB);
+        return res.status(200).send("ok");
+    }
+    catch(err) {
+        return res.status(500).send(err);
+    }
+});
+
 Router.get('/rating', async (req: Express.Request, res: Express.Response) => {
     let x = {}; 
     if(req.query.name) { x = {name: {$regex: req.query.name}}; }
     let show = await list(x);
-    let str = show[0].imgUrls;
-    return res.status(200).json({show: show, img: str});
+    return res.status(200).json({show: show});
 });
 
 Router.post('/rating', async (req:Express.Request, res: Express.Response) => {
     try {
         console.log(req.body);
-        let name = req.body.name.toString();
         let location = req.body.location;
         req.body.name = undefined; req.body.location = undefined;
-        await update({name: {$regex: name}}, {rating: req.body, location: location});
+        await update({_id: mongoose.Types.ObjectId(req.body._id)}, {rating: req.body, location: location});
         return res.status(200).json({ok: true});
     }
     catch(err) {
@@ -55,7 +66,7 @@ Router.post('/rating', async (req:Express.Request, res: Express.Response) => {
 Router.delete('/rating', async (req: Express.Request, res: Express.Response) => {
     try {
         console.log(req.query);
-        let ans = await deleteOne({name: {$regex: req.query.name.toString()}});
+        let ans = await deleteOne({_id: mongoose.Types.ObjectId(req.query.id)});
         return res.status(200).json({ans: ans});
     }
     catch(err) {
