@@ -8,7 +8,6 @@ import cookieParser from 'cookie-parser';
 import {init as configInit} from './config';
 import dbinit from './tools/mongodb';
 
-import getUser from './controllers/user';
 import apiRouter from './routes/kakao_openbuilderi';
 import adminRouter from './routes/admin';
 import kakaoRouter from './routes/kakao_oauth';
@@ -36,7 +35,7 @@ configInit();
 
 app.use('/api', apiRouter);
 app.use('/admin', adminRouter);
-app.use('/kakao_oauth', getUser, kakaoRouter);
+app.use('/kakao_oauth', kakaoRouter);
 
 app.use("/static", Express.static(__dirname + '/static'));
 
