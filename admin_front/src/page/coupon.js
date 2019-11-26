@@ -115,7 +115,8 @@ export const CouponList = () => {
         <div style={{width:"80vw", height:"10vh", display: "flex", overflow: "scroll", flexDirection: "row"}}>
             {list[0].map(item => <div style={{border: "1px solid black", width: "20vw", height: "8vh", position: "relative"}}>
                 blockId: {item.blockId}<br/>
-                title: {item.title}
+                title: {item.title}<br/>
+                _id: {item._id}
                 <img src={item.imageUrl} style={{position: "absolute", right:"10px", width:"8vmin", height:"8vmin"}}/>
             </div>)} 
         </div>

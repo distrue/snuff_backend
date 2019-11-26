@@ -66,6 +66,10 @@ Router.post('/giveCoupon', async (req:Express.Request, res:Express.Response) => 
     }
     await OneTimeCodeModel.remove({code: code});
     let coupon:Coupon = item[0].coupon as Coupon;
+    if(!coupon) {
+        let responseBody = fallbackBlock("유효한 코드가 아니에요!", "coupon");
+        return res.status(200).json(responseBody);
+    }
     blockId = coupon.blockId;
     
     await owncouponAdd(blockId, userId);
