@@ -14,6 +14,14 @@ export async function couponAdd(blockId: string, imageUrl: string, title: string
     }
 }
 
+export async function couponList() {
+    try {
+        return await CouponModel.find();
+    } catch (err) {
+        throw err;
+    }
+}
+
 export async function owncouponAdd(blockId: string, userId: string, expireDate?: Date) {
     try {
         let display = await CouponModel.find({blockId: blockId});

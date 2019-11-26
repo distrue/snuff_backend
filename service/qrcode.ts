@@ -22,3 +22,11 @@ export async function read(code: string) {
         throw err;
     }
 }
+
+export async function list() {
+    try {
+        return await QRcodeModel.find({})
+    } catch(err) {
+        throw err;
+    }
+}

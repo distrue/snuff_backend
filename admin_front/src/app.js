@@ -1,10 +1,10 @@
-import React, {useState, useEffect} from 'react';
-import Axios from 'axios';
+import React, {useState} from 'react'
 
 import {SearchBar, ReviewPostPad, ResultList} from './page/review';
 import {Selector} from './component';
 import {EventList, EventDetail, EventFixPad} from './page/event';
 import {NewReview} from './page/newreview';
+import {QRList, OTCodeList, CouponList} from './page/coupon';
 
 
 const App = () => {
@@ -33,6 +33,11 @@ const App = () => {
         </div>
         <div id="newReview" style={{display:idPage[0] === "newReview"?"block":"none"}}>
             <NewReview/>
+        </div>
+        <div id="coupon" style={{display:idPage[0] === "coupon"?"block":"none"}}>
+            <QRList/>
+            <OTCodeList/>
+            <CouponList/>
         </div>
         <Selector idPage={idPage}/>
     </>);

@@ -3,15 +3,15 @@ import path from 'path';
 import mongoose from 'mongoose';
 import {ObjectId} from 'bson';
 
-import {couponAdd} from '../service/coupon';
+import {couponAdd, couponList} from '../service/coupon';
 import {OneTimeCodeModel} from '../models/coupon';
 import {list, update, deleteOne} from '../service/review';
 import {add, list as eventList, addParticipant, deleteParticipant} from '../service/event';
 import {jwtSign} from '../tools/jwt';
 import isAdmin from '../controllers/admin';
 import {readCSV, addToDB} from '../tools/dbUpdater';
-import {add as qrAdd} from '../service/qrcode';
-import {eventRuleAdd} from '../service/eventRule';
+import {add as qrAdd, list as qrList} from '../service/qrcode';
+import {eventRuleAdd, getEventRule} from '../service/eventRule';
 
 const Router = Express.Router();
 
@@ -120,11 +120,19 @@ Router.get('/event', async function(req, res) {
     }
 });
 
-Router.post('/putQR', async (req:Express.Request, res: Express.Response) => {
-    return await qrAdd("event", req.body.code, req.body.qrcode );
+Router.get('/QR', async(req: Express.Request, res: Express.Response) => {
+    return res.status(200).json({ans: await qrList()});
 })
 
-Router.post('/addCode', async (req: Express.Request, res: Express.Response) => {
+Router.post('/addQR', async (req:Express.Request, res: Express.Response) => {
+    return res.status(200).json({ans: await qrAdd("event", req.body.code, req.body.qrcode )});
+})
+
+Router.get('/OTcode', async (req:Express.Request, res: Express.Response) => {
+    return res.status(200).json({ans: await OneTimeCodeModel.find()});
+})
+
+Router.post('/addOTCode', async (req: Express.Request, res: Express.Response) => {
     let ans = await OneTimeCodeModel.create({
         code: req.body.code,
         coupon: new ObjectId(req.body.coupon)
@@ -132,9 +140,16 @@ Router.post('/addCode', async (req: Express.Request, res: Express.Response) => {
     return res.status(200).json({ans: ans});
 });
 
-Router.post('/couponAdd', async(req: Express.Request, res: Express.Response) => {
-    let ans =  await couponAdd(req.body.blockId, req.body.imageUrl, req.body.title);
-    return res.status(200).json({ans: ans});
+Router.get('/coupon', async(req: Express.Request, res: Express.Response) => {
+    return res.status(200).json({ans: await couponList()});
+})
+
+Router.post('/addCoupon', async(req: Express.Request, res: Express.Response) => {
+    return res.status(200).json({ans: await couponAdd(req.body.blockId, req.body.imageUrl, req.body.title)});
+});
+
+Router.get('/eventRule', async(req: Express.Request, res: Express.Response) => {
+    return res.status(200).json({ans: await getEventRule("")});
 });
 
 Router.post('/addEventRule', async (req: Express.Request, res: Express.Response) => {
