@@ -73,7 +73,7 @@ Router.post('/keyword', async (req: Express.Request, res:Express.Response) => {
             responseBody = fallbackBlock(`${find} 키워드에 일치하는 식당이 아직 없어요, 이런 키워드는 어떤가요?`)
         }
         else {
-            data.forEach((item:any) => {            
+            data.participants.forEach((item:any) => {            
                 let menudsc = String(item.content.match(/메뉴:.*$/));
                 menudsc = menudsc!.replace(/\"/gi, "");
                 dataList.push(recommendCell(item, menudsc, item.imgUrls[0], false))
@@ -83,12 +83,12 @@ Router.post('/keyword', async (req: Express.Request, res:Express.Response) => {
         }
         let more = await keywordFind("", true)
         more.forEach(item => dataList.push({
-            "type": "text",
+            "action": "message",
             "label": item.phrase,
             "message": `키워드검색 ${item.phrase}`
         }))
-        responseBody.quickReplies = dataList;
-        res.status(200).send(basicCardCarousel(dataList));
+        responseBody.template.quickReplies = dataList;
+        res.status(200).send(responseBody);
     })
 })
 

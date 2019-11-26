@@ -12,7 +12,7 @@ export async function list() {
 export async function find(phrase: string, random: boolean) {
     try{
         if(random) return await KeywordModel.aggregate([{$sample: {size: 10}}])
-        else return await KeywordModel.find({phrase: phrase})
+        else return await KeywordModel.find({phrase: phrase}).populate('participants')
     }catch(err) {
         throw err;
     }
