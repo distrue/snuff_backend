@@ -1,6 +1,6 @@
 import fs from 'fs-extra';
 import jsonfile from 'jsonfile';
-import logger from '../logger';
+import logger from '../tools/logger';
 import path from 'path';
 
 interface KakaoAppConfig {
@@ -9,15 +9,17 @@ interface KakaoAppConfig {
 }
 interface ConfigStore {
   kakaoAppConfig: KakaoAppConfig;
+  dbUrl: string;
 }
 
-type keys = 'kakaoAppConfig';
+type keys = 'kakaoAppConfig' | 'dbUrl';
 
 let config: ConfigStore = {
   kakaoAppConfig: {
       clientId: "",
       redirectUri: ""
-  }
+  },
+  dbUrl: ""
 };
 
 const STORE_PATH = path.join(__dirname, 'store');

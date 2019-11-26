@@ -3,15 +3,12 @@ import bson from 'bson';
 import mongoose from 'mongoose';
 import {Review as ReviewItem, ReviewModel} from '../models/review';
 import path from 'path';
+import {getValue} from '../config';
 
-mongoose.connect('mongodb://localhost/snuff', {useNewUrlParser: true}, () =>
-  {
-    console.log('[+] Connected to MongoDB server');
-    work();
-});
-
-async function readCSV() {
-  const file = fs.readFileSync(path.join(__dirname, '..', 'result.csv'), 'utf-8');
+export async function readCSV(data: string) {
+  let file;
+  if(data) file = data;
+  else file = fs.readFileSync(path.join(__dirname, '..', 'result.csv'), 'utf-8');
   let lines = file.split('endline\n');
   lines.push(lines[0].split('end\n')[1]);
   lines[0] = lines[0].split('end\n')[0];
@@ -65,7 +62,7 @@ async function add(item: ReviewItem) {
   } 
 }
 
-async function addToDB(items: ReviewItem[]) {
+export async function addToDB(items: ReviewItem[]) {
   console.log('[+] Add to DB');
   console.log(items);
   try {
@@ -83,5 +80,13 @@ async function addToDB(items: ReviewItem[]) {
 }
 
 function work() {
-  readCSV().then(addToDB);
+  readCSV("").then(addToDB);
+}
+
+if (require.main === module) {
+  mongoose.connect(getValue('dbUrl'), {useNewUrlParser: true}, () =>
+  {
+    console.log('[+] Connected to MongoDB server');
+    work();
+});
 }

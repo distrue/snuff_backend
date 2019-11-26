@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import {list} from '../api/database/review';
+import {list} from '../service/review';
 
 mongoose.connect('mongodb://localhost/snuff', {useNewUrlParser: true}, () =>
   {

@@ -3,22 +3,22 @@ import Axios from 'axios';
 import querystring from 'querystring';
 
 import {getValue} from '../config';
-import {create, find, remove} from '../api/database/user';
+import {create, find, remove} from '../service/user';
 
 const Router = Express.Router();
 
 Router.get('/secess', async(req: Express.Request, res: Express.Response) => {
     try {
-        if(!req.session!.token) return res.status(401).send("check islogin first");
-        let ans = await find({access_token: req.session!.token});
+        if(!req.user!.token) return res.status(401).send("check islogin first");
+        let ans = await find({access_token: req.user!.token});
         if(ans.length === 0) return res.status(406).send("User does not exists");
         if(ans[0].nickname !== "") return res.status(200).json({isRegister:"true"});
-        let profile = await Axios.get(`https://kapi.kakao.com/v1/user/unlink`, {headers: {"Content-type": "application/x-www-form-urlencoded;charset=utf-8", "Authorization": `Bearer ${req.session!.token}`}, withCredentials: true})
+        let profile = await Axios.get(`https://kapi.kakao.com/v1/user/unlink`, {headers: {"Content-type": "application/x-www-form-urlencoded;charset=utf-8", "Authorization": `Bearer ${req.user!.token}`}, withCredentials: true})
         .then(async (ans2) => {
             return ans2.data;
         })
-        await remove({access_token: req.session!.token});
-        return req.session!.destroy(() => {
+        await remove({access_token: req.user!.token});
+        return req.user!.destroy(() => {
             return res.status(200).json({secession: true, profile: profile});
         });
     } catch(err) {
@@ -29,15 +29,15 @@ Router.get('/secess', async(req: Express.Request, res: Express.Response) => {
 
 Router.get('/logout', async(req: Express.Request, res: Express.Response) => {
     try {
-        if(!req.session!.token) return res.status(401).send("check islogin first");
-        let ans = await find({access_token: req.session!.token});
+        if(!req.user!.token) return res.status(401).send("check islogin first");
+        let ans = await find({access_token: req.user!.token});
         if(ans.length === 0) return res.status(406).send("User does not exists");
         if(ans[0].nickname !== "") return res.status(200).json({isRegister:"true"});
-        let profile = await Axios.get(`https://kapi.kakao.com/v1/user/logout`, {headers: {"Content-type": "application/x-www-form-urlencoded;charset=utf-8", "Authorization": `Bearer ${req.session!.token}`}, withCredentials: true})
+        let profile = await Axios.get(`https://kapi.kakao.com/v1/user/logout`, {headers: {"Content-type": "application/x-www-form-urlencoded;charset=utf-8", "Authorization": `Bearer ${req.user!.token}`}, withCredentials: true})
         .then(async (ans2) => {
             return ans2.data;
         })
-        return req.session!.destroy(() => {
+        return req.user!.destroy(() => {
             return res.status(200).json({secession: true, profile: profile});
         });
     } catch(err) {
@@ -48,11 +48,11 @@ Router.get('/logout', async(req: Express.Request, res: Express.Response) => {
 
 Router.get('/register', async(req: Express.Request, res: Express.Response) => {
     try {
-        if(!req.session!.token) return res.status(401).send("check islogin first");
-        let ans = await find({access_token: req.session!.token});
+        if(!req.user!.token) return res.status(401).send("check islogin first");
+        let ans = await find({access_token: req.user!.token});
         if(ans.length === 0) return res.status(406).send("User does not exists");
         if(ans[0].nickname !== "") return res.status(200).json({isRegister:"true"});
-        let profile = await Axios.get(`https://kapi.kakao.com/v2/user/me`, {headers: {"Content-type": "application/x-www-form-urlencoded;charset=utf-8", "Authorization": `Bearer ${req.session!.token}`}, withCredentials: true})
+        let profile = await Axios.get(`https://kapi.kakao.com/v2/user/me`, {headers: {"Content-type": "application/x-www-form-urlencoded;charset=utf-8", "Authorization": `Bearer ${req.user!.token}`}, withCredentials: true})
         .then(async (ans2) => {
             if(ans2.data.kakao_account) {
                 let y = await ans[0].update({kakao_account: ans2.data.kakao_account});
@@ -68,9 +68,9 @@ Router.get('/register', async(req: Express.Request, res: Express.Response) => {
 
 Router.get('/islogin', async(req: Express.Request, res: Express.Response) => {
     try {
-        let ans = await find({access_token: req.session!.token});
+        let ans = await find({access_token: req.user!.token});
         if(ans.length === 0) return res.status(200).json({islogin: false});
-        req.session!.token = ans[0].access_token;
+        req.user!.token = ans[0].access_token;
         return res.status(200).json({islogin: true});
     } catch(err) {
         console.error(err);
@@ -97,7 +97,7 @@ Router.get('/', async (req: Express.Request, res: Express.Response) => {
                 console.log(err);
                 return {res: "failed", update: ''};
             })
-            req.session!.token = ans.res.access_token;
+            req.user!.token = ans.res.access_token;
             return res.status(200).redirect(`https://snufoodfighter.firebaseapp.com/login/?code=${req.query.code}`);
         }
         else {
