@@ -1,7 +1,6 @@
 import mongoose from 'mongoose';
 import {EventModel} from '../models/event';
-import { ObjectId } from 'bson';
-import {list as reivewList} from './review';
+import {ObjectId} from 'bson';
 
 export async function add(title: string, code: string, blockId: string, description: string, imageUrl: string) {
     try {
@@ -39,7 +38,7 @@ export async function list(participant: string) {
             return event;
         }
         else {
-            return await EventModel.find({}).sort("-expireDate");           
+            return await EventModel.find({}).populate('participants').sort("-expireDate");           
         }
     } catch (err) {
         throw err;
@@ -50,6 +49,50 @@ export async function targets(code: string) {
     try {
         let query = { "code": {"$regex": code} };
         return await EventModel.find(query).populate('participants');
+    } catch (err) {
+        throw err;
+    }
+}
+
+export async function deleteParticipant(event: ObjectId, participant: ObjectId, reward?: string) {
+    try {
+        let query = { "_id": event };
+        await EventModel.find(query)
+        .then(async data => {
+            if(data.length === 0) return "";
+            let ch = data[0].reward; ch[participant.toHexString()] = undefined;
+            let look = data[0].participants; let idx = data[0].participants.findIndex((item:any) => item._id.toHexString() === participant.toHexString());
+            if(idx !== -1) look.splice(idx, 1)
+            return await EventModel.findOneAndUpdate(query, {$set: {reward: ch, participants: look}})
+        });
+    } catch (err) {
+        throw err;
+    }
+}
+
+export async function addParticipant(event: ObjectId, participant: ObjectId, reward?: string) {
+    try {
+        let query = { "_id": event };
+        if(reward) {
+            await EventModel.find(query)
+            .then(async data => {
+                if(data.length === 0) return "";
+                let ch = data[0].reward; ch[participant.toHexString()] = reward;
+                return await EventModel.findOneAndUpdate(query, {$set: {reward: ch}})
+            });
+        }
+        return await EventModel.find(query)
+        .then(async ans => {
+            if(ans.length === 0) return "";
+            let idx = ans[0].participants.findIndex((item:any) => item._id === participant)
+            if(idx === -1) {
+                return await EventModel.findOneAndUpdate(query, {
+                    $push: {participants: participant}
+                });
+            }
+            return ans;
+        })
+        
     } catch (err) {
         throw err;
     }

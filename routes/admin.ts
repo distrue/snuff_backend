@@ -3,7 +3,7 @@ import path from 'path';
 import mongoose from 'mongoose';
 
 import {list, update, deleteOne} from '../service/review';
-import {add, list as eventList} from '../service/event';
+import {add, list as eventList, addParticipant, deleteParticipant} from '../service/event';
 import {jwtSign} from '../tools/jwt';
 import isAdmin from '../controllers/admin';
 import {readCSV, addToDB} from '../tools/dbUpdater';
@@ -75,7 +75,27 @@ Router.delete('/rating', async (req: Express.Request, res: Express.Response) => 
     }
 })
 
-Router.put('/event', async function(req, res) {
+Router.post('/event/participant', async function(req, res) {
+    try{
+        let ans = await addParticipant(mongoose.Types.ObjectId(req.body.event), mongoose.Types.ObjectId(req.body.participant), req.body.reward);
+        return res.status(200).json(ans);        
+    }catch(err) {
+        console.error(err);
+        return res.status(500).send("Unintended Server error occured");
+    }
+})
+
+Router.delete('/event/participant', async function(req, res) {
+    try{
+        let ans = await deleteParticipant(mongoose.Types.ObjectId(req.query.event), mongoose.Types.ObjectId(req.query.participant));
+        return res.status(200).json(ans);        
+    }catch(err) {
+        console.error(err);
+        return res.status(500).send("Unintended Server error occured");
+    }
+})
+
+Router.post('/event', async function(req, res) {
     try {
         let ans = await add(req.body.title, req.body.code, req.body.blockId, req.body.description, req.body.imageUrl);
         return res.status(200).json(ans);
