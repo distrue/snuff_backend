@@ -4,28 +4,16 @@ const Router = Express.Router();
 import reviewService from './reviewService';
 Router.use(reviewService);
 
-import ratingone from './ratingone';
-Router.use(ratingone);
+import eventService from './eventService';
+Router.use(eventService);
 
-import askEvent from './askEvent';
-Router.use(askEvent);
+import stampService from './stampService';
+Router.use(stampService);
 
-import eventTgt from './eventTgt';
-Router.use(eventTgt);
+import couponService from './couponService';
+Router.use(couponService);
 
-import validateQr from './validateqr';
-Router.use(validateQr);
-
-import myScore from './myScore';
-Router.use(myScore);
-
-import eventRule from './eventRule';
-Router.use(eventRule);
-
-import couponList from './couponList';
-Router.use(couponList);
-
-import giveCoupon from './giveCoupon';
-Router.use(giveCoupon);
+import accessService from './accessService';
+Router.use(accessService);
 
 export default Router;

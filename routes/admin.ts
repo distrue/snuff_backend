@@ -1,12 +1,17 @@
 import Express  from 'express';
 import path from 'path';
 import mongoose from 'mongoose';
+import {ObjectId} from 'bson';
 
+import {couponAdd} from '../service/coupon';
+import {OneTimeCodeModel} from '../models/coupon';
 import {list, update, deleteOne} from '../service/review';
 import {add, list as eventList, addParticipant, deleteParticipant} from '../service/event';
 import {jwtSign} from '../tools/jwt';
 import isAdmin from '../controllers/admin';
 import {readCSV, addToDB} from '../tools/dbUpdater';
+import {add as qrAdd} from '../service/qrcode';
+import {eventRuleAdd} from '../service/eventRule';
 
 const Router = Express.Router();
 
@@ -114,6 +119,28 @@ Router.get('/event', async function(req, res) {
         return res.status(500).send("Unintended Server error occured");
     }
 });
+
+Router.post('/putQR', async (req:Express.Request, res: Express.Response) => {
+    return await qrAdd("event", req.body.code, req.body.qrcode );
+})
+
+Router.post('/addCode', async (req: Express.Request, res: Express.Response) => {
+    let ans = await OneTimeCodeModel.create({
+        code: req.body.code,
+        coupon: new ObjectId(req.body.coupon)
+    });
+    return res.status(200).json({ans: ans});
+});
+
+Router.post('/couponAdd', async(req: Express.Request, res: Express.Response) => {
+    let ans =  await couponAdd(req.body.blockId, req.body.imageUrl, req.body.title);
+    return res.status(200).json({ans: ans});
+});
+
+Router.post('/addEventRule', async (req: Express.Request, res: Express.Response) => {
+    let ans = await eventRuleAdd(req.body.title, req.body.code, req.body.blockId, req.body.description, req.body.imageUrl);
+    return res.status(200).json(ans);
+})
 
 Router.all('/', function(req, res) {
     res.sendFile(path.join(__dirname, '..', 'bundle', 'index.html'));

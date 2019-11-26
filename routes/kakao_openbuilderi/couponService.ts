@@ -1,24 +1,23 @@
 import Express from 'express';
 const Router = Express.Router();
-
 import {owncouponList} from '../../service/coupon';
 
 function fallbackBlock(msg:string) {
-  return {
-    "version": "2.0",
-    "template": {
-      "outputs": [
-        {
-            "basicCard": {
-                "title": msg,
-                "buttons": [],
-                "thumbnail": {
-                    "imageUrl": "https://snuffstatic.s3.ap-northeast-2.amazonaws.com/coupon.png"
+    return {
+        "version": "2.0",
+        "template": {
+          "outputs": [
+            {
+                "basicCard": {
+                    "title": msg,
+                    "buttons": [],
+                    "thumbnail": {
+                        "imageUrl": "https://snuffstatic.s3.ap-northeast-2.amazonaws.com/coupon.png"
+                    }
                 }
-            }
-        }]
-    }
-  };
+            }]
+        }
+      };
 }
 
 Router.post('/couponList', (req:Express.Request, res:Express.Response) => {
@@ -65,5 +64,12 @@ Router.post('/couponList', (req:Express.Request, res:Express.Response) => {
         res.status(200).send(responseBody);
     });
 });
+
+// 챗봇에서 지급해주는 경우
+// Context 활용할 것
+// -> 기존의 보기좋지 않은 keyword, restaurant_name을 이용하는 것들도 context 대체되면 좋을 것!
+Router.post('/grantCoupon', async (req:Express.Request, res:Express.Response) => {
+    return res.status(200).send("TBD")
+})
 
 export default Router;
