@@ -32,6 +32,7 @@ export async function addParticipant(phrase: string, participant: ObjectId) {
     try{
         return await KeywordModel.find({phrase: phrase})
         .then(async ans => {
+            if(ans.length === 0) return
             let idx = ans[0].participants.findIndex((item) => item === participant)
             if(idx === -1) ans[0].participants.push(participant)
             await ans[0].save()
@@ -45,7 +46,9 @@ export async function deleteParticipant(phrase: string, participant: ObjectId) {
     try{
         return await KeywordModel.find({phrase: phrase})
         .then(async ans => {
-            let idx = ans[0].participants.findIndex((item) => item === participant)
+            if(ans.length === 0) return
+            let idx = ans[0].participants.findIndex((item) => item.toString() === participant.toString())
+            console.log(idx)
             if(idx !== -1) ans[0].participants.splice(idx, 1)
             await ans[0].save()
         })

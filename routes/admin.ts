@@ -12,7 +12,7 @@ import isAdmin from '../controllers/admin';
 import {readCSV, addToDB} from '../tools/dbUpdater';
 import {add as qrAdd, list as qrList} from '../service/qrcode';
 import {eventRuleAdd, getEventRule} from '../service/eventRule';
-import {list as keywordList, addWord, addParticipant as addParticipantKey} from '../service/keyword';
+import {list as keywordList, addWord, addParticipant as addParticipantKey, find as keywordFind, deleteParticipant as deleteParticipantKey} from '../service/keyword';
 
 const Router = Express.Router();
 
@@ -163,6 +163,11 @@ Router.get('/keyword', async (req: Express.Request, res: Express.Response) => {
     return res.status(200).json(ans);
 })
 
+Router.get('/keywordOne', async (req: Express.Request, res: Express.Response) => {
+    let ans = await keywordFind(req.query.phrase, false)
+    return res.status(200).json(ans);
+})
+
 Router.post('/keyword/phrase', async (req: Express.Request, res: Express.Response) => {
     let ans = await addWord(req.body.phrase);
     return res.status(200).json(ans);
@@ -170,6 +175,11 @@ Router.post('/keyword/phrase', async (req: Express.Request, res: Express.Respons
 
 Router.post('/keyword/participant', async (req: Express.Request, res: Express.Response) => {
     let ans = await addParticipantKey(req.body.phrase, mongoose.Types.ObjectId(req.body.participant));
+    return res.status(200).json(ans);
+})
+
+Router.delete('/keyword/participant', async (req: Express.Request, res: Express.Response) => {
+    let ans = await deleteParticipantKey(req.query.phrase, mongoose.Types.ObjectId(req.query.participant));
     return res.status(200).json(ans);
 })
 

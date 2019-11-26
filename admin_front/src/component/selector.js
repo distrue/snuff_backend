@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 
 export default ({idPage}) => {
-    return(<SelectorStyle width={"20%"}>
+    return(<SelectorStyle width={"18%"}>
         <div className="item" onClick={() => idPage[1]("review")}>
             <NavBarText width="20px">리뷰수정</NavBarText>
         </div>
@@ -16,6 +16,9 @@ export default ({idPage}) => {
         </div>
         <div className="item" onClick={() => idPage[1]("coupon")}>
             <NavBarText width="20px">쿠폰</NavBarText>
+        </div>
+        <div className="item" onClick={() => idPage[1]("keyword")}>
+            <NavBarText width="20px">키워드</NavBarText>
         </div>
     </SelectorStyle>);
 }

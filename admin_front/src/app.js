@@ -5,6 +5,7 @@ import {Selector} from './component';
 import {EventList, EventDetail, EventFixPad} from './page/event';
 import {NewReview} from './page/newreview';
 import {QRList, OTCodeList, CouponList} from './page/coupon';
+import {KeywordList} from './page/keyword';
 
 
 const App = () => {
@@ -38,6 +39,11 @@ const App = () => {
             <QRList/>
             <OTCodeList/>
             <CouponList/>
+        </div>
+        <div id="keyword" style={{display:idPage[0] === "keyword"?"block":"none"}}>
+            <KeywordList look={chosen}/>
+            <SearchBar name={name} show={show} />
+            <ResultList show={show} chosen={chosen} />
         </div>
         <Selector idPage={idPage}/>
     </>);
