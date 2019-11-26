@@ -12,6 +12,7 @@ import isAdmin from '../controllers/admin';
 import {readCSV, addToDB} from '../tools/dbUpdater';
 import {add as qrAdd, list as qrList} from '../service/qrcode';
 import {eventRuleAdd, getEventRule} from '../service/eventRule';
+import {list as keywordList, addWord} from '../service/keyword';
 
 const Router = Express.Router();
 
@@ -154,6 +155,16 @@ Router.get('/eventRule', async(req: Express.Request, res: Express.Response) => {
 
 Router.post('/addEventRule', async (req: Express.Request, res: Express.Response) => {
     let ans = await eventRuleAdd(req.body.title, req.body.code, req.body.blockId, req.body.description, req.body.imageUrl);
+    return res.status(200).json(ans);
+})
+
+Router.get('/keyword', async (req: Express.Request, res: Express.Response) => {
+    let ans = await keywordList();
+    return res.status(200).json(ans);
+})
+
+Router.post('/keyword/phrase', async (req: Express.Request, res: Express.Response) => {
+    let ans = await addWord(req.body.phrase);
     return res.status(200).json(ans);
 })
 

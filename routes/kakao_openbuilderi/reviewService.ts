@@ -5,7 +5,9 @@ import {list} from '../../service/review';
 import {add} from '../../service/request';
 
 import {fallbackBlock, basicCardCarousel} from '../../controllers/kakao_openbuilderi/common';
-import {reviewFallback, reviewResponse, recommendList, pictureCell, reviewtextResponse } from '../../controllers/kakao_openbuilderi/review';
+import {reviewFallback, reviewResponse, recommendList, pictureCell, reviewtextResponse, recommendCell } from '../../controllers/kakao_openbuilderi/review';
+import { find as keywordFind } from '../../service/keyword';
+
 
 Router.post('/pickone', (req:Express.Request, res:Express.Response) => {
     let skill_params = req.body.action.detailParams;
@@ -59,5 +61,35 @@ Router.post('/detailone', (req:Express.Request, res:Express.Response) => {
         res.status(200).send(responseBody);
     });
 });
+
+Router.post('/keyword', async (req: Express.Request, res:Express.Response) => {
+    let find = req.body.action.params.keyword.replace(/ /gi, "");
+    let responseBody:any;
+    let dataList: any = [];
+    
+    await keywordFind(find, false)
+    .then(async (data: any) => {
+        if(data.length === 0) {
+            responseBody = fallbackBlock(`${find} 키워드에 일치하는 식당이 아직 없어요, 이런 키워드는 어떤가요?`)
+        }
+        else {
+            data.forEach((item:any) => {            
+                let menudsc = String(item.content.match(/메뉴:.*$/));
+                menudsc = menudsc!.replace(/\"/gi, "");
+                dataList.push(recommendCell(item, menudsc, item.imgUrls[0], false))
+            })
+            responseBody = basicCardCarousel(dataList)
+            dataList = []
+        }
+        let more = await keywordFind("", true)
+        more.forEach(item => dataList.push({
+            "type": "text",
+            "label": item.phrase,
+            "message": `키워드검색 ${item.phrase}`
+        }))
+        responseBody.quickReplies = dataList;
+        res.status(200).send(basicCardCarousel(dataList));
+    })
+})
 
 export default Router;
