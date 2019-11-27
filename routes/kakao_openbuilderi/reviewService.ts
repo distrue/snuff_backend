@@ -66,6 +66,19 @@ Router.post('/keyword', async (req: Express.Request, res:Express.Response) => {
     let find = req.body.action.params.keyword.replace(/ /gi, "");
     let responseBody:any;
     let dataList: any = [];
+    let predetermine = ["양식", "한식", "중식", "일식"]
+
+    // 음식 종류의 분할인 경우 -> rcmd와 동일하게
+    if(find in predetermine) {
+        let skill_params = {food_type: {value: find}};
+        return await list({foodtype: {$regex: skill_params.food_type.value}})
+        .then(async (data) => {
+            let datalist: any[] = await recommendList(data, skill_params);
+
+            if(datalist.length === 0) return res.status(200).send( fallbackBlock("아직 이 분류의 리뷰가 없어요ㅠㅠ 스누푸파가 더 노력할게요!") )
+            return res.status(200).send(basicCardCarousel(datalist))
+        })
+    }
     
     await keywordFind(find, false)
     .then(async (data: any) => {

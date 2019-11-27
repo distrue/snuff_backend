@@ -40,7 +40,7 @@ const App = () => {
             <OTCodeList/>
             <CouponList/>
         </div>
-        <div id="keyword" style={{display:idPage[0] === "keyword"?"block":"none"}}>
+        <div id="keyword" style={{display:idPage[0] === "keyword"?"block":"none", height:"90vh", overflow:"scroll", marginBottom:"10px"}}>
             <KeywordList look={chosen}/>
             <SearchBar name={name} show={show} />
             <ResultList show={show} chosen={chosen} />

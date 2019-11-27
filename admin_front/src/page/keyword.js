@@ -16,6 +16,7 @@ export const KeywordList = ({look}) => {
     const participants = useState([]);
     const newKey = useState("")
     const newPar = useState("")
+    const onLook = useState("")
 
     function loadList() {
         Axios.get("/admin/keyword", {withCredentials: true})
@@ -38,20 +39,20 @@ export const KeywordList = ({look}) => {
     }, [onChose[0]])
 
     return(<div>
-        <table style={{border: "1px solid black"}}>
+        <div style={{maxHeight: "15vh", overflow: "scroll"}}><table style={{border: "1px solid black", width:"90vw"}}>
             <thead>
                 <th>키워드</th><th>참여식당</th>
             </thead>
-            <tbody>
-                {List[0].map(item => <tr onClick={() => {onChose[1](item.phrase)}}>
+            <tbody  style={{fontSize:"1.5vh"}}>
+                {List[0].map(item => <tr style={{backgroundColor: onChose[0]===item.phrase?"skyblue":"white"}} onClick={() => {onChose[1](item.phrase)}}>
                 <td>{item.phrase}</td>
                 <td>{JSON.stringify(item.participants)}</td>
                 </tr>)}
             </tbody>
-        </table>
+        </table></div>
         <div style={{margin: "20px 0px 20px 0px"}}>
             키워드 추가
-            <input value={newKey[0]} onChange={e => newKey[1](e.target.value)}/>
+            <input value={newKey[0]} style={{border: "1px solid green"}} onChange={e => newKey[1](e.target.value)}/>
             <button onClick={() => {
                 Axios.post('/admin/keyword/phrase', {phrase: newKey[0]}, {withCredentials: true})
                 .then(ans => {
@@ -61,16 +62,30 @@ export const KeywordList = ({look}) => {
             }}>추가</button>
         </div>
         <hr/>
-        <div style={{display: "flex", flexDirection:"column"}}>
-            현재: {JSON.stringify(onChose[0])}
-            {participants[0].map(item => <div>
-                {item.name} / {item._id}
-            </div>)} 
+        <div>현재: {JSON.stringify(onChose[0])}
+            <button style={{height:"30px", border:"1px solid red"}} onClick={() => {
+                Axios.delete(`/admin/keyword?phrase=${onChose[0]}`, {withCredentials: true})
+                .then(ans => {
+                    alert(JSON.stringify(ans.data))
+                    loadList()
+                })
+            }}>키워드 제거</button></div>
+        <div style={{margin: "20px 0px 20px 0px",display: "flex", flexDirection:"row"}}>
+            <div style={{ height:"10vh", overflow:"scroll"}}>
+            <table style={{width: "40vw"}}><tbody  style={{fontSize:"1.5vh"}}>
+            {participants[0].map(item => <tr style={{backgroundColor: onLook[0]._id===item._id?"skyblue":"white"}} onClick={() => {onLook[1](item)}} >
+                <td>{item.name}</td><td>{item._id}</td>
+            </tr>)} 
+            </tbody></table></div>
+            <div style={{width:"50vw", height:"20vh", overflow:"scroll"}}>
+                 <a href={onLook[0].postURL}>Insta Link</a><br/>
+                {onLook[0].content}
+            </div>
         </div>
-        <div style={{margin: "20px 0px 20px 0px"}}>
+        <div style={{fontSize:"1.5vh"}}>
             키워드 참가 식당
-            <input value={newPar[0]} onChange={e => newPar[1](e.target.value)}/>
-            <button onClick={() => {
+            <input value={newPar[0]} onChange={e => newPar[1](e.target.value)} style={{fontSize: "1.5vh", border: "1px solid blue"}}/>
+            <button  style={{fontSize:"1.5vh"}} onClick={() => {
                 Axios.post('/admin/keyword/participant', {phrase: onChose[0],participants: newPar[0]}, {withCredentials: true})
                 .then(ans => {
                     console.log(ans)
@@ -78,7 +93,7 @@ export const KeywordList = ({look}) => {
                     loadList()
                 })
             }}>추가</button>
-            <button onClick={() => {
+            <button  style={{fontSize:"1.5vh"}} onClick={() => {
                 Axios.delete(`/admin/keyword/participant?phrase=${onChose[0]}&participant=${newPar[0]}`, {withCredentials: true})
                 .then(ans => {
                     console.log(ans)
@@ -87,9 +102,13 @@ export const KeywordList = ({look}) => {
                 })
             }}>제거</button>
         </div>
-        <div>
-            <h2>검색 식당</h2>
-            {look[0].name} {look[0]._id}
+        <div style={{display: "flex", flexDirection:"row"}}>
+            <div style={{height:"15vh", overflow:"scroll", width:"80vw"}}>
+                <h2>식당 검색하기</h2>
+                {look[0].name} {look[0]._id}<br/>
+                {look[0].images?look[0].images.map(item => <img style={{width:"15vw"}} src={item}/>):""}
+            </div>
         </div>
+        <hr/>
     </div>)
 }

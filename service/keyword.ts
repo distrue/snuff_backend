@@ -28,6 +28,16 @@ export async function addWord(phrase: string) {
     }
 }
 
+export async function delWord(phrase: string) {
+    try{
+        return await KeywordModel.deleteOne({
+            phrase: phrase
+        })
+    }catch(err) {
+        throw err;
+    }
+}
+
 export async function addParticipant(phrase: string, participant: ObjectId) {
     try{
         return await KeywordModel.find({phrase: phrase})

@@ -236,10 +236,10 @@ const TableStyle = styled.table`
         overflow: hidden;
     }
     tr {
-        height: 60px;
+        height: 4vh;
     }
     table-layout: fixed;
-    font-size: 16pt;
+    font-size: 1.8vh;
     width: 90vw;
     .row1 { width: 20%; } .row2 { width: 60%; } .row3 { width: 20%; }
 `;

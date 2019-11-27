@@ -12,7 +12,9 @@ import isAdmin from '../controllers/admin';
 import {readCSV, addToDB} from '../tools/dbUpdater';
 import {add as qrAdd, list as qrList} from '../service/qrcode';
 import {eventRuleAdd, getEventRule} from '../service/eventRule';
-import {list as keywordList, addWord, addParticipant as addParticipantKey, find as keywordFind, deleteParticipant as deleteParticipantKey} from '../service/keyword';
+import {list as keywordList, addWord, delWord, 
+    addParticipant as addParticipantKey, find as keywordFind, 
+    deleteParticipant as deleteParticipantKey} from '../service/keyword';
 
 const Router = Express.Router();
 
@@ -166,6 +168,11 @@ Router.get('/keyword', async (req: Express.Request, res: Express.Response) => {
 Router.get('/keywordOne', async (req: Express.Request, res: Express.Response) => {
     let ans = await keywordFind(req.query.phrase, false)
     return res.status(200).json(ans);
+})
+
+Router.delete('/keyword', async (req: Express.Request, res: Express.Response) => {
+    let ans = await delWord(req.query.phrase);
+    return res.status(200).json(ans)
 })
 
 Router.post('/keyword/phrase', async (req: Express.Request, res: Express.Response) => {
