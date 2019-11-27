@@ -73,7 +73,9 @@ export const KeywordList = ({look}) => {
         <div style={{margin: "20px 0px 20px 0px",display: "flex", flexDirection:"row"}}>
             <div style={{ height:"10vh", overflow:"scroll"}}>
             <table style={{width: "40vw"}}><tbody  style={{fontSize:"1.5vh"}}>
-            {participants[0].map(item => <tr style={{backgroundColor: onLook[0]._id===item._id?"skyblue":"white"}} onClick={() => {onLook[1](item)}} >
+            {participants[0].map(item => <tr style={{backgroundColor: newPar[0]._id===item._id?"skyblue":"white"}} onClick={() => {
+                onLook[1](item); newPar[1](item)
+            }} >
                 <td>{item.name}</td><td>{item._id}</td>
             </tr>)} 
             </tbody></table></div>
@@ -83,10 +85,10 @@ export const KeywordList = ({look}) => {
             </div>
         </div>
         <div style={{fontSize:"1.5vh"}}>
-            키워드 참가 식당
-            <input value={newPar[0]} onChange={e => newPar[1](e.target.value)} style={{fontSize: "1.5vh", border: "1px solid blue"}}/>
+            등록: {newPar[0].name}
+            <input value={newPar[0]._id} style={{fontSize: "1.5vh", border: "1px solid blue", backgroundColor:"#cccccc", width:"30vw"}} readOnly/>
             <button  style={{fontSize:"1.5vh"}} onClick={() => {
-                Axios.post('/admin/keyword/participant', {phrase: onChose[0],participants: newPar[0]}, {withCredentials: true})
+                Axios.post('/admin/keyword/participant', {phrase: onChose[0],participants: newPar[0]._id}, {withCredentials: true})
                 .then(ans => {
                     console.log(ans)
                     alert(JSON.stringify(ans.data))
@@ -94,7 +96,7 @@ export const KeywordList = ({look}) => {
                 })
             }}>추가</button>
             <button  style={{fontSize:"1.5vh"}} onClick={() => {
-                Axios.delete(`/admin/keyword/participant?phrase=${onChose[0]}&participant=${newPar[0]}`, {withCredentials: true})
+                Axios.delete(`/admin/keyword/participant?phrase=${onChose[0]}&participant=${newPar[0]._id}`, {withCredentials: true})
                 .then(ans => {
                     console.log(ans)
                     alert(JSON.stringify(ans.data))
@@ -102,9 +104,9 @@ export const KeywordList = ({look}) => {
                 })
             }}>제거</button>
         </div>
+        <hr/>
         <div style={{display: "flex", flexDirection:"row"}}>
-            <div style={{height:"15vh", overflow:"scroll", width:"80vw"}}>
-                <h2>식당 검색하기</h2>
+            <div style={{height:"15vh", overflow:"scroll", width:"80vw", backgroundColor: newPar[0]._id === look[0]._id?"skyblue":"white"}} onClick={() => newPar[1](look[0])}>
                 {look[0].name} {look[0]._id}<br/>
                 {look[0].images?look[0].images.map(item => <img style={{width:"15vw"}} src={item}/>):""}
             </div>
