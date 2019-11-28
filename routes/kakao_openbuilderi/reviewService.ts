@@ -63,7 +63,7 @@ Router.post('/detailone', (req:Express.Request, res:Express.Response) => {
 });
 
 Router.post('/keyword', async (req: Express.Request, res:Express.Response) => {
-    let find = req.body.action.params.keyword.replace(/ /gi, "");
+    let find = req.body.action.params.keyword.replace(/ /gi, "").replace("키워드검색","");
     let responseBody:any;
     let dataList: any = [];
     let predetermine = ["양식", "한식", "중식", "일식"]
@@ -100,9 +100,9 @@ Router.post('/keyword', async (req: Express.Request, res:Express.Response) => {
         {
             if(idx >= 10) return;
             dataList.push({
-            "action": "block",
-            "label": item.phrase,
-            "data":{ "blockId": "5db29bfcb617ea00012b9989", "extra": {"keyword": item.phrase}}
+            "action": "message",
+            "label": `키워드검색 ${item.phrase}`,
+            "messageText": item.phrase
             })
         })
         responseBody.template.quickReplies = dataList;
