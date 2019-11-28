@@ -14,7 +14,7 @@ import {add as qrAdd, list as qrList} from '../service/qrcode';
 import {eventRuleAdd, getEventRule} from '../service/eventRule';
 import {list as keywordList, addWord, delWord, 
     addParticipant as addParticipantKey, find as keywordFind, 
-    deleteParticipant as deleteParticipantKey} from '../service/keyword';
+    deleteParticipant as deleteParticipantKey, crawlParticiapnt} from '../service/keyword';
 
 const Router = Express.Router();
 
@@ -177,6 +177,11 @@ Router.delete('/keyword', async (req: Express.Request, res: Express.Response) =>
 
 Router.post('/keyword/phrase', async (req: Express.Request, res: Express.Response) => {
     let ans = await addWord(req.body.phrase);
+    return res.status(200).json(ans);
+})
+
+Router.post('/keyword/crawl', async (req: Express.Request, res: Express.Response) => {
+    let ans = await crawlParticiapnt(req.body.phrase);
     return res.status(200).json(ans);
 })
 

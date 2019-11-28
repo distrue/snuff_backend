@@ -22,6 +22,7 @@ export const KeywordList = ({look}) => {
         Axios.get("/admin/keyword", {withCredentials: true})
         .then(ans => {
             List[1](ans.data)
+            participants[1]([])
         })
     }
     useEffect(() => {
@@ -63,15 +64,24 @@ export const KeywordList = ({look}) => {
         </div>
         <hr/>
         <div>현재: {JSON.stringify(onChose[0])}
-            <button style={{height:"30px", border:"1px solid red"}} onClick={() => {
+            <button  style={{fontSize:"1.5vh"}} onClick={() => {
                 Axios.delete(`/admin/keyword?phrase=${onChose[0]}`, {withCredentials: true})
                 .then(ans => {
                     alert(JSON.stringify(ans.data))
                     loadList()
                 })
-            }}>키워드 제거</button></div>
+            }}>키워드 제거</button>
+             <button  style={{fontSize:"1.5vh"}} onClick={() => {
+                Axios.post(`/admin/keyword/crawl`, {phrase: onChose[0]}, {withCredentials: true})
+                .then(ans => {
+                    console.log(ans)
+                    alert(JSON.stringify(ans.data))
+                    loadList()
+                })
+            }}>crawl</button>
+        </div>
         <div style={{margin: "20px 0px 20px 0px",display: "flex", flexDirection:"row"}}>
-            <div style={{ height:"10vh", overflow:"scroll"}}>
+            <div style={{  height:"20vh", overflow:"scroll"}}>
             <table style={{width: "40vw"}}><tbody  style={{fontSize:"1.5vh"}}>
             {participants[0].map(item => <tr style={{backgroundColor: newPar[0]._id===item._id?"skyblue":"white"}} onClick={() => {
                 onLook[1](item); newPar[1](item)

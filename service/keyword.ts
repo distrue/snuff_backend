@@ -1,5 +1,6 @@
 import {KeywordModel} from '../models/keyword';
 import { ObjectId } from 'bson';
+import { ReviewModel } from '../models/review';
 
 export async function list() {
     try{
@@ -67,3 +68,15 @@ export async function deleteParticipant(phrase: string, participant: ObjectId) {
     }
 }
 
+export async function crawlParticiapnt(phrase: string) {
+    try {
+        const result:any[] = [];
+        const ans = await ReviewModel.find({})
+        ans.forEach(item => {
+            if(item.content.match(phrase)) result.push(item._id)
+        })
+        return await KeywordModel.findOneAndUpdate({phrase: phrase}, {$set: {participants: result}})
+    } catch(err) {
+        throw err;
+    }
+}
