@@ -104,7 +104,7 @@ Router.post('/keyword', async (req: Express.Request, res:Express.Response) => {
             "label": item.phrase,
             "messageText": `키워드검색`,
             "blockId": "5ddfaa148192ac0001d64a89",
-            "clientExtra": {keyword: item.phrase}
+            "extra": {keyword: item.phrase}
             })
         })
         responseBody.template.quickReplies = dataList;
@@ -154,7 +154,7 @@ Router.post('/keywordExtra', async (req: Express.Request, res:Express.Response) 
                 "label": item.phrase,
                 "messageText": `키워드검색`,
                 "blockId": "5ddfaa148192ac0001d64a89",
-                "clientExtra": {keyword: item.phrase}
+                "extra": {keyword: item.phrase}
             })
         })
         responseBody.template.quickReplies = dataList;
