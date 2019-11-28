@@ -82,7 +82,7 @@ Router.post('/keyword', async (req: Express.Request, res:Express.Response) => {
     
     await keywordFind(find, false)
     .then(async (data: any) => {
-        if(data.length === 0) {
+        if(data.length === 0 || data[0].participants.length === 0) {
             responseBody = fallbackBlock(`${find} 키워드에 일치하는 식당이 아직 없어요, 이런 키워드는 어떤가요?`)
         }
         else {
@@ -132,7 +132,7 @@ Router.post('/keywordExtra', async (req: Express.Request, res:Express.Response) 
     
     await keywordFind(find, false)
     .then(async (data: any) => {
-        if(data.length === 0) {
+        if(data.length === 0 || data[0].participants.length === 0) {
             responseBody = fallbackBlock(`${find} 키워드에 일치하는 식당이 아직 없어요, 이런 키워드는 어떤가요?`)
         }
         else {
