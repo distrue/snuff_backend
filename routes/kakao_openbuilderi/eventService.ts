@@ -8,7 +8,8 @@ import { inruleCell, noruleCell, targetCell, targetMapCell } from '../../control
 
 Router.post('/askEvent', (req:Express.Request, res:Express.Response) => {
   let responseBody:any, datalist: any[] = [];
-  if(req.body.action.params.restaurant_name) {
+  let params = req.body.action.params;
+  if(params.restaurant_name) {
     const find = req.body.action.params.restaurant_name.replace(/_/gi, " ");
     list(find)
     .then(async data => {
