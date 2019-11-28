@@ -6,12 +6,12 @@ import { resolve } from 'path';
 import { fallbackBlock, basicCardCarousel } from '../../controllers/kakao_openbuilderi/common';
 import { inruleCell, noruleCell, targetCell, targetMapCell } from '../../controllers/kakao_openbuilderi/event';
 
-Router.post('/askEvent', (req:Express.Request, res:Express.Response) => {
+Router.post('/askEvent', async (req:Express.Request, res:Express.Response) => {
   let responseBody:any, datalist: any[] = [];
   let params = req.body.action.params;
   if(params.restaurant_name) {
     const find = req.body.action.params.restaurant_name.replace(/_/gi, " ");
-    list(find)
+    await list(find)
     .then(async data => {
         let pms = data.map((item:any) => {
           if(item.participants.length !== 1) return resolve("ok");  // 자신이 포함되어 있지 않으면 제거
@@ -26,7 +26,7 @@ Router.post('/askEvent', (req:Express.Request, res:Express.Response) => {
     });
   }
   else {
-    list("")
+    await list("")
     .then(async data => {
         let pms = data.map((item:any) => {
           if(item.type === 'in_rule') return resolve("ok");  // 적립 이벤트는 표시하지 않음
