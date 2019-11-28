@@ -103,7 +103,7 @@ Router.post('/keyword', async (req: Express.Request, res:Express.Response) => {
             "action": "block",
             "label": item.phrase,
             "messageText": `키워드검색`,
-            "blockId": "",
+            "blockId": "5ddfaa148192ac0001d64a89",
             "clientExtra": {keyword: item.phrase}
             })
         })
@@ -153,7 +153,7 @@ Router.post('/keywordExtra', async (req: Express.Request, res:Express.Response) 
                 "action": "block",
                 "label": item.phrase,
                 "messageText": `키워드검색`,
-                "blockId": "",
+                "blockId": "5ddfaa148192ac0001d64a89",
                 "clientExtra": {keyword: item.phrase}
             })
         })
