@@ -7,7 +7,6 @@ import {add} from '../../service/request';
 import {fallbackBlock, basicCardCarousel} from '../../controllers/kakao_openbuilderi/common';
 import {reviewFallback, reviewResponse, recommendList, pictureCell, reviewtextResponse, recommendCell } from '../../controllers/kakao_openbuilderi/review';
 import { find as keywordFind } from '../../service/keyword';
-import { stringifyJSON } from '../../tools/json';
 
 
 Router.post('/pickone', (req:Express.Request, res:Express.Response) => {
