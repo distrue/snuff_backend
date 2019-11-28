@@ -106,7 +106,7 @@ Router.post('/keyword', async (req: Express.Request, res:Express.Response) => {
             })
         })
         responseBody.template.quickReplies = dataList;
-        res.status(200).send(responseBody);
+        res.status(200).json(responseBody);
     })
 })
 
