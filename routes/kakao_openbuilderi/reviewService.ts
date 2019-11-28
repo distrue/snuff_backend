@@ -101,9 +101,9 @@ Router.post('/keyword', async (req: Express.Request, res:Express.Response) => {
         {
             if(idx >= 10) return;
             dataList.push({
-            "action": "message",
+            "action": "block",
             "label": item.phrase,
-            "message": `키워드검색 ${item.phrase}`
+            "data":{ "blockId": "5db29bfcb617ea00012b9989", "extra": {"keyword": item.phrase}}
             })
         })
         responseBody.template.quickReplies = dataList;
