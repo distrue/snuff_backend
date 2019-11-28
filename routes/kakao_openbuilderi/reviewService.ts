@@ -96,11 +96,15 @@ Router.post('/keyword', async (req: Express.Request, res:Express.Response) => {
             dataList = []
         }
         let more = await keywordFind("", true)
-        more.forEach(item => dataList.push({
+        more.forEach((item, idx) => 
+        {
+            if(idx >= 10) return;
+            dataList.push({
             "action": "message",
             "label": item.phrase,
             "message": `키워드검색 ${item.phrase}`
-        }))
+            })
+        })
         responseBody.template.quickReplies = dataList;
         res.status(200).send(responseBody);
     })
