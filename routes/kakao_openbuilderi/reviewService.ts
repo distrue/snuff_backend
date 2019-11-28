@@ -87,7 +87,7 @@ Router.post('/keyword', async (req: Express.Request, res:Express.Response) => {
         }
         else {
             data[0].participants.forEach((item:any, idx:number) => {
-                if(idx > 6) return;            
+                if(idx >= 5) return;            
                 let menudsc = String(item.content.match(/메뉴:.*$/));
                 menudsc = menudsc!.replace(/\"/gi, "");
                 dataList.push(recommendCell(item, menudsc, item.imgUrls[0], false))
