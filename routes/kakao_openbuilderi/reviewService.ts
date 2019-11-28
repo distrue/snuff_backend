@@ -63,7 +63,7 @@ Router.post('/detailone', (req:Express.Request, res:Express.Response) => {
 });
 
 Router.post('/keyword', async (req: Express.Request, res:Express.Response) => {
-    let find = req.body.action.params.keyword.replace(/ /gi, "").replace("키워드검색","");
+    let find = req.body.action.params.keyword.replace(/ /gi, "");
     let responseBody:any;
     let dataList: any = [];
     let predetermine = ["양식", "한식", "중식", "일식"]
@@ -100,14 +100,67 @@ Router.post('/keyword', async (req: Express.Request, res:Express.Response) => {
         {
             if(idx >= 10) return;
             dataList.push({
-            "action": "message",
+            "action": "block",
             "label": item.phrase,
-            "messageText": `키워드찾기`
+            "messageText": `키워드검색`,
+            "blockId": "",
+            "clientExtra": {keyword: item.phrase}
             })
         })
         responseBody.template.quickReplies = dataList;
         res.status(200).json(responseBody);
     })
 })
+
+Router.post('/keywordExtra', async (req: Express.Request, res:Express.Response) => {
+    let find = req.body.action.clientExtra.keyword.replace(/ /gi, "");
+    let responseBody:any;
+    let dataList: any = [];
+    let predetermine = ["양식", "한식", "중식", "일식"]
+
+    // 음식 종류의 분할인 경우 -> rcmd와 동일하게
+    if(find in predetermine) {
+        let skill_params = {food_type: {value: find}};
+        return await list({foodtype: {$regex: skill_params.food_type.value}})
+        .then(async (data) => {
+            let datalist: any[] = await recommendList(data, skill_params);
+
+            if(datalist.length === 0) return res.status(200).send( fallbackBlock("아직 이 분류의 리뷰가 없어요ㅠㅠ 스누푸파가 더 노력할게요!") )
+            return res.status(200).send(basicCardCarousel(datalist))
+        })
+    }
+    
+    await keywordFind(find, false)
+    .then(async (data: any) => {
+        if(data.length === 0) {
+            responseBody = fallbackBlock(`${find} 키워드에 일치하는 식당이 아직 없어요, 이런 키워드는 어떤가요?`)
+        }
+        else {
+            data[0].participants.forEach((item:any, idx:number) => {
+                if(idx >= 5) return;            
+                let menudsc = String(item.content.match(/메뉴:.*$/));
+                menudsc = menudsc!.replace(/\"/gi, "");
+                dataList.push(recommendCell(item, menudsc, item.imgUrls[0], false))
+            })
+            responseBody = basicCardCarousel(dataList)
+            dataList = []
+        }
+        let more = await keywordFind("", true)
+        more.forEach((item, idx) => 
+        {
+            if(idx >= 10) return;
+            dataList.push({
+                "action": "block",
+                "label": item.phrase,
+                "messageText": `키워드검색`,
+                "blockId": "",
+                "clientExtra": {keyword: item.phrase}
+            })
+        })
+        responseBody.template.quickReplies = dataList;
+        res.status(200).json(responseBody);
+    })
+})
+
 
 export default Router;
