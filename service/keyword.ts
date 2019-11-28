@@ -46,6 +46,7 @@ export async function addParticipant(phrase: string, participant: ObjectId) {
             if(ans.length === 0) return
             let idx = ans[0].participants.findIndex((item) => item === participant)
             if(idx === -1) ans[0].participants.push(participant)
+            console.log(typeof ans[0].participants[0], participant)
             await ans[0].save()
         })
     }catch(err) {
