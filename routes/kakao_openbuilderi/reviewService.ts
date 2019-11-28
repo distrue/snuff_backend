@@ -102,7 +102,7 @@ Router.post('/keyword', async (req: Express.Request, res:Express.Response) => {
             dataList.push({
             "action": "message",
             "label": item.phrase,
-            "messageText": `키워드검색 ${item.phrase}`
+            "messageText": `키워드검색`
             })
         })
         responseBody.template.quickReplies = dataList;
