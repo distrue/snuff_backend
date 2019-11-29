@@ -33,7 +33,8 @@ Router.post('/pickone', (req:Express.Request, res:Express.Response) => {
     const skill_params = req.body.action.detailParams;
     const find:any = {name: ""}
     if(skill_params && skill_params.restaurant_name) find.name = {$regex: skill_params.restaurant_name.value};
-    if(req.body.action.clientExtra && req.body.action.clientExtra.restaurant_name) find.name = {$regex: req.body.action.clientExtra.restaurant_name.replace(" ", "")}
+    if(req.body.action.clientExtra && req.body.action.clientExtra.restaurant_name) find.name = {$regex: req.body.action.clientExtra.restaurant_name}
+    console.log(find.name)
 
     list(find)
     .then(async (data) => {
@@ -51,7 +52,8 @@ Router.post('/pictureone', (req:Express.Request, res:Express.Response) => {
     const skill_params = req.body.action.detailParams;
     const find:any = {name: ""}
     if(skill_params && skill_params.restaurant_name) find.name = {$regex: skill_params.restaurant_name.value};
-    if(req.body.action.clientExtra && req.body.action.clientExtra.restaurant_name) find.name = {$regex: req.body.action.clientExtra.restaurant_name.replace(" ", "")}
+    if(req.body.action.clientExtra && req.body.action.clientExtra.restaurant_name) find.name = {$regex: req.body.action.clientExtra.restaurant_name}
+    console.log(find.name)
     
     list(find)
     .then(data => {
@@ -64,7 +66,8 @@ Router.post('/detailone', (req:Express.Request, res:Express.Response) => {
     const skill_params = req.body.action.detailParams;
     const find:any = {name: ""}
     if(skill_params && skill_params.restaurant_name) find.name = {$regex: skill_params.restaurant_name.value};
-    if(req.body.action.clientExtra && req.body.action.clientExtra.restaurant_name) find.name = {$regex: req.body.action.clientExtra.restaurant_name.replace(" ", "")}
+    if(req.body.action.clientExtra && req.body.action.clientExtra.restaurant_name) find.name = {$regex: req.body.action.clientExtra.restaurant_name}
+    console.log(find.name)
     
     list(find)
     .then(data => {
