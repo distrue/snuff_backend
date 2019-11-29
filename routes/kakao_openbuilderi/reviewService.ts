@@ -47,7 +47,10 @@ Router.post('/rcmd', async (req:Express.Request, res:Express.Response) => {
 });
 
 Router.post('/pictureone', (req:Express.Request, res:Express.Response) => {
-    let find = {name: {$regex: req.body.action.params.restaurant_name.replace(/_/gi, " ")}};
+    const skill_params = req.body.action.detailParams;
+    const find:any = {name: ""}
+    if(skill_params && skill_params.restaurant_name) find.name = {$regex: skill_params.restaurant_name.value};
+    if(req.body.action.clientExtra && req.body.action.clientExtra.restaurant_name) find.name = {$regex: req.body.action.clientExtra.restaurant_name.replace(" ", "")}
     
     list(find)
     .then(data => {
@@ -60,8 +63,7 @@ Router.post('/detailone', (req:Express.Request, res:Express.Response) => {
     const skill_params = req.body.action.detailParams;
     const find:any = {name: ""}
     if(skill_params && skill_params.restaurant_name) find.name = {$regex: skill_params.restaurant_name.value};
-    if(req.body.action.clientExtra && req.body.action.clientExtra.restaurant_name) find.name = {$regex: req.body.action.clientExtra.restaurant_name}
-    find.replace(" ", "")
+    if(req.body.action.clientExtra && req.body.action.clientExtra.restaurant_name) find.name = {$regex: req.body.action.clientExtra.restaurant_name.replace(" ", "")}
     
     list(find)
     .then(data => {
