@@ -14,8 +14,7 @@ Router.post('/askEvent', async (req:Express.Request, res:Express.Response) => {
   if(req.body.action.clientExtra && req.body.action.clientExtra.restaurant_name) find.name = {$regex: req.body.action.clientExtra.restaurant_name}
   console.log(find.name)
   if(find.name) {
-    const find = req.body.action.params.restaurant_name.replace(/_/gi, " ");
-    await list(find)
+    await list(find.name)
     .then(async data => {
         let pms = data.map((item:any) => {
           if(item.participants.length !== 1) return resolve("ok");  // 자신이 포함되어 있지 않으면 제거
