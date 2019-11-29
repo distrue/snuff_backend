@@ -142,8 +142,10 @@ export function recommendCell(item: any, menudsc: string, imgs: string, pupapick
         "buttons": [
           {
             "action": "message",
-            "label": "매장 정보 보기",
-            "messageText": `askTotal ${searchTitle(item.name)}`
+            "label": "리뷰 보기",
+            "messageText": "리뷰 보기",
+            "blockId": "5d83141d92690d0001d800c7",
+            "extra": {keyword: searchTitle(item.name)}
           },
           {
             "action": "message",

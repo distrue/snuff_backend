@@ -55,7 +55,8 @@ Router.post('/pictureone', (req:Express.Request, res:Express.Response) => {
 });
 
 Router.post('/detailone', (req:Express.Request, res:Express.Response) => {
-    let find = {name: {$regex: req.body.action.params.restaurant_name.replace(/_/gi, " ")}};
+    const find = {name: {$regex: req.body.action.params.restaurant_name.replace(/_/gi, " ")}};
+    if(req.body.action.clientExtra) find.name = req.body.action.clientExtra.restaurant_name
     
     list(find)
     .then(data => {
