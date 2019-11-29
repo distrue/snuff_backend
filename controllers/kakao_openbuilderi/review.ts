@@ -50,9 +50,11 @@ export function reviewResponse(data:any, imgURLs: string[]) {
                 ],
                 "buttons": [
                   {
-                  "action": "message",
-                  "label": "이벤트 보기",
-                  "messageText": `askEvent ${ searchTitle(data.name) }`
+                    "action": "block",
+                    "label": "이벤트 보기",
+                    "messageText": "이벤트 보기",
+                    "blockId": "5db6c42d92690d000164df99",
+                    "extra": {restaurant_name: searchTitle(data.name)}
                   },
                   {
                     "action": "share",
@@ -69,9 +71,11 @@ export function reviewResponse(data:any, imgURLs: string[]) {
                 },
                 "buttons":[
                   {
-                    "label": "음식점 사진",
-                    "action": "message",
-                    "messageText": `askImage ${ searchTitle(data.name) }`
+                    "action": "block",
+                    "label": "사진 보기",
+                    "messageText": "사진 보기",
+                    "blockId": "5d83143392690d0001d800cc",
+                    "extra": {restaurant_name: searchTitle(data.name)}
                   },
                   {
                     "action": "block",
