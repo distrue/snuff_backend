@@ -48,7 +48,7 @@ export function reviewResponse(data:any, imgURLs: string[]) {
                     }
                   }
                 ],
-                "buttons": [ 
+                "buttons": [
                   {
                   "action": "message",
                   "label": "이벤트 보기",
@@ -73,11 +73,13 @@ export function reviewResponse(data:any, imgURLs: string[]) {
                     "action": "message",
                     "messageText": `askImage ${ searchTitle(data.name) }`
                   },
-                   {
-                    "action": "message",
-                    "label": "상세 리뷰 보기",
-                    "messageText": `askDetail ${ searchTitle(data.name) }`
-                   },
+                  {
+                    "action": "block",
+                    "label": "푸파 리뷰 보기",
+                    "messageText": "푸파 리뷰 보기",
+                    "blockId": "5d83141d92690d0001d800c7",
+                    "extra": {keyword: searchTitle(data.name)}
+                  },
                    {
                      "action": "share",
                      "label": "공유하기"
@@ -141,10 +143,10 @@ export function recommendCell(item: any, menudsc: string, imgs: string, pupapick
         },
         "buttons": [
           {
-            "action": "message",
+            "action": "block",
             "label": "리뷰 보기",
             "messageText": "리뷰 보기",
-            "blockId": "5d83141d92690d0001d800c7",
+            "blockId": "5d831369b617ea0001e17af8",
             "extra": {keyword: searchTitle(item.name)}
           },
           {
