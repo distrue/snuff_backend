@@ -12,8 +12,9 @@ import { ReviewModel } from '../../models/review';
 
 
 Router.post('/pickone', (req:Express.Request, res:Express.Response) => {
-    let skill_params = req.body.action.detailParams;
-    let find = {name: {$regex: skill_params.restaurant_name.value.replace(/_/gi, " ")}};
+    const skill_params = req.body.action.detailParams;
+    const find:any = {name: ""}
+    if(skill_params && skill_params.restaurant_name) find.name = {$regex: skill_params.restaurant_name.value};
     if(req.body.action.clientExtra && req.body.action.clientExtra.restaurant_name) find.name = req.body.action.clientExtra.restaurant_name
 
     list(find)
@@ -56,7 +57,9 @@ Router.post('/pictureone', (req:Express.Request, res:Express.Response) => {
 });
 
 Router.post('/detailone', (req:Express.Request, res:Express.Response) => {
-    const find = {name: {$regex: req.body.action.params.restaurant_name.replace(/_/gi, " ")}};
+    const skill_params = req.body.action.detailParams;
+    const find:any = {name: ""}
+    if(skill_params && skill_params.restaurant_name) find.name = {$regex: skill_params.restaurant_name.value};
     if(req.body.action.clientExtra && req.body.action.clientExtra.restaurant_name) find.name = req.body.action.clientExtra.restaurant_name
     
     list(find)
