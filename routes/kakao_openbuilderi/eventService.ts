@@ -24,7 +24,7 @@ Router.post('/askEvent', async (req:Express.Request, res:Express.Response) => {
           return datalist.push(noruleCell(item));  // 자신의 reward가 없는 경우
         })
         await Promise.all(pms);
-        if(datalist.length === 0) responseBody = fallbackBlock(`현재 ${find}에서 진행중인 이벤트가 없어요!`)
+        if(datalist.length === 0) responseBody = fallbackBlock(`현재 ${find.name}에서 진행중인 이벤트가 없어요!`)
         else responseBody = basicCardCarousel(datalist)
     });
   }
