@@ -78,7 +78,7 @@ export function reviewResponse(data:any, imgURLs: string[]) {
                     "label": "푸파 리뷰 보기",
                     "messageText": "푸파 리뷰 보기",
                     "blockId": "5d83141d92690d0001d800c7",
-                    "extra": {keyword: searchTitle(data.name)}
+                    "extra": {restaurant_name: searchTitle(data.name)}
                   },
                    {
                      "action": "share",
@@ -147,7 +147,7 @@ export function recommendCell(item: any, menudsc: string, imgs: string, pupapick
             "label": "리뷰 보기",
             "messageText": "리뷰 보기",
             "blockId": "5d831369b617ea0001e17af8",
-            "extra": {keyword: searchTitle(item.name)}
+            "extra": {restaurant_name: searchTitle(item.name)}
           },
           {
             "action": "message",
