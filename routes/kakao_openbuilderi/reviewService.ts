@@ -11,25 +11,6 @@ import {RequestModel} from '../../models/request';
 import { ReviewModel } from '../../models/review';
 
 
-Router.post('/pickone', (req:Express.Request, res:Express.Response) => {
-    const skill_params = req.body.action.detailParams;
-    const find:any = {name: ""}
-    if(skill_params && skill_params.restaurant_name) find.name = {$regex: skill_params.restaurant_name.value};
-    if(req.body.action.clientExtra && req.body.action.clientExtra.restaurant_name) find.name = {$regex: req.body.action.clientExtra.restaurant_name}
-    find.replace(" ", "")
-
-    list(find)
-    .then(async (data) => {
-      let responseBody;
-      if(data.length === 0) {
-        await add(find.name);
-        responseBody = reviewFallback(`아직 ${find.name}의 리뷰가 없어요, 스누푸파가 준비해볼게요!`)
-      }
-      else responseBody = reviewResponse(data[0], data[0].imgUrls);
-      res.status(200).send(responseBody);
-    })
-});
-
 Router.post('/rcmd', async (req:Express.Request, res:Express.Response) => {
     let filter:object = {};
     let skill_params = req.body.action.detailParams;
@@ -43,6 +24,26 @@ Router.post('/rcmd', async (req:Express.Request, res:Express.Response) => {
 
         if(datalist.length === 0) return res.status(200).send( fallbackBlock("아직 이 분류의 리뷰가 없어요ㅠㅠ 스누푸파가 더 노력할게요!") )
         return res.status(200).send(basicCardCarousel(datalist))
+    })
+});
+
+/////
+
+Router.post('/pickone', (req:Express.Request, res:Express.Response) => {
+    const skill_params = req.body.action.detailParams;
+    const find:any = {name: ""}
+    if(skill_params && skill_params.restaurant_name) find.name = {$regex: skill_params.restaurant_name.value};
+    if(req.body.action.clientExtra && req.body.action.clientExtra.restaurant_name) find.name = {$regex: req.body.action.clientExtra.restaurant_name.replace(" ", "")}
+
+    list(find)
+    .then(async (data) => {
+      let responseBody;
+      if(data.length === 0) {
+        await add(find.name);
+        responseBody = reviewFallback(`아직 ${find.name}의 리뷰가 없어요, 스누푸파가 준비해볼게요!`)
+      }
+      else responseBody = reviewResponse(data[0], data[0].imgUrls);
+      res.status(200).send(responseBody);
     })
 });
 
