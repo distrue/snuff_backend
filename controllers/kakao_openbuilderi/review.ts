@@ -154,9 +154,11 @@ export function recommendCell(item: any, menudsc: string, imgs: string, pupapick
             "extra": {restaurant_name: searchTitle(item.name)}
           },
           {
-            "action": "message",
-            "label": "매장 이벤트 보기",
-            "messageText": `askEvent ${searchTitle(item.name)}`
+            "action": "block",
+            "label": "이벤트 보기",
+            "messageText": "이벤트 보기",
+            "blockId": "5db6c42d92690d000164df99",
+            "extra": {restaurant_name: searchTitle(item.name)}
           }
         ]
     })
