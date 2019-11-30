@@ -43,11 +43,11 @@ Router.post('/askEvent', async (req:Express.Request, res:Express.Response) => {
   return res.status(200).send(responseBody);
 });
 
-Router.post('/eventTgt', (req:Express.Request, res:Express.Response) => {
+Router.post('/eventTgt', async (req:Express.Request, res:Express.Response) => {
     let find = "", responseBody, datalist: any[] = [];
     if(req.body.action.params.EventName) find = req.body.action.params.EventName.replace(/_/gi, " ");
     
-    targets(find) 
+    await targets(find) 
     .then(async data => {
         if(data.length === 0) return responseBody = fallbackBlock("참여하고 있는 매장이 없어요")
         datalist.push(targetMapCell(find))
