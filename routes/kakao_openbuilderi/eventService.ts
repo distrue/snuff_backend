@@ -47,7 +47,7 @@ Router.post('/eventTgt', async (req:Express.Request, res:Express.Response) => {
     let find = "", responseBody, datalist: any[] = [];
     if(req.body.action.params.EventName) find = req.body.action.params.EventName.replace(/_/gi, " ");
     
-    await targets(find) 
+    await targets(find, true) 
     .then(async data => {
         if(data.length === 0) return responseBody = fallbackBlock("참여하고 있는 매장이 없어요")
         datalist.push(targetMapCell(find))
@@ -67,7 +67,7 @@ Router.get('/eventTgt', (req:Express.Request, res:Express.Response) => {
   let find = "";
   if(req.query.eventName) find = req.query.eventName.replace(/_/gi, " ");
 
-  targets(find) 
+  targets(find, false) 
   .then(async data => {
       if(data.length === 0) return res.status(400).send("no review");
       return res.status(200).json({participants: data[0].participants, reward: data[0].reward})

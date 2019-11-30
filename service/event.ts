@@ -45,10 +45,11 @@ export async function list(participant: string) {
     }
 }
 
-export async function targets(code: string) {
+export async function targets(code: string, sample: boolean) {
     try {
         let query = { "code": {"$regex": code} };
-        return await EventModel.find(query).populate('participants');
+        if(!sample) return await EventModel.find(query).populate('participants');
+        else return await EventModel.aggregate().match({"code": {"$regex": code}}).sample(9)
     } catch (err) {
         throw err;
     }
