@@ -4,7 +4,7 @@ import { EventRule } from './eventRule';
 
 export interface Attendance extends mongoose.Document {
   userId: string;
-  log: Date[];
+  log: Number[];
   eventRule: EventRule;
 }
 
@@ -16,8 +16,7 @@ const schema = new mongoose.Schema({
   log: {
     default: [],
     type: [{
-        type: Date,
-        default: Date.now
+        type: Number
     }]
   },
   eventRule: {

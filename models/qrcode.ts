@@ -1,5 +1,4 @@
 import mongoose from 'mongoose';
-import { ObjectId } from 'bson';
 
 export interface QRcode extends mongoose.Document {
   code: string;

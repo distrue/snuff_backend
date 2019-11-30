@@ -13,6 +13,16 @@ export async function add(type: string, code: string, qrcode: string) {
     }
 }
 
+export async function del(qrcode: string) {
+    try {
+        return await QRcodeModel.deleteOne({
+            qrcode: qrcode
+        });
+    } catch (err) {
+        throw err;
+    }
+}
+
 export async function read(code: string) {
     try {
         let match = await QRcodeModel.find({qrcode: code});
