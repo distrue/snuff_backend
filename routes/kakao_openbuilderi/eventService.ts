@@ -54,6 +54,7 @@ Router.post('/eventTgt', async (req:Express.Request, res:Express.Response) => {
         data[0].participants.forEach((item: any, idx: number) => {
           if(idx >= 9) return 
           let parseContent;
+          console.log(item)
           try {
             parseContent = String(item.content.match(/메뉴:.*$/));
             parseContent = parseContent!.replace(/\"/gi, "");
