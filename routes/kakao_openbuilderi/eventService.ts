@@ -53,8 +53,13 @@ Router.post('/eventTgt', async (req:Express.Request, res:Express.Response) => {
         datalist.push(targetMapCell(find))
         data[0].participants.forEach((item: any, idx: number) => {
           if(idx >= 9) return 
-          let parseContent = String(item.content.match(/메뉴:.*$/));
-          parseContent = parseContent!.replace(/\"/gi, "");
+          let parseContent;
+          try {
+            parseContent = String(item.content.match(/메뉴:.*$/));
+            parseContent = parseContent!.replace(/\"/gi, "");
+          } catch(err) {
+            parseContent = "";
+          }
           datalist.push(targetCell(item, parseContent));
         });
         responseBody = basicCardCarousel(datalist)
