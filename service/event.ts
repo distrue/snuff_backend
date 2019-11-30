@@ -49,7 +49,7 @@ export async function targets(code: string, sample: boolean) {
     try {
         let query = { "code": {"$regex": code} };
         if(!sample) return await EventModel.find(query).populate('participants');
-        else return await EventModel.aggregate().match({"code": {"$regex": code}}).sample(9).lookup({from: 'Review', localField: 'participants', foreignField: '_id'})
+        else return await EventModel.aggregate().match({"code": {"$regex": code}}).sample(9).lookup({from: 'Review', localField: 'participants', foreignField: '_id', as: 'participants'})
     } catch (err) {
         throw err;
     }
