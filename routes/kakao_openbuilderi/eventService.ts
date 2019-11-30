@@ -51,10 +51,10 @@ Router.post('/eventTgt', async (req:Express.Request, res:Express.Response) => {
     .then(async data => {
         if(data.length === 0) return responseBody = fallbackBlock("참여하고 있는 매장이 없어요")
         datalist.push(targetMapCell(find))
-        data[0].participants.forEach((item: any, idx: number) => {
+        console.log(data[0])
+        data[0].participantObjects.forEach((item: any, idx: number) => {
           if(idx >= 9) return 
           let parseContent;
-          console.log(item)
           try {
             parseContent = String(item.content.match(/메뉴:.*$/));
             parseContent = parseContent!.replace(/\"/gi, "");

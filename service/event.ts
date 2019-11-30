@@ -49,7 +49,9 @@ export async function targets(code: string, sample: boolean) {
     try {
         let query = { "code": {"$regex": code} };
         if(!sample) return await EventModel.find(query).populate('participants');
-        else return await EventModel.aggregate().match({"code": {"$regex": code}}).sample(9).unwind('participants').lookup({from: 'Review', localField: 'participants', foreignField: '_id', as: 'participants'}).group({"_id":"_id", "participants": { "$push": "$participants" }, "participantObjects": { "$push": "$participantObjects" }})
+        else return await EventModel.aggregate().match({"code": {"$regex": code}}).sample(9).lookup({from: 'reviews', localField: 'participants', foreignField: '_id', as: 'participantObjects'}) 
+        //  .unwind('participants') -> participant 배열을 분리; 지금은 필요 없음
+        //  .group({"_id":"_id", "participants": { "$push": "$participants" }}) -> 분리한 배열을 묶어줌
     } catch (err) {
         throw err;
     }
