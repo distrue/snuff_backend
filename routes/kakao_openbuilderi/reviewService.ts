@@ -30,8 +30,8 @@ Router.post('/rcmd', async (req:Express.Request, res:Express.Response) => {
 Router.get('/rcmd', async (req:Express.Request, res:Express.Response) => {
     let filter:object = {};
     let skill_params = req.query;
-    if(skill_params.region!=="0") filter = Object.assign(filter, {region: {$regex: skill_params.region}});
-    if(skill_params.foodtype!=="0") filter = Object.assign(filter, {foodtype: {$regex: skill_params.foodtype}});
+    if(skill_params.region) filter = Object.assign(filter, {region: {$regex: skill_params.region}});
+    if(skill_params.foodtype) filter = Object.assign(filter, {foodtype: {$regex: skill_params.foodtype}});
     if(skill_params.rating) filter = Object.assign(filter, {'rating.total': {$gte: Number(skill_params.rating)} });
     if(skill_params.phrase) filter = Object.assign(filter, {'name': {$regex: skill_params.phrase} });
     
