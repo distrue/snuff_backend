@@ -38,10 +38,10 @@ const schema = new mongoose.Schema({
     type: String
   },
   region: {
-    type: String
+    type: Array
   },
   foodtype: {
-    type: String
+    type: Array
   },
   content: {
     required: true,

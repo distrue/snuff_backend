@@ -27,6 +27,19 @@ Router.post('/rcmd', async (req:Express.Request, res:Express.Response) => {
     })
 });
 
+Router.get('/rcmd', async (req:Express.Request, res:Express.Response) => {
+    let filter:object = {};
+    let skill_params = req.query;
+    if(skill_params.region!=="0") filter = Object.assign(filter, {$elemMatch: {region: skill_params.region}});
+    if(skill_params.foodtype!=="0") filter = Object.assign(filter, {$elemMatch: {foodtype: skill_params.foodtype}});
+    if(skill_params.rating) filter = Object.assign(filter, {'rating.total': {$gte: Number(skill_params.rating)} });
+    
+    return await list(filter)
+    .then(async (data) => {
+        return res.status(200).json(data)
+    })
+});
+
 /////
 
 Router.post('/pickone', (req:Express.Request, res:Express.Response) => {
