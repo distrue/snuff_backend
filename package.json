@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "ts-node app.ts",
     "update": "ts-node tools/dbUpdater.ts",
-    "total_up": "ts-node tools/totalscore.ts"
+    "total_up": "ts-node tools/scoreUpdater.ts"
   },
   "author": "",
   "license": "ISC",

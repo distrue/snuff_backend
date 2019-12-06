@@ -16,8 +16,7 @@ export async function readCSV(data: string) {
   {
     if(idx === 0) return null;
     const vv = v.split('$');
-    if(vv[4] !== undefined) { console.log(vv[3]);
-      // vv[0]: postURL, vv[2]:region, vv[3]: foodtype 
+    if(vv[4] !== undefined) {
       try {
         return {
           postURL: vv[0],
@@ -41,7 +40,6 @@ export async function readCSV(data: string) {
 }
 
 async function add(item: ReviewItem) {
-  // console.log('Review');
   try {
     await new ReviewModel({
       reviewId: new bson.ObjectId(),
@@ -64,17 +62,8 @@ async function add(item: ReviewItem) {
 
 export async function addToDB(items: ReviewItem[]) {
   console.log('[+] Add to DB');
-  console.log(items);
-  try {
-    // console.log('[-] UserModel Clear');
-    // await ReviewModel.collection.drop();
-    // tslint:disable-next-line: no-empty
-  } catch {}
   for (const item of items) {
-    // console.log(`[+] Add ${item.userNickname}`);
-    if(item !== null) {
-      await add(item);
-    }
+    if(item !== null) await add(item);
   }
   console.log('[!] Complete');
 }
