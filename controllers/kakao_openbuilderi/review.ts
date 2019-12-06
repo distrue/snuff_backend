@@ -33,10 +33,10 @@ export function reviewResponse(data:any, imgURLs: string[]) {
                 "items": [
                   {
                     "title": "음식점 위치 🗺️",
-                    "description": "음식점을 검색해 보세요!",
+                    "description": "음식점 위치를 확인해 보세요!",
                     "imageUrl": "https://snuffstatic.s3.ap-northeast-2.amazonaws.com/%E1%84%8C%E1%85%B5%E1%84%83%E1%85%A9.png",
                     "link": {
-                      "web": `https://snufoodfighter.firebaseapp.com/`
+                      "web": `https://snufoodfighter.firebaseapp.com/?phrase=${searchTitle(data.name)}`
                     }
                   },
                   {                        
